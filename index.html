@@ -1,61 +1,86 @@
- <!-- Video Source -->
-  <!-- https://www.pexels.com/video/aerial-view-of-beautiful-resort-2169880/ -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sujay Halder | Home</title>
     <link rel="stylesheet" href="style.css">
-    <script src="scripts.js"></script>
-</head>  
-<section class="showcase">
-    <header>
-      <h2 class="logo">Sujay Halder</h2>
-      <div class="toggle"></div>
-    </header>
-    <video src="https://traversymedia.com/downloads/videos/explore.mp4" muted loop autoplay></video>
-    <div class="overlay"></div>
-    <div class="text">
-     <h2>Coming Soon.......</h2>
-     <!--
-      <h2>Never Stop To </h2> 
-      <h3>Expore the World</h3>
-      
-     
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat.</p>
-    -->
-      <a href="#">Explore</a>
-    </div>
-    <ul class="social">
-      <li><a href="https://facebook.com/TheSujayHalder" target="_blank"><img
-            src="https://i.ibb.co/x7P24fL/facebook.png"></a></li>
-      <li><a href="https://twitter.com/TheSujayHalder" target="_blank"><img
-            src="https://i.ibb.co/Wnxq2Nq/twitter.png"></a></li>
-      <li><a href="https://www.instagram.com/the_sujay_halder/" target="_blank"><img
-            src="https://i.ibb.co/ySwtH4B/instagram.png"></a>
-      </li>
-    </ul>
-  </section>
-  <div class="menu">
-    <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="#">News</a></li>
-      <li><a href="#">Destination</a></li>
-      <li><a href="#">Blog</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-  </div>
- <script>
-  const menuToggle = document.querySelector('.toggle');
-  const showcase = document.querySelector('.showcase');
+    <script type="text/javascript" src="/main.js"></script>
+    <title>Sujay Halder</title>
+</head>
 
-  menuToggle.addEventListener('click', () => {
-    menuToggle.classList.toggle('active');
-    showcase.classList.toggle('active');
-  })
- </script>
+<!-- Body of the page -->
+
+<h1>Kungfu Master</h1>
+<canvas id="my-canvas" style="border: 2px solid red" width="500" height="500"></canvas>
+<button id = "kick">Kick</button>
+<button id = "punch">Punch</button>
+<button id = "block">Block</button>
+<button id = "forward">Forward</button>
+<button id = "backward">Backword</button>
+
+<body>
+    <header>
+        <h1>Sujay Halder</h1>
+    </header>
+
+    <!--
+    <img src="finisher/images/backgroundImg.jpg" alt="Background Image" width="device-width" >
+    -->
+    <div class="topnav">
+        <a class="active" href="#home">Home</a>
+        <a href="#news">Blog</a>
+        <a href="#contact">Projects</a>
+        <a href="#about">About</a>
+    </div>
+<!--  
+    <img src="finisher/images/backward/1.png" alt="Background Image" width=30%>
+--> 
+    
+    <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+
+</body>
+<!-- 
+<footer class="social-footer">
+
+    <div class="social-footer-icons">
+      <ul class="menu simple">
+
+        
+        <li><a href="https://www.facebook.com/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        <li><a href="https://www.instagram.com/?hl=en"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+        <li><a href="https://www.pinterest.com/"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a></li>
+        <li><a href="https://twitter.com/?lang=en"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        <li><a href="https://facebook.com/TheSujayHalder" target="_blank"><img
+        
+
+        <li><a href="https://facebook.com/TheSujayHalder" target="_blank"><img
+            src="https://i.ibb.co/x7P24fL/facebook.png"></a></li>
+        <li><a href="https://twitter.com/TheSujayHalder" target="_blank"><img
+            src="https://i.ibb.co/Wnxq2Nq/twitter.png"></a></li>
+        <li><a href="https://www.instagram.com/the_sujay_halder/" target="_blank"><img
+            src="https://i.ibb.co/ySwtH4B/instagram.png"></a></li>
+            
+      </ul>
+    </div>
+  </footer>
+  
+-->
+
+<!-- Footer of the page 
+<footer>
+    <div class="social-footer">
+        <ul>
+            <li><a href="https://facebook.com/TheSujayHalder" target="_blank"><img
+                        src="https://i.ibb.co/x7P24fL/facebook.png"></a></li>
+            <li><a href="https://twitter.com/TheSujayHalder" target="_blank"><img
+                        src="https://i.ibb.co/Wnxq2Nq/twitter.png"></a></li>
+            <li><a href="https://www.instagram.com/the_sujay_halder/" target="_blank"><img
+                        src="https://i.ibb.co/ySwtH4B/instagram.png"></a></li>
+        </ul>
+    </div>
+    
+</footer>
+-->
+
+</html>
