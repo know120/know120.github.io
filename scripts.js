@@ -8,7 +8,7 @@ let loadImage = (src,callback) => {
 };
 
 let imagePath = (frameNumber,animation) => {
-    return "https://know120.github.io/images/" + animation + "/" + frameNumber + ".png";
+    return "https://know120.github.io/images/" + animation + "/" + frameNumber + ".png?raw = true";
 
 };
 
