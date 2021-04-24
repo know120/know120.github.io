@@ -8,7 +8,7 @@ let loadImage = (src,callback) => {
 };
 
 let imagePath = (frameNumber,animation) => {
-    return "/images/" + animation + "/" + frameNumber + ".png";
+    return "https://github.com/know120/know120.github.io/tree/main/images/" + animation + "/" + frameNumber + ".png";
 
 };
 
@@ -46,7 +46,7 @@ let animate = (ctx,images,animation,callback) => {
         setTimeout(() =>{
             ctx.clearRect(0,0,500,500);
             ctx.drawImage(image,0,0,500,500);
-        },index = 100);
+        },index * 100);
     });
 
     setTimeout(callback,images[animation].length * 100);
