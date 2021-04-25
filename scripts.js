@@ -8,7 +8,7 @@ let loadImage = (src,callback) => {
 };
 
 let imagePath = (frameNumber,animation) => {
-    return "https://know120.github.io/images/" + animation + "/" + frameNumber + ".png?raw = true";
+    return "https://know120.github.io/images/" + animation + "/" + frameNumber + ".png";
 
 };
 
@@ -16,13 +16,16 @@ let frames = {
     idle: [1,2,3,4,5,6,7,8],
     kick: [1,2,3,4,5,6,7],
     punch: [1,2,3,4,5,6,7],
+    block: [1,2,3,4,5,6,7,8,9],
+    forward: [1,2,3,4,5,6],
+    backward: [1,2,3,4,5,6],
 };
 
 let loadImages = (callback) => {
-    let images = {idle:[],kick:[],punch:[]};
+    let images = {idle:[],kick:[],punch:[],block:[],forward:[],backward:[]};
     let imagesToLoad = 0;
 
-    ["idle","kick","punch"].forEach((animation) => {
+    ["idle","kick","punch","forward","backward","block"].forEach((animation) => {
         let animationFrames = frames[animation];
         imagesToLoad = imagesToLoad + animationFrames.length;
 
@@ -44,51 +47,86 @@ let loadImages = (callback) => {
 let animate = (ctx,images,animation,callback) => {
     images[animation].forEach((image,index) => {
         setTimeout(() =>{
-            ctx.clearRect(0,0,500,500);
-            ctx.drawImage(image,0,0,500,500);
+            ctx.clearRect(50,50,300,300);
+            ctx.drawImage(image,50,50,300,300);
         },index * 100);
     });
 
     setTimeout(callback,images[animation].length * 100);
 };
 
-loadImages((image)=> {
-    let queuedAnimation = [];
+loadImages((images)=> {
+    let queuedAnimations = [];
 
     let aux = () =>{
         let selectedAnimation;
 
-        if(queuedAnimation.length === 0){
+        if(queuedAnimations.length === 0){
             selectedAnimation = "idle";
         } else {
-            selectedAnimation = queuedAnimation.shift();
+            selectedAnimation = queuedAnimations.shift();
         }
         animate(ctx,images,selectedAnimation,aux);
     };
 
     aux();
+
+    document.getElementById("kick").onclick = () => {
+        queuedAnimations.push("kick");
+        console.log("Kicked");
+    };
+    
+    document.getElementById("punch").onclick = () => {
+        queuedAnimations.push("punch");
+        console.log("Punched");
+    };
+
+    document.getElementById("block").onclick = () => {
+        queuedAnimations.push("block");
+        console.log("Blocked");
+    };
+    
+    document.getElementById("forward").onclick = () => {
+        queuedAnimations.push("forward");
+        console.log("Going Forward");
+    };
+
+    document.getElementById("backward").onclick = () => {
+        queuedAnimations.push("backward");
+        console.log("Coming Backward");
+    };
+
+    document.addEventListener("keyup",(event) =>{
+        const key = event.key;
+        if (key === "ArrowLeft"){
+            queuedAnimations.push("kick");
+        } else if (key === "ArrowRight"){
+            queuedAnimations.push("punch");
+        }
+    });
 });
 
 
-/*
+
+
+
 //Get the button:
 mybutton = document.getElementById("myBtn");
 
 // When the user scrolls down 20px from the top of the document, show the button
-window.onscroll = function() {scrollFunction()};
+window.onscroll = () => {scrollFunction()};
 
-function scrollFunction() {
-  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+let scrollFunction = () =>{
+  if (document.body.scrollTop > 20 || document.getElementById("myBtn").scrollTop > 20) {
     mybutton.style.display = "block";
   } else {
-    mybutton.style.display = "none";
+    document.getElementById("myBtn").style.display = "none";
+    //mybutton.style.display = "none";
   }
 }
 
 // When the user clicks on the button, scroll to the top of the document
-function topFunction() {
+let topFunction = () =>{
   document.body.scrollTop = 0; // For Safari
   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
-
-*/
