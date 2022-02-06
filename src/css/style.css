@@ -8,9 +8,11 @@ html {
 body {
     /* The image used */
     background-image: url("https://know120.github.io/res/images/bgHome.jpg");
+    backface-visibility: visible;
   
     /* Full height */
     height: 100%; 
+    width: auto;
   
     /* Center and scale the image nicely*/ 
     background-position: center;
@@ -18,12 +20,14 @@ body {
     background-size: cover;
 }
 
-/*
+
 h1 {
-    font-style: italic;
+    font-style: oblique;
     color: #373fff;
+    position: relative;
+    size: 5cm;
 }
-*/
+
 /* Add a black background color to the top navigation 
 .topnav {
     background-color: #333;
@@ -52,8 +56,10 @@ h1 {
     color: white;
   }
   */
+
+
 #myBtn {
-    display: show; /* Hidden by default */
+    display:block show; /* Hidden by default */
     position: fixed; /* Fixed/sticky position */
     bottom: 20px; /* Place the button at the bottom of the page */
     right: 30px; /* Place the button 30px from the right */
