@@ -1,5 +1,22 @@
-.title{
-    font-size: 2rem;
-    font-weight: bold;
-    padding-left: 3rem;
+.navigation{
+    /* background-color: #000; */
+    border: 1px solid #e7e7e7;
+    border-radius: 5rem;
+    box-shadow: 0 2rem 2rem rgba(0,0,0,.05);
+    /* margin-bottom: 20px; */
+    padding: 1rem;
+}
+.about{
+    font-size: 30px;
+    padding: 5rem;
+    height: 25rem;
+    width: auto;
+}
+
+:host::ng-deep .p-card{
+    padding: 5rem;
+    height: 25rem;
+    width: auto;
+    border-radius: 5rem;
+    box-shadow: 1rem 2rem 2rem rgba(0, 0, 0, .8);
 }

@@ -7,7 +7,7 @@ import { MenuItem } from 'primeng/api';
     styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
-    
+
     items!: MenuItem[];
 
     constructor() { }
@@ -15,5 +15,4 @@ export class DashboardComponent {
     ngOnInit(): void {
         
     }
-
 }
