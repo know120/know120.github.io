@@ -17,12 +17,17 @@
     padding: 5rem;
     height: 25rem;
     width: auto;
-    border-radius: 5rem;
-    box-shadow: 1rem 2rem 2rem rgba(0, 0, 0, .8);
+    border-radius: 3rem;
+    box-shadow: 1rem 2rem 2rem rgba(0, 0, 0, 0.8);
     background-color: rgba(27, 25, 25, 0.164);
 }
 
 footer {
     background-color: #000 !Important;
     border-radius: 3rem;
+}
+
+.info {
+    margin: auto;
+    font-size: larger;
 }
