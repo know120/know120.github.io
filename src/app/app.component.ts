@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+import { DashboardComponent } from "./home/dashboard/dashboard.component";
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
-    standalone: true
+    standalone: true,
+    imports: [DashboardComponent]
 })
 export class AppComponent {
   title = 'Sujay Halder';
