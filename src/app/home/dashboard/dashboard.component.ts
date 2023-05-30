@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MenuItem, SharedModule } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 
