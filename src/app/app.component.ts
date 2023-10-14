@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
-import { DashboardComponent } from "./pages/dashboard/dashboard.component";
-import { SuperappComponent } from './pages/superapp/superapp.component';
+import { RouterOutlet } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [DashboardComponent, MenubarModule, SuperappComponent]
+  imports: [MenubarModule, RouterOutlet]
 })
 export class AppComponent {
   title = 'Sujay Halder';
@@ -21,21 +21,25 @@ export class AppComponent {
     this.menuItems = [
       {
         label: 'Home',
+        routerLink: ['home']
       },
       {
         label: 'About',
       },
       {
         label: 'Projects',
+        routerLink:["#projects"]
       },
       {
         label: 'Services',
         items: [
           {
             label: 'Notes',
+            routerLink: ['note']
           },
           {
             label: 'Super App',
+            routerLink: ['super']
           },
         ]
       },
@@ -43,7 +47,7 @@ export class AppComponent {
         label: 'Blogs',
       },
       {
-        label: 'Contact',
+        label: 'Contacts',
       }
     ];
   }
