@@ -12,40 +12,4 @@ import { MenubarModule } from 'primeng/menubar';
 })
 export class DashboardComponent {
 
-    // menuItems: MenuItem[] = [];
-
-    // constructor() { }
-
-    // ngOnInit(): void {
-    //     this.menuItems = [
-    //         {
-    //             label: 'Home',
-    //         },
-    //         {
-    //             label: 'About',
-    //         },
-    //         {
-    //             label: 'Projects',
-    //             // url: '#projects'
-    //             // routerLink: ['#projects'],
-    //         },
-    //         {
-    //             label: 'Services',
-    //             items: [
-    //                 {
-    //                     label: 'Super App',
-    //                 },
-    //                 {
-    //                     label: 'Notes',
-    //                 }
-    //             ]
-    //         },
-    //         {
-    //             label: 'Blogs',
-    //         },
-    //         {
-    //             label: 'Contact',
-    //         }
-    //     ];
-    // }
 }

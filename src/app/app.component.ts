@@ -27,18 +27,16 @@ export class AppComponent {
       },
       {
         label: 'Projects',
-        url: '#projects',
-        routerLink: ['#projects'],
       },
       {
         label: 'Services',
         items: [
           {
-            label: 'Super App',
+            label: 'Notes',
           },
           {
-            label: 'Notes',
-          }
+            label: 'Super App',
+          },
         ]
       },
       {
