@@ -15,7 +15,6 @@ a:hover {
 
 
 .about {
-    font-size: 30px;
     padding: 5rem;
     height: 25rem;
     width: auto;
@@ -23,8 +22,8 @@ a:hover {
 
 :host::ng-deep .p-card {
     color: white;
-    padding: 5rem;
-    height: 25rem;
+    padding: 2rem;
+    height: fit-content;
     width: auto;
     border-radius: 3rem;
     box-shadow: 1rem 2rem 2rem rgba(0, 0, 0, 0.8);
@@ -37,5 +36,5 @@ footer {
 
 .info {
     margin: auto;
-    font-size: larger;
+    font-size: xx-large;
 }

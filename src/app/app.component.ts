@@ -32,16 +32,16 @@ export class AppComponent {
       },
       {
         label: 'Services',
-        items: [
-          {
-            label: 'Notes',
-            routerLink: ['note']
-          },
-          {
-            label: 'Super App',
-            routerLink: ['super']
-          },
-        ]
+        // items: [
+        //   {
+        //     label: 'Notes',
+        //     routerLink: ['note']
+        //   },
+        //   {
+        //     label: 'Super App',
+        //     routerLink: ['super']
+        //   },
+        // ]
       },
       {
         label: 'Blogs',
