@@ -36,5 +36,17 @@ footer {
 
 .info {
     margin: auto;
-    font-size: xx-large;
+    font-size: 5rem;
+    /* background: -webkit-linear-gradient(#eee, #333); */
+    background: -webkit-linear-gradient(#2f1f3f, #ec7c69);
+    background-clip: content-box;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.zoom{
+    transition: transform .2s;
+}
+.zoom:hover{
+    transform: scale(1.1);
 }
