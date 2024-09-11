@@ -10,6 +10,9 @@ import { CardModule } from 'primeng/card';
   styleUrls: ['./card.component.css']
 })
 export class CardComponent {
+  @Input() header: string = "";
   @Input() title: string = "";
+  @Input() body: string = "";
+  @Input() footer: string = "";
 
 }

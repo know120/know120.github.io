@@ -22,15 +22,13 @@ a:hover {
 
 :host::ng-deep .p-card {
     color: white;
-    background-color: #000;
     padding: 2rem;
     height: fit-content;
     width: auto;
     border: 0.1rem solid #000;
     border-radius: 3rem;
-    /* box-shadow: 1rem 2rem 2rem rgba(0, 0, 0, 0.8); */
     box-shadow: 0.5rem 1rem;
-    background-color: rgba(27, 25, 25, 0.164);
+    background-color: 000;
 }
 
 footer {
