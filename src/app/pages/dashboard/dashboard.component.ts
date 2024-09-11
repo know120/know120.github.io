@@ -11,5 +11,5 @@ import { MenubarModule } from 'primeng/menubar';
     imports: [CardModule, SharedModule, MenubarModule]
 })
 export class DashboardComponent {
-
+    currentYear = new Date().getFullYear();
 }
