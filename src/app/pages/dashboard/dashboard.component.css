@@ -1,0 +1,63 @@
+/* .navigation {
+    background-color: #000;
+    padding: 1.25rem;
+} */
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(75, 75, 196);
+    text-decoration: none;
+}
+
+
+/* .about {
+    padding: 5rem;
+    height: 25rem;
+    width: auto;
+} */
+
+:host::ng-deep .p-card {
+    color: white;
+    background-color: #000;
+    padding: 2rem;
+    height: fit-content;
+    width: auto;
+    border: 0.1rem solid #000;
+    border-radius: 3rem;
+    /* box-shadow: 1rem 2rem 2rem rgba(0, 0, 0, 0.8); */
+    box-shadow: 0.5rem 1rem;
+    background-color: rgba(27, 25, 25, 0.164);
+}
+
+footer {
+    border-radius: 3rem;
+}
+
+.info {
+    margin: auto;
+    font-size: 5rem;
+    /* background: -webkit-linear-gradient(#eee, #333); */
+    background: -webkit-linear-gradient(#2f1f3f, #ec7c69);
+    background-clip: content-box;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.zoom{
+    transition: transform .3s ease-in-out;
+}
+.zoom:hover{
+    transform: scale(1.1);
+}
+
+.skew {
+    transition: transform .3s ease-in-out;
+}
+
+.skew:hover {
+    transform: skew(-10deg);
+}

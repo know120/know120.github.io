@@ -1,5 +1,17 @@
-body {
-    padding: 0rem 5rem;
+@import 'primeng/resources/themes/md-dark-indigo/theme.css';
+
+.app {
     background-color: var(--bs-dark);
     color: var(--bs-light);
+}
+.p-menubar{
+    padding: 0;
+    align-items: end;
+}
+
+.full-size{
+    height: 100vh;
+    width: 100vw;
+    align-items: center;
+    align-content: center;
 }
