@@ -3,6 +3,10 @@ name: Build and Deploy to GitHub Pages
 on:
   push:
     branches: [ main ] # Or your default branch
+      
+permissions:
+    id-token: write 
+    contents: read
 
 jobs:  # Colon added here
   build:
