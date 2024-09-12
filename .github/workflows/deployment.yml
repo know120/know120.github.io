@@ -3,7 +3,7 @@ name: Build and Deploy to GitHub Pages
 on:
   push:
     branches: [ main ] # Or your default branch
-      
+
 permissions:
     id-token: write 
     contents: read
@@ -24,7 +24,7 @@ jobs:  # Colon added here
         run: npm ci
 
       - name: Build
-        run: npm run build # Or your build command
+        run: ng build # Or your build command
 
   deploy:
     runs-on: ubuntu-latest
