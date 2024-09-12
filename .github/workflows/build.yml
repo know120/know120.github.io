@@ -1,23 +1,23 @@
-name: Build on Push
+# name: Build on Push
 
-on:
-  push:
-    branches: [ main ] # Or your default branch
+# on:
+#   push:
+#     branches: [ main ] # Or your default branch
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v3 # Checks out your code
+#     steps:
+#       - uses: actions/checkout@v3 # Checks out your code
 
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20' # Or your desired Node.js version
+#       - name: Use Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '20' # Or your desired Node.js version
 
-      - name: Install dependencies
-        run: npm ci
+#       - name: Install dependencies
+#         run: npm ci
 
-      - name: Build
-        run: npm run build # Or your build command
+#       - name: Build
+#         run: npm run build # Or your build command
