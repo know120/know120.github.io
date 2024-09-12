@@ -1,47 +1,31 @@
-name: Build and Deploy to GitHub Pages
+name: Build and Deploy Angular App
 
 on:
   push:
-    branches: [ main ] # Or your default branch
+    branches:
+      - main
 
-permissions:
-    id-token: write 
-    contents: read
-
-jobs:  # Colon added here
-  build:
+jobs:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Use Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # Or your desired Node.js version
+          node-version: '20'
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build
-        run: ng build # Or your build command
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: ./docs # Or your build output directory
+        run: ng build
+        # run: npm run build -- --prod --base-href="https://know120.github.io/know120.github.io/"
 
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
