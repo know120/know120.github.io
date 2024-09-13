@@ -4,14 +4,24 @@
     background-color: var(--bs-dark);
     color: var(--bs-light);
 }
-.p-menubar{
+
+.p-menubar {
     padding: 0;
     align-items: end;
 }
 
-.full-size{
+.full-size {
     height: 100vh;
     width: 100vw;
     align-items: center;
     align-content: center;
+}
+
+.grid {
+    background-image:
+        radial-gradient(circle, #333 3px, transparent 2px),
+        linear-gradient(to right, #e0e0e0 1px, transparent 1px),
+        linear-gradient(to bottom, #e0e0e0 1px, transparent 1px);
+    background-size: 5rem 5rem, 5rem 5rem, 5rem 5rem;
+    background-position: 0 0, 2.5rem 2.5rem, 2.5rem 2.5rem;
 }
