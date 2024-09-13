@@ -29,6 +29,9 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
+            "allowedCommonJsDependencies": [
+              "jquery"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -36,7 +39,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1mb",
+                  "maximumWarning": "1.5mb",
                   "maximumError": "2mb"
                 },
                 {
