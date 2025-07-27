@@ -23,12 +23,12 @@ const Navigation = () => {
   };
 
   return (
-    <nav className={`navbar navbar-expand-lg fixed-top ${isScrolled ? 'navbar-scrolled' : ''}`}>
-      <div className="container">
+    <nav className={`navbar-floating ${isScrolled ? 'navbar-scrolled' : ''}`}>
+      <div className="navbar-container">
         <a className="navbar-brand fw-bold" href="#home" onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}>
           Sujay Halder
         </a>
-        
+
         <button
           className="navbar-toggler"
           type="button"
@@ -39,48 +39,48 @@ const Navigation = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className={`collapse navbar-collapse ${isMobileMenuOpen ? 'show' : ''}`}>
-          <ul className="navbar-nav ms-auto">
+        <div className={`navbar-menu ${isMobileMenuOpen ? 'show' : ''}`}>
+          <ul className="navbar-nav">
             <li className="nav-item">
-              <a 
-                className="nav-link" 
-                href="#home" 
+              <a
+                className="nav-link"
+                href="#home"
                 onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}
               >
                 Home
               </a>
             </li>
             <li className="nav-item">
-              <a 
-                className="nav-link" 
-                href="#about" 
+              <a
+                className="nav-link"
+                href="#about"
                 onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}
               >
                 Experience
               </a>
             </li>
             <li className="nav-item">
-              <a 
-                className="nav-link" 
-                href="#projects" 
+              <a
+                className="nav-link"
+                href="#projects"
                 onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}
               >
                 Projects
               </a>
             </li>
             <li className="nav-item">
-              <a 
-                className="nav-link" 
-                href="#blog" 
+              <a
+                className="nav-link"
+                href="#blog"
                 onClick={(e) => { e.preventDefault(); scrollToSection('blog'); }}
               >
                 Blog
               </a>
             </li>
             <li className="nav-item">
-              <a 
-                className="nav-link" 
-                href="#contact" 
+              <a
+                className="nav-link"
+                href="#contact"
                 onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}
               >
                 Contact

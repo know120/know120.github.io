@@ -34,10 +34,10 @@ const Dashboard = () => {
   return (
     <div className="app">
       <Navigation />
-      <section id="home">
-        <div className="container-fluid full-size" style={{ paddingTop: '80px' }}>
-          <div className="row d-flex align-items-center justify-content-center min-vh-100">
-            <div className="col-12 col-md-6 col-lg-5 text-center mb-4 mb-md-0">
+      <section id="home" className="w-100 vh-100">
+        <div className="container-fluid h-100 px-0 d-flex align-items-center">
+          <div className="row d-flex align-items-center justify-content-center w-100 mx-0">
+            <div className="col-12 col-md-6 col-lg-5 text-center mb-4 mb-md-0 px-4">
               <img
                 className="profile-image rounded-circle img-fluid"
                 src="assets/img/me.jpg"
@@ -45,11 +45,11 @@ const Dashboard = () => {
                 style={{ maxWidth: '280px', width: '80%' }}
               />
             </div>
-            <div className="col-12 col-md-6 col-lg-7 text-center text-md-start">
+            <div className="col-12 col-md-6 col-lg-7 text-center text-md-start px-4">
               <div className="hero-content">
                 <h1 className="hero-title display-4 fw-bold mb-3">Hi, I'm Sujay</h1>
-                <h2 className="hero-subtitle h3 mb-2">A Software</h2>
-                <h2 className="hero-subtitle h3 mb-4">Engineer</h2>
+                <h2 className="hero-subtitle h3 mb-2">A Software Engineer</h2>
+                {/* <h2 className="hero-subtitle h3 mb-4">Engineer</h2> */}
                 <div className="hero-description d-none d-md-block">
                   <p className="lead">Passionate about creating innovative solutions and building amazing web experiences.</p>
                 </div>
@@ -59,12 +59,12 @@ const Dashboard = () => {
         </div>
       </section>
 
-      <section id="about">
-        <div className="container-fluid section-padding grid bg-secondary">
-          <div className="container">
+      <section id="about" className="w-100 vh-100">
+        <div className="container-fluid h-100 grid bg-secondary px-0 d-flex align-items-center">
+          <div className="w-100 px-4">
             <h1 className="section-title text-center mb-5">Work Experience</h1>
-            <div className="row g-4">
-              <div className="col-12 col-lg-6">
+            <div className="row g-4 mx-0 justify-content-center">
+              <div className="col-12 col-lg-6 px-3">
                 <Card
                   header={expASL.header}
                   title={expASL.title}
@@ -72,7 +72,7 @@ const Dashboard = () => {
                   footer={expASL.footer}
                 />
               </div>
-              <div className="col-12 col-lg-6">
+              <div className="col-12 col-lg-6 px-3">
                 <Card
                   header={expDSS.header}
                   title={expDSS.title}
@@ -85,19 +85,19 @@ const Dashboard = () => {
         </div>
       </section>
 
-      <section id="projects">
-        <div className="container-fluid section-padding gradient-grid">
-          <div className="container">
+      <section id="projects" className="w-100 vh-100">
+        <div className="container-fluid h-100 gradient-grid px-0 d-flex align-items-center">
+          <div className="w-100 px-4">
             <h1 className="section-title text-center mb-5">Projects</h1>
-            <div className="row g-4">
-              <div className="col-12 col-lg-6">
+            <div className="row g-4 mx-0 justify-content-center">
+              <div className="col-12 col-lg-6 px-3">
                 <Card
                   header={projDA.header}
                   body={projDA.body}
                   footer={projDA.footer}
                 />
               </div>
-              <div className="col-12 col-lg-6">
+              <div className="col-12 col-lg-6 px-3">
                 <Card
                   header={projML.header}
                   body={projML.body}
@@ -109,9 +109,9 @@ const Dashboard = () => {
         </div>
       </section>
 
-      <section id="blog">
-        <div className="container-fluid section-padding grid bg-secondary bg-gradient">
-          <div className="container">
+      <section id="blog" className="w-100 vh-100">
+        <div className="container-fluid h-100 grid bg-secondary bg-gradient px-0 d-flex align-items-center">
+          <div className="w-100 px-4">
             <h1 className="section-title text-center mb-4">Blogs</h1>
             <div className="text-center">
               <p className="lead">Coming Soon...</p>
@@ -121,10 +121,10 @@ const Dashboard = () => {
         </div>
       </section>
 
-      <section id="contact">
-        <footer className="bg-dark text-center text-white py-5">
-          <div className="container">
-            <div className="row">
+      <section id="contact" className="w-100 vh-100">
+        <footer className="bg-dark text-center text-white w-100 h-100 d-flex align-items-center">
+          <div className="container-fluid px-4 w-100">
+            <div className="row mx-0">
               <div className="col-12">
                 <h3 className="mb-4">Let's Connect</h3>
                 <div className="social-links mb-4">
