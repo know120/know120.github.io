@@ -1,31 +1,31 @@
 /* Responsive Floating Navigation Styles */
 .navbar-floating {
   position: fixed;
-  top: 20px;
+  top: 15px;
   left: 2rem;
   right: 2rem;
-  background: rgba(26, 26, 26, 0.8);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 25px;
-  padding: 0.75rem 2rem;
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   z-index: 1000;
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    0 2px 8px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 6px 24px rgba(0, 0, 0, 0.2),
+    0 1px 4px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
   width: auto;
 }
 
 .navbar-scrolled {
-  background: rgba(26, 26, 26, 0.95);
-  border-color: rgba(139, 92, 246, 0.3);
+  background: rgba(26, 26, 26, 0.8);
+  border-color: rgba(139, 92, 246, 0.2);
   box-shadow: 
-    0 12px 40px rgba(0, 0, 0, 0.4),
-    0 4px 12px rgba(139, 92, 246, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(139, 92, 246, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
 }
 
 .navbar-container {
@@ -77,12 +77,12 @@
 .nav-link {
   color: #cbd5e1 !important;
   font-weight: 500;
-  padding: 0.6rem 1.2rem !important;
-  border-radius: 20px;
+  padding: 0.4rem 1rem !important;
+  border-radius: 15px;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   position: relative;
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   white-space: nowrap;
   display: block;
 }
@@ -153,17 +153,17 @@
   .navbar-floating {
     left: 1.5rem;
     right: 1.5rem;
-    padding: 0.7rem 1.8rem;
+    padding: 0.45rem 1.3rem;
   }
   
   .navbar-nav {
     flex-direction: row;
-    gap: 0.8rem;
+    gap: 0.6rem;
   }
   
   .nav-link {
-    padding: 0.55rem 1rem !important;
-    font-size: 0.9rem;
+    padding: 0.35rem 0.8rem !important;
+    font-size: 0.85rem;
   }
 }
 
@@ -171,9 +171,9 @@
   .navbar-floating {
     left: 1rem;
     right: 1rem;
-    top: 15px;
-    padding: 0.6rem 1.5rem;
-    border-radius: 20px;
+    top: 12px;
+    padding: 0.4rem 1.2rem;
+    border-radius: 18px;
   }
   
   .navbar-menu {
@@ -224,9 +224,9 @@
   .navbar-floating {
     left: 0.75rem;
     right: 0.75rem;
-    top: 12px;
-    padding: 0.5rem 1.2rem;
-    border-radius: 18px;
+    top: 10px;
+    padding: 0.35rem 1rem;
+    border-radius: 16px;
   }
   
   .navbar-brand {
@@ -248,9 +248,9 @@
   .navbar-floating {
     left: 0.5rem;
     right: 0.5rem;
-    top: 10px;
-    padding: 0.5rem 1rem;
-    border-radius: 15px;
+    top: 8px;
+    padding: 0.3rem 0.8rem;
+    border-radius: 14px;
   }
   
   .navbar-brand {
@@ -390,8 +390,8 @@ ing navigation enhancements */
   }
   
   .nav-link {
-    padding: 0.6rem 1.2rem !important;
-    font-size: 0.95rem !important;
+    padding: 0.4rem 1rem !important;
+    font-size: 0.9rem !important;
     text-align: left !important;
     width: auto !important;
   }
@@ -406,7 +406,7 @@ ing navigation enhancements */
   .navbar-floating {
     left: 3rem;
     right: 3rem;
-    padding: 0.8rem 2.5rem;
+    padding: 0.55rem 2rem;
   }
   
   .navbar-brand {
@@ -421,8 +421,8 @@ ing navigation enhancements */
   }
   
   .nav-link {
-    font-size: 1rem;
-    padding: 0.65rem 1.3rem !important;
+    font-size: 0.95rem;
+    padding: 0.45rem 1.1rem !important;
     width: auto !important;
     text-align: left !important;
   }
@@ -433,7 +433,7 @@ ing navigation enhancements */
   .navbar-floating {
     left: 4rem;
     right: 4rem;
-    padding: 0.9rem 3rem;
+    padding: 0.6rem 2.5rem;
   }
   
   .navbar-brand {
@@ -448,8 +448,8 @@ ing navigation enhancements */
   }
   
   .nav-link {
-    font-size: 1.05rem;
-    padding: 0.7rem 1.5rem !important;
+    font-size: 1rem;
+    padding: 0.5rem 1.3rem !important;
     width: auto !important;
     text-align: left !important;
   }
@@ -474,5 +474,120 @@ ing navigation enhancements */
   
   .nav-link:hover {
     background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Theme Toggle in Navigation */
+.theme-toggle-nav {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 0.5rem;
+}
+
+.toggle-track-nav {
+  width: 45px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 11px;
+  position: relative;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.toggle-thumb-nav {
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-thumb-nav.dark {
+  left: 2px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+}
+
+.toggle-thumb-nav.light {
+  left: calc(100% - 20px);
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+.toggle-icon-nav {
+  font-size: 9px;
+  line-height: 1;
+}
+
+.theme-toggle-nav:hover .toggle-track-nav {
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.2);
+}
+
+.theme-toggle-nav:hover .toggle-thumb-nav {
+  transform: translateY(-50%) scale(1.05);
+}
+
+/* Light theme styles for navigation theme toggle */
+.light-theme .toggle-track-nav {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.light-theme .theme-toggle-nav:hover .toggle-track-nav {
+  border-color: rgba(139, 92, 246, 0.4);
+}/* Mobi
+le theme toggle adjustments */
+@media (max-width: 991.98px) {
+  .theme-toggle-nav {
+    margin-left: 0;
+    margin-top: 0.5rem;
+    align-self: center;
+  }
+  
+  .toggle-track-nav {
+    width: 40px;
+    height: 20px;
+  }
+  
+  .toggle-thumb-nav {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .toggle-thumb-nav.light {
+    left: calc(100% - 18px);
+  }
+  
+  .toggle-icon-nav {
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .toggle-track-nav {
+    width: 35px;
+    height: 18px;
+  }
+  
+  .toggle-thumb-nav {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .toggle-thumb-nav.light {
+    left: calc(100% - 16px);
+  }
+  
+  .toggle-icon-nav {
+    font-size: 7px;
   }
 }

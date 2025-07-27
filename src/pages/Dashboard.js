@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import Card from '../components/Card';
 import Navigation from '../components/Navigation';
+import HeroSection from '../components/HeroSection';
+import SkillsSection from '../components/SkillsSection';
+import ProjectCard from '../components/ProjectCard';
+import ContactForm from '../components/ContactForm';
+import LoadingScreen from '../components/LoadingScreen';
+
 
 const Dashboard = () => {
   const currentYear = new Date().getFullYear();
+  const [isLoading, setIsLoading] = useState(true);
+  const [showAllProjects, setShowAllProjects] = useState(false);
+
+
+
+  // Intersection Observer for animations
+  const [aboutRef, aboutInView] = useInView({ threshold: 0.3, triggerOnce: true });
+  const [projectsRef, projectsInView] = useInView({ threshold: 0.3, triggerOnce: true });
+  const [blogRef, blogInView] = useInView({ threshold: 0.3, triggerOnce: true });
+  const [contactRef, contactInView] = useInView({ threshold: 0.3, triggerOnce: true });
 
   const expASL = {
     header: 'Alumnus Software Limited',
@@ -19,48 +36,91 @@ const Dashboard = () => {
     footer: 'August 2021 - July 2022'
   };
 
-  const projDA = {
-    header: 'Data Analysis',
-    body: 'Analysis and Visualization of Political Spending on Facebook.',
-    footer: 'Have a look'
-  };
+  // Enhanced project data
+  const projects = [
+    {
+      title: 'Political Spending Analysis',
+      description: 'Comprehensive analysis and visualization of political advertising spending on Facebook using Python, Pandas, and advanced data visualization techniques.',
+      technologies: ['Python', 'Pandas', 'Matplotlib', 'Seaborn', 'Jupyter'],
+      image: 'https://via.placeholder.com/400x200/6366f1/ffffff?text=Data+Analysis',
+      liveDemo: 'https://jovian.ai/know120/fb-ad-lib',
+      github: 'https://github.com/know120/political-spending-analysis',
+      features: [
+        'Interactive data visualizations',
+        'Statistical analysis of spending patterns',
+        'Trend identification and forecasting',
+        'Automated report generation'
+      ],
+      duration: '3 months',
+      teamSize: '1 (Solo Project)'
+    },
+    {
+      title: 'COVID-19 X-Ray Classifier',
+      description: 'Machine learning model for COVID-19 detection using chest X-ray images with deep learning and computer vision techniques.',
+      technologies: ['Python', 'TensorFlow', 'OpenCV', 'Keras', 'NumPy'],
+      image: 'https://via.placeholder.com/400x200/8b5cf6/ffffff?text=ML+Project',
+      liveDemo: 'https://know120.github.io/covid-xray-classifier',
+      github: 'https://github.com/know120/covid-xray-ml',
+      features: [
+        'Deep learning CNN model',
+        '95% accuracy rate',
+        'Real-time image processing',
+        'Web-based interface'
+      ],
+      duration: '4 months',
+      teamSize: '2 developers'
+    },
+    {
+      title: 'Tire Manufacturing System',
+      description: 'Full-stack web application for tire manufacturing company built with Angular, .NET Framework, and SQL Server.',
+      technologies: ['Angular 7', 'TypeScript', '.NET Framework', 'SQL Server', 'Bootstrap'],
+      image: 'https://via.placeholder.com/400x200/a855f7/ffffff?text=Tire+System',
+      liveDemo: null, // Private/Enterprise project
+      github: null, // Private repository
+      features: [
+        'Inventory management system',
+        'Production tracking',
+        'Quality control modules',
+        'Reporting dashboard'
+      ],
+      duration: '8 months',
+      teamSize: '4 developers'
+    },
+    {
+      title: 'Speed Detection System',
+      description: 'Over-speed detection system using C++ and OpenCV with TCP connection for real-time vehicle monitoring.',
+      technologies: ['C++', 'OpenCV', 'TCP/IP', 'Computer Vision', 'Real-time Processing'],
+      image: 'https://via.placeholder.com/400x200/06b6d4/ffffff?text=Speed+Detection',
+      liveDemo: null,
+      github: 'https://github.com/know120/speed-detection-system',
+      features: [
+        'Real-time speed calculation',
+        'Automatic image capture',
+        'TCP server communication',
+        'Alert system integration'
+      ],
+      duration: '6 months',
+      teamSize: '3 developers'
+    }
+  ];
 
-  const projML = {
-    header: 'Machine Learning',
-    body: 'Covid prediction using Chest X-Ray using Machine Learning.',
-    footer: 'Have a look'
-  };
+  if (isLoading) {
+    return <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />;
+  }
 
   return (
     <div className="app">
       <Navigation />
-      <section id="home" className="w-100 vh-100">
-        <div className="container-fluid h-100 px-0 d-flex align-items-center">
-          <div className="row d-flex align-items-center justify-content-center w-100 mx-0">
-            <div className="col-12 col-md-6 col-lg-5 text-center mb-4 mb-md-0 px-4">
-              <img
-                className="profile-image rounded-circle img-fluid"
-                src="assets/img/me.jpg"
-                alt="Sujay Halder"
-                style={{ maxWidth: '280px', width: '80%' }}
-              />
-            </div>
-            <div className="col-12 col-md-6 col-lg-7 text-center text-md-start px-4">
-              <div className="hero-content">
-                <h1 className="hero-title display-4 fw-bold mb-3">Hi, I'm Sujay</h1>
-                <h2 className="hero-subtitle h3 mb-2">A Software Engineer</h2>
-                {/* <h2 className="hero-subtitle h3 mb-4">Engineer</h2> */}
-                <div className="hero-description d-none d-md-block">
-                  <p className="lead">Passionate about creating innovative solutions and building amazing web experiences.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <section id="about" className="w-100 vh-100">
-        <div className="container-fluid h-100 grid bg-secondary px-0 d-flex align-items-center">
+      {/* Enhanced Hero Section */}
+      <HeroSection />
+
+      {/* Skills Section */}
+      {/* <SkillsSection /> */}
+
+      {/* Enhanced About/Experience Section */}
+      <section id="about" className="w-100 vh-100" ref={aboutRef}>
+        <div className={`container-fluid h-100 grid bg-secondary px-0 d-flex align-items-center ${aboutInView ? 'animate-in' : ''}`}>
           <div className="w-100 px-4">
             <h1 className="section-title text-center mb-5">Work Experience</h1>
             <div className="row g-4 mx-0 justify-content-center">
@@ -85,113 +145,191 @@ const Dashboard = () => {
         </div>
       </section>
 
-      <section id="projects" className="w-100 vh-100">
-        <div className="container-fluid h-100 gradient-grid px-0 d-flex align-items-center">
+      {/* Enhanced Projects Section */}
+      <section id="projects" className={`w-100 ${showAllProjects ? 'vh-auto' : 'vh-100'}`} ref={projectsRef}>
+        <div className={`container-fluid ${showAllProjects ? 'py-5' : 'h-100'} projects-section px-0 d-flex align-items-center ${projectsInView ? 'animate-in' : ''}`}>
           <div className="w-100 px-4">
-            <h1 className="section-title text-center mb-5">Projects</h1>
+            <h1 className="section-title text-center mb-5">
+              {showAllProjects ? `All Projects (${projects.length})` : 'Featured Projects'}
+            </h1>
+
             <div className="row g-4 mx-0 justify-content-center">
-              <div className="col-12 col-lg-6 px-3">
-                <Card
-                  header={projDA.header}
-                  body={projDA.body}
-                  footer={projDA.footer}
-                />
-              </div>
-              <div className="col-12 col-lg-6 px-3">
-                <Card
-                  header={projML.header}
-                  body={projML.body}
-                  footer={projML.footer}
-                />
-              </div>
+              {(showAllProjects ? projects : projects.slice(0, 2)).map((project, index) => (
+                <div
+                  key={`project-${index}-${showAllProjects ? 'all' : 'featured'}`}
+                  className={`col-12 ${showAllProjects ? 'col-md-6 col-xl-4' : 'col-lg-6'} px-3 mb-4`}
+                  style={{ minHeight: '400px' }}
+                >
+                  {project ? <ProjectCard project={project} /> : <div>Loading project...</div>}
+                </div>
+              ))}
+            </div>
+
+            {/* Debug info to ensure projects are loading */}
+            <div className="text-center mt-2" style={{ fontSize: '0.8rem', opacity: 0.7 }}>
+              Showing {showAllProjects ? projects.length : 2} of {projects.length} projects
+            </div>
+
+            <div className="text-center mt-4">
+              {!showAllProjects ? (
+                <button
+                  className="btn btn-outline-light btn-lg"
+                  onClick={() => {
+                    setShowAllProjects(true);
+                    // Smooth scroll to projects section after state update
+                    setTimeout(() => {
+                      document.getElementById('projects')?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                      });
+                    }, 100);
+                  }}
+                >
+                  <i className="pi pi-eye me-2"></i>
+                  View All Projects ({projects.length})
+                </button>
+              ) : (
+                <div className="btn-group-projects">
+                  <button
+                    className="btn btn-outline-light btn-lg"
+                    onClick={() => {
+                      setShowAllProjects(false);
+                      // Smooth scroll to projects section after state update
+                      setTimeout(() => {
+                        document.getElementById('projects')?.scrollIntoView({
+                          behavior: 'smooth',
+                          block: 'center'
+                        });
+                      }, 100);
+                    }}
+                  >
+                    <i className="pi pi-arrow-up me-2"></i>
+                    Show Featured Only
+                  </button>
+                  <button
+                    className="btn btn-primary btn-lg"
+                    onClick={() => window.open('https://github.com/know120', '_blank')}
+                  >
+                    <i className="pi pi-github me-2"></i>
+                    View GitHub Profile
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </section>
 
-      <section id="blog" className="w-100 vh-100">
-        <div className="container-fluid h-100 grid bg-secondary bg-gradient px-0 d-flex align-items-center">
+      {/* Blog Section */}
+      <section id="blog" className="w-100 vh-100" ref={blogRef}>
+        <div className={`container-fluid h-100 grid bg-secondary bg-gradient px-0 d-flex align-items-center ${blogInView ? 'animate-in' : ''}`}>
           <div className="w-100 px-4">
-            <h1 className="section-title text-center mb-4">Blogs</h1>
+            <h1 className="section-title text-center mb-4">Latest Insights</h1>
             <div className="text-center">
-              <p className="lead">Coming Soon...</p>
-              <p className="text-muted">Stay tuned for insights and tutorials on web development!</p>
+              <div className="blog-preview">
+                <i className="pi pi-file-edit" style={{ fontSize: '4rem', color: '#6366f1', marginBottom: '2rem' }}></i>
+                <h3 className="mb-3">Blog Coming Soon!</h3>
+                <p className="lead mb-4">I'm working on sharing my insights about web development, best practices, and the latest technologies.</p>
+                <div className="upcoming-topics">
+                  <h4 className="mb-3">Upcoming Topics:</h4>
+                  <div className="row justify-content-center">
+                    <div className="col-md-8">
+                      <ul className="list-unstyled">
+                        <li className="mb-2">🚀 Modern React Development Patterns</li>
+                        <li className="mb-2">⚡ Performance Optimization Techniques</li>
+                        <li className="mb-2">🎨 Advanced CSS and Animations</li>
+                        <li className="mb-2">🔧 Full-Stack Development Best Practices</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <button className="btn btn-primary btn-lg mt-3">
+                  <i className="pi pi-bell me-2"></i>
+                  Notify Me When Ready
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="contact" className="w-100 vh-100">
-        <footer className="bg-dark text-center text-white w-100 h-100 d-flex align-items-center">
-          <div className="container-fluid px-4 w-100">
-            <div className="row mx-0">
-              <div className="col-12">
-                <h3 className="mb-4">Let's Connect</h3>
-                <div className="social-links mb-4">
-                  <a
-                    className="btn btn-outline-light btn-social mx-2 mb-2"
-                    href="https://www.facebook.com/TheSujayHalder"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    role="button"
-                    aria-label="Facebook"
-                  >
-                    <i className="pi pi-facebook"></i>
+      {/* Enhanced Contact Section */}
+      <section id="contact" className="w-100" ref={contactRef}>
+        <div className={`container-fluid bg-dark px-0 py-5 ${contactInView ? 'animate-in' : ''}`} style={{ minHeight: '100vh' }}>
+          <div className="w-100 px-4">
+            <div className="row justify-content-center">
+              <div className="col-12 col-lg-8">
+                <h1 className="section-title text-center mb-4 text-white">Get In Touch</h1>
+                <ContactForm />
+              </div>
+            </div>
+
+            {/* Social Links Footer */}
+            <div className="text-center mt-4">
+              <div className="social-links mb-3">
+                <a
+                  className="btn btn-outline-light btn-social mx-2 mb-2"
+                  href="https://www.facebook.com/TheSujayHalder"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  role="button"
+                  aria-label="Facebook"
+                >
+                  <i className="pi pi-facebook"></i>
+                </a>
+                <a
+                  className="btn btn-outline-light btn-social mx-2 mb-2"
+                  href="https://twitter.com/TheSujayHalder"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  role="button"
+                  aria-label="Twitter"
+                >
+                  <i className="pi pi-twitter"></i>
+                </a>
+                <a
+                  className="btn btn-outline-light btn-social mx-2 mb-2"
+                  href="https://www.instagram.com/the_sujay_halder"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  role="button"
+                  aria-label="Instagram"
+                >
+                  <i className="pi pi-instagram"></i>
+                </a>
+                <a
+                  className="btn btn-outline-light btn-social mx-2 mb-2"
+                  href="https://www.linkedin.com/in/sujayhalder"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  role="button"
+                  aria-label="LinkedIn"
+                >
+                  <i className="pi pi-linkedin"></i>
+                </a>
+                <a
+                  className="btn btn-outline-light btn-social mx-2 mb-2"
+                  href="https://github.com/know120"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  role="button"
+                  aria-label="GitHub"
+                >
+                  <i className="pi pi-github"></i>
+                </a>
+              </div>
+              <div className="footer-text text-white">
+                <p className="mb-1">
+                  © {currentYear}{' '}
+                  <a className="text-white text-decoration-none" href="https://know120.github.io/">
+                    Sujay Halder
                   </a>
-                  <a
-                    className="btn btn-outline-light btn-social mx-2 mb-2"
-                    href="https://twitter.com/TheSujayHalder"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    role="button"
-                    aria-label="Twitter"
-                  >
-                    <i className="pi pi-twitter"></i>
-                  </a>
-                  <a
-                    className="btn btn-outline-light btn-social mx-2 mb-2"
-                    href="https://www.instagram.com/the_sujay_halder"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    role="button"
-                    aria-label="Instagram"
-                  >
-                    <i className="pi pi-instagram"></i>
-                  </a>
-                  <a
-                    className="btn btn-outline-light btn-social mx-2 mb-2"
-                    href="https://www.linkedin.com/in/sujayhalder"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    role="button"
-                    aria-label="LinkedIn"
-                  >
-                    <i className="pi pi-linkedin"></i>
-                  </a>
-                  <a
-                    className="btn btn-outline-light btn-social mx-2 mb-2"
-                    href="https://github.com/know120"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    role="button"
-                    aria-label="GitHub"
-                  >
-                    <i className="pi pi-github"></i>
-                  </a>
-                </div>
-                <div className="footer-text">
-                  <p className="mb-1">
-                    © {currentYear}{' '}
-                    <a className="text-white text-decoration-none" href="https://know120.github.io/">
-                      Sujay Halder
-                    </a>
-                  </p>
-                  <p className="text-muted small mb-0">Built with React & Bootstrap</p>
-                </div>
+                </p>
+                <p className="text-muted small mb-0">Built with React, Bootstrap & Modern Web Technologies</p>
               </div>
             </div>
           </div>
-        </footer>
+        </div>
       </section>
     </div>
   );

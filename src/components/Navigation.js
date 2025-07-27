@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTheme } from '../contexts/ThemeContext';
 import './Navigation.css';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { darkMode, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,6 +87,21 @@ const Navigation = () => {
               >
                 Contact
               </a>
+            </li>
+            <li className="nav-item">
+              <button 
+                className="theme-toggle-nav"
+                onClick={toggleTheme}
+                aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
+              >
+                <div className="toggle-track-nav">
+                  <div className={`toggle-thumb-nav ${darkMode ? 'dark' : 'light'}`}>
+                    <div className="toggle-icon-nav">
+                      {darkMode ? '🌙' : '☀️'}
+                    </div>
+                  </div>
+                </div>
+              </button>
             </li>
           </ul>
         </div>

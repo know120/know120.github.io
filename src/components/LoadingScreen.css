@@ -1,0 +1,139 @@
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.loading-content {
+  text-align: center;
+  z-index: 2;
+}
+
+.loading-logo {
+  margin-bottom: 3rem;
+}
+
+.loading-name {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.loading-title {
+  color: #cbd5e1;
+  font-size: 1.2rem;
+  font-weight: 300;
+  opacity: 0.8;
+}
+
+.loading-bar-container {
+  width: 300px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 2rem auto;
+}
+
+.loading-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #a855f7);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+}
+
+.loading-percentage {
+  color: #f8fafc;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.loading-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: linear-gradient(45deg, #6366f1, #8b5cf6);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+}
+
+.particle-0 { top: 10%; left: 10%; animation-delay: 0s; }
+.particle-1 { top: 20%; left: 80%; animation-delay: 0.5s; }
+.particle-2 { top: 80%; left: 20%; animation-delay: 1s; }
+.particle-3 { top: 60%; left: 90%; animation-delay: 1.5s; }
+.particle-4 { top: 30%; left: 60%; animation-delay: 2s; }
+.particle-5 { top: 90%; left: 70%; animation-delay: 2.5s; }
+.particle-6 { top: 15%; left: 40%; animation-delay: 3s; }
+.particle-7 { top: 70%; left: 15%; animation-delay: 3.5s; }
+.particle-8 { top: 40%; left: 85%; animation-delay: 4s; }
+.particle-9 { top: 85%; left: 45%; animation-delay: 4.5s; }
+.particle-10 { top: 25%; left: 25%; animation-delay: 5s; }
+.particle-11 { top: 75%; left: 75%; animation-delay: 5.5s; }
+.particle-12 { top: 35%; left: 5%; animation-delay: 0.2s; }
+.particle-13 { top: 65%; left: 95%; animation-delay: 0.7s; }
+.particle-14 { top: 5%; left: 55%; animation-delay: 1.2s; }
+.particle-15 { top: 95%; left: 35%; animation-delay: 1.7s; }
+.particle-16 { top: 45%; left: 65%; animation-delay: 2.2s; }
+.particle-17 { top: 55%; left: 25%; animation-delay: 2.7s; }
+.particle-18 { top: 15%; left: 75%; animation-delay: 3.2s; }
+.particle-19 { top: 85%; left: 55%; animation-delay: 3.7s; }
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+  }
+  to {
+    text-shadow: 0 0 30px rgba(139, 92, 246, 0.8);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Light theme */
+.light-theme .loading-screen {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f8fafc 100%);
+}
+
+.light-theme .loading-title {
+  color: #475569;
+}
+
+.light-theme .loading-percentage {
+  color: #1e293b;
+}
+
+.light-theme .loading-bar-container {
+  background: rgba(0, 0, 0, 0.1);
+}
