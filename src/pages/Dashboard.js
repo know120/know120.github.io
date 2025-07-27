@@ -11,7 +11,7 @@ import LoadingScreen from '../components/LoadingScreen';
 
 const Dashboard = () => {
   const currentYear = new Date().getFullYear();
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [showAllProjects, setShowAllProjects] = useState(false);
 
 
@@ -104,9 +104,9 @@ const Dashboard = () => {
     }
   ];
 
-  if (isLoading) {
-    return <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />;
-  }
+  // if (isLoading) {
+  //   return <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />;
+  // }
 
   return (
     <div className="app">

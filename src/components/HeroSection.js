@@ -8,7 +8,7 @@ const HeroSection = () => {
   
   const texts = [
     'Full Stack Developer',
-    'React Specialist',
+    'React Expert',
     // 'Angular Expert',
     // 'Problem Solver'
   ];
@@ -56,7 +56,7 @@ const HeroSection = () => {
                 alt="Sujay Halder"
                 loading="lazy"
               />
-              <div className="profile-ring"></div>
+              {/* <div className="profile-ring"></div> */}
               <div className="profile-glow"></div>
             </div>
           </div>
