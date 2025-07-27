@@ -1,0 +1,389 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.app {
+    background-color: var(--bs-dark);
+    color: var(--bs-light);
+}
+
+/* Responsive section sizing */
+.full-size {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    z-index: 3;
+}
+
+.section-padding {
+    padding: 80px 0;
+}
+
+.bg-secondary {
+    background-color: var(--bs-secondary);
+}
+
+.grid {
+    background-image:
+        radial-gradient(circle, rgba(255,255,255,0.8) 2px, transparent 2px),
+        linear-gradient(to right, rgba(255,255,255,0.3) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 5rem 5rem, 5rem 5rem, 5rem 5rem;
+    background-position: 0 0, 2.5rem 2.5rem, 2.5rem 2.5rem;
+}
+
+/* Hero section styles */
+.profile-image {
+    transition: transform 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.profile-image:hover {
+    transform: scale(1.05);
+}
+
+.hero-content {
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-title {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+.hero-subtitle {
+    animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+.hero-description {
+    animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+/* Section titles */
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 2px;
+}
+
+/* Social buttons */
+.btn-social {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-social:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+}
+
+.gradient-grid {
+    position: relative;
+    min-height: 400px;
+    padding: 20px;
+    overflow: hidden;
+    color: white;
+}
+
+.gradient-grid::before,
+.gradient-grid::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.gradient-grid::before {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    z-index: -2;
+}
+
+.gradient-grid::after {
+    background-image:
+        radial-gradient(circle, rgba(255,255,255,0.8) 2px, transparent 2px),
+        linear-gradient(to right, rgba(255,255,255,0.3) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 5rem 5rem, 5rem 5rem, 5rem 5rem;
+    background-position: 0 0, 2.5rem 2.5rem, 2.5rem 2.5rem;
+    z-index: -1;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.gradient-grid > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Remove the old zoom effect since we now have 3D cards */
+.zoom {
+    transition: transform 0.3s ease;
+}
+
+/* Keep zoom for non-card elements, but disable for card containers */
+.zoom:hover:not(.card-3d-container) {
+    transform: scale(1.05);
+}
+
+.info {
+    margin: 10px 0;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 767.98px) {
+    .section-padding {
+        padding: 60px 0;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.5rem;
+    }
+    
+    .profile-image {
+        max-width: 200px !important;
+        margin-bottom: 2rem;
+    }
+    
+    .full-size {
+        min-height: auto;
+        padding: 40px 0;
+    }
+    
+    #home .full-size {
+        min-height: 100vh;
+    }
+    
+    .grid {
+        background-size: 3rem 3rem, 3rem 3rem, 3rem 3rem;
+        background-position: 0 0, 1.5rem 1.5rem, 1.5rem 1.5rem;
+    }
+    
+    .btn-social {
+        width: 45px;
+        height: 45px;
+        margin: 0.25rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .section-padding {
+        padding: 40px 0;
+    }
+    
+    .section-title {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.25rem;
+    }
+    
+    .profile-image {
+        max-width: 180px !important;
+    }
+    
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .btn-social {
+        width: 40px;
+        height: 40px;
+        font-size: 0.9rem;
+    }
+    
+    .social-links {
+        margin-bottom: 2rem !important;
+    }
+}
+
+/* Tablet styles */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .section-title {
+        font-size: 2.25rem;
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .profile-image {
+        max-width: 250px !important;
+    }
+}
+
+/* Large desktop styles */
+@media (min-width: 1200px) {
+    .section-padding {
+        padding: 100px 0;
+    }
+    
+    .section-title {
+        font-size: 3rem;
+    }
+    
+    .hero-title {
+        font-size: 4rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 2rem;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .profile-image:hover {
+        transform: none;
+    }
+    
+    .btn-social:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .btn-social:active {
+        transform: scale(0.95);
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .hero-title {
+        background: none;
+        -webkit-text-fill-color: inherit;
+        color: inherit;
+    }
+    
+    .section-title::after {
+        background: currentColor;
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .hero-content,
+    .hero-title,
+    .hero-subtitle,
+    .hero-description {
+        animation: none;
+    }
+    
+    .profile-image {
+        transition: none;
+    }
+    
+    .btn-social {
+        transition: none;
+    }
+}
+
+/* Print styles */
+@media print {
+    .btn-social,
+    .social-links {
+        display: none;
+    }
+    
+    .section-padding {
+        padding: 20px 0;
+    }
+    
+    .hero-title,
+    .section-title {
+        color: black !important;
+        background: none !important;
+        -webkit-text-fill-color: inherit !important;
+    }
+}
+
+/* Focus styles for accessibility */
+.btn-social:focus {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Ensure proper spacing on all devices */
+.row.g-4 > * {
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 992px) {
+    .row.g-4 > * {
+        margin-bottom: 0;
+    }
+}
