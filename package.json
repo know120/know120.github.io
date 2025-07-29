@@ -7,6 +7,10 @@
     "build": "react-scripts build",
     "build:github": "react-scripts build && if exist docs rmdir /s /q docs && move build docs && echo. > docs\\.nojekyll",
     "test": "react-scripts test",
+    "test:utils": "react-scripts test --testPathPattern=tests/utils",
+    "test:basic": "react-scripts test --testPathPattern=tests/utils/basic.test.js",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "test:all": "react-scripts test --testPathPattern=tests --watchAll=false",
     "eject": "react-scripts eject"
   },
   "homepage": "https://know120.github.io",
