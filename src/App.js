@@ -3,10 +3,10 @@ import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { HelmetProvider } from 'react-helmet-async';
 import Dashboard from './pages/Dashboard';
+import Note from './pages/Note';
 
 // Lazy load other components for better performance
 const SuperApp = React.lazy(() => import('./pages/SuperApp'));
-const Note = React.lazy(() => import('./pages/Note'));
 
 function App() {
   return (

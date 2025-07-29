@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkportfolio_react=self.webpackChunkportfolio_react||[]).push([[127],{127:(e,s,t)=>{t.r(s),t.d(s,{default:()=>i});t(43);var r=t(579);const i=()=>(0,r.jsxs)("div",{className:"container mt-5",children:[(0,r.jsx)("h1",{children:"Notes"}),(0,r.jsx)("p",{children:"This is the Notes page. Content will be migrated from the Angular version."})]})}}]);
-//# sourceMappingURL=127.a96b79b2.chunk.js.map
