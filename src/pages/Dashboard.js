@@ -89,7 +89,7 @@ const Dashboard = () => {
     {
       title: 'Speed Detection System',
       description: 'Over-speed detection system using C++ and OpenCV with TCP connection for real-time vehicle monitoring.',
-      technologies: ['C++', 'OpenCV', 'TCP/IP', 'Computer Vision', 'Real-time Processing'],
+      technologies: ['C++', 'OpenCV', 'TCP/IP', 'Computer Vision'],
       image: 'https://via.placeholder.com/400x200/06b6d4/ffffff?text=Speed+Detection',
       liveDemo: null,
       github: 'https://github.com/know120/speed-detection-system',
@@ -254,19 +254,19 @@ const Dashboard = () => {
       </section>
 
       {/* Enhanced Contact Section */}
-      <section id="contact" className="w-100" ref={contactRef}>
-        <div className={`container-fluid bg-dark px-0 py-5 ${contactInView ? 'animate-in' : ''}`} style={{ minHeight: '100vh' }}>
+      <section id="contact" className="w-100 vh-100" ref={contactRef}>
+        <div className={`container-fluid bg-dark px-0 h-100 d-flex flex-column justify-content-center ${contactInView ? 'animate-in' : ''}`}>
           <div className="w-100 px-4">
             <div className="row justify-content-center">
               <div className="col-12 col-lg-8">
-                <h1 className="section-title text-center mb-4 text-white">Get In Touch</h1>
+                <h1 className="section-title text-center mb-3 text-white">Get In Touch</h1>
                 <ContactForm />
               </div>
             </div>
 
             {/* Social Links Footer */}
-            <div className="text-center mt-4">
-              <div className="social-links mb-3">
+            <div className="text-center mt-3">
+              <div className="social-links mb-2">
                 <a
                   className="btn btn-outline-light btn-social mx-2 mb-2"
                   href="https://www.facebook.com/TheSujayHalder"

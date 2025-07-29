@@ -901,10 +901,10 @@ jects section dynamic height */
   .projects-grid-all {
     gap: 1rem;
   }
-}/* Projects 
-section with stable gradient background */
-.projects-section {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+}/* Projects section with stable gradient background */
+.projects-section,
+.container-fluid.projects-section {
+  background: transparent !important;
   position: relative;
   overflow: hidden;
 }
@@ -916,10 +916,12 @@ section with stable gradient background */
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab) !important;
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
-  z-index: -2;
+  /* z-index: -2; */
+  opacity: 1;
+  pointer-events: none;
 }
 
 .projects-section::after {
@@ -936,9 +938,13 @@ section with stable gradient background */
   background-size: 5rem 5rem, 5rem 5rem, 5rem 5rem;
   background-position: 0 0, 2.5rem 2.5rem, 2.5rem 2.5rem;
   z-index: -1;
+  opacity: 1;
+  pointer-events: none;
 }
 
-.projects-section > * {
+.projects-section > *,
+.projects-section .w-100,
+.projects-section .px-4 {
   position: relative;
   z-index: 1;
 }
@@ -962,4 +968,37 @@ section with stable gradient background */
 .projects-section .section-title {
   position: relative;
   z-index: 2;
+}/*
+ Force stable gradient background for projects section */
+#projects .projects-section,
+#projects .container-fluid.projects-section {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Prevent any dark background override */
+.projects-section,
+.projects-section.bg-dark,
+.projects-section.bg-secondary {
+  background: transparent !important;
+}
+
+/* Ensure gradient animation continues */
+@keyframes gradient {
+  0% { 
+    background-position: 0% 50%; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+  }
+  100% { 
+    background-position: 0% 50%; 
+  }
+}
+
+/* Make sure the gradient is always visible */
+.projects-section::before {
+  will-change: background-position;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
