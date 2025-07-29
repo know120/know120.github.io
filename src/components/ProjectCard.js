@@ -5,6 +5,17 @@ const ProjectCard = ({ project }) => {
   const [transform, setTransform] = useState('');
   const [isFlipped, setIsFlipped] = useState(false);
 
+  // Safety check for project data
+  if (!project) {
+    return (
+      <div className="project-card-container h-100">
+        <div className="project-card h-100" style={{ background: '#2a2a2a', padding: '2rem', borderRadius: '20px' }}>
+          <p style={{ color: 'white', textAlign: 'center' }}>No project data available</p>
+        </div>
+      </div>
+    );
+  }
+
   const handleMouseMove = (e) => {
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
@@ -56,7 +67,7 @@ const ProjectCard = ({ project }) => {
       >
         <div className="project-card-front">
           <div className="project-image">
-            <img src={project.image} alt={project.title} />
+            <img src={project.image || 'https://via.placeholder.com/400x200/6366f1/ffffff?text=Project'} alt={project.title || 'Project'} />
             <div className="project-overlay">
               <button 
                 className="flip-btn"
@@ -67,10 +78,10 @@ const ProjectCard = ({ project }) => {
             </div>
           </div>
           <div className="project-content">
-            <h3 className="project-title">{project.title}</h3>
-            <p className="project-description">{project.description}</p>
+            <h3 className="project-title">{project.title || 'Untitled Project'}</h3>
+            <p className="project-description">{project.description || 'No description available'}</p>
             <div className="project-tech">
-              {project.technologies.map((tech, index) => (
+              {(project.technologies || []).map((tech, index) => (
                 <span key={index} className="tech-tag">{tech}</span>
               ))}
             </div>
@@ -79,11 +90,11 @@ const ProjectCard = ({ project }) => {
         
         <div className="project-card-back">
           <div className="project-details">
-            <h3 className="project-title">{project.title}</h3>
+            <h3 className="project-title">{project.title || 'Untitled Project'}</h3>
             <div className="project-features">
               <h4>Key Features:</h4>
               <ul>
-                {project.features?.map((feature, index) => (
+                {(project.features || []).map((feature, index) => (
                   <li key={index}>{feature}</li>
                 ))}
               </ul>
@@ -91,11 +102,11 @@ const ProjectCard = ({ project }) => {
             <div className="project-stats">
               <div className="stat">
                 <span className="stat-label">Duration:</span>
-                <span className="stat-value">{project.duration}</span>
+                <span className="stat-value">{project.duration || 'N/A'}</span>
               </div>
               <div className="stat">
                 <span className="stat-label">Team Size:</span>
-                <span className="stat-value">{project.teamSize}</span>
+                <span className="stat-value">{project.teamSize || 'N/A'}</span>
               </div>
             </div>
             <div className="project-actions">
