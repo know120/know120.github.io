@@ -105,7 +105,7 @@ const NoteToolbar = ({
             title="Bold (Ctrl+B)"
             type="button"
           >
-            <i className="pi pi-bold"></i>
+            <i className="pi pi-bold">B</i>
           </button>
           <button
             className="toolbar-btn"
@@ -113,7 +113,7 @@ const NoteToolbar = ({
             title="Italic (Ctrl+I)"
             type="button"
           >
-            <i className="pi pi-italic"></i>
+            <i className="pi pi-italic">i</i>
           </button>
         </div>
 

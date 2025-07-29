@@ -275,13 +275,13 @@
 }
 
 /* Separator between toolbar groups */
-.toolbar-group + .toolbar-group::before {
+/* .toolbar-group + .toolbar-group::before {
   content: '';
   width: 1px;
   height: 20px;
   background: rgba(139, 92, 246, 0.2);
   margin: 0 0.5rem;
-}
+} */
 
 /* Focus styles for accessibility */
 .toolbar-btn:focus-visible {

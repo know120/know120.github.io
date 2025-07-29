@@ -1,6 +1,7 @@
 /* Note page specific styles */
 .notes-container {
   transition: padding 0.3s ease;
+  padding-bottom: 1rem;
 }
 
 /* Mobile-specific optimizations */
