@@ -24,6 +24,7 @@ function App() {
               <Route path="/home" element={<Dashboard />} />
               <Route path="/super" element={<SuperApp />} />
               <Route path="/note" element={<Note />} />
+              <Route path="*" element={<Dashboard />} />
             </Routes>
           </Suspense>
         </div>
