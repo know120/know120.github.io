@@ -9,13 +9,13 @@ const Card = ({ header, title, body, footer }) => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
+    
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-
+    
     const rotateX = (y - centerY) / 10;
     const rotateY = (centerX - x) / 10;
-
+    
     setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`);
   };
 
@@ -30,13 +30,13 @@ const Card = ({ header, title, body, footer }) => {
       const rect = card.getBoundingClientRect();
       const x = touch.clientX - rect.left;
       const y = touch.clientY - rect.top;
-
+      
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
-
+      
       const rotateX = (y - centerY) / 15; // Gentler effect for touch
       const rotateY = (centerX - x) / 15;
-
+      
       setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(15px)`);
     }
   };

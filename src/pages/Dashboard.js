@@ -67,11 +67,11 @@ const Dashboard = () => {
         'Real-time image processing',
         'Web-based interface'
       ],
-      duration: '4 months',
-      teamSize: '2 developers'
+      duration: '6 months',
+      teamSize: '4 developers'
     },
     {
-      title: 'Tire Manufacturing System',
+      title: 'Budget Evaluation System',
       description: 'Full-stack web application for tire manufacturing company built with Angular, .NET Framework, and SQL Server.',
       technologies: ['Angular 7', 'TypeScript', '.NET Framework', 'SQL Server', 'Bootstrap'],
       image: 'https://via.placeholder.com/400x200/a855f7/ffffff?text=Tire+System',
@@ -84,7 +84,7 @@ const Dashboard = () => {
         'Reporting dashboard'
       ],
       duration: '8 months',
-      teamSize: '4 developers'
+      teamSize: '2 developers'
     },
     {
       title: 'Speed Detection System',
@@ -131,7 +131,7 @@ const Dashboard = () => {
                   body={expASL.body}
                   footer={expASL.footer}
                 />
-              </div>
+                </div>
               <div className="col-12 col-lg-6 px-3">
                 <Card
                   header={expDSS.header}
