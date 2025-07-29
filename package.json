@@ -9,7 +9,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "homepage": ".",
+  "homepage": "https://know120.github.io",
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
