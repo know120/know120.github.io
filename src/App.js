@@ -4,6 +4,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { HelmetProvider } from 'react-helmet-async';
 import Dashboard from './pages/Dashboard';
 import Note from './pages/Note';
+import AdLibray from './pages/AdLibrary';
 
 // Lazy load other components for better performance
 const SuperApp = React.lazy(() => import('./pages/SuperApp'));
@@ -24,6 +25,7 @@ function App() {
               <Route path="/home" element={<Dashboard />} />
               <Route path="/super" element={<SuperApp />} />
               <Route path="/note" element={<Note />} />
+              <Route path="/ad-library" element={<AdLibray />} />
               <Route path="*" element={<Dashboard />} />
             </Routes>
           </Suspense>
