@@ -67,7 +67,7 @@ const NoteToolbar = ({
                   onClick={onManualSave}
                   title="Try saving manually"
                 >
-                  <i className="pi pi-refresh"></i>
+                  <i className="pi pi-refresh">Save</i>
                 </button>
               )}
               {onResetSaveStatus && (
@@ -196,6 +196,17 @@ const NoteToolbar = ({
             type="button"
           >
             <i className="pi pi-redo"></i>
+          </button>
+        </div>
+
+        <div className="toolbar-group">
+          <button
+            className="toolbar-btn"
+            onClick={onManualSave}
+            // disabled={!canUndo}
+            title="Save"
+            type="button"
+          >Save
           </button>
         </div>
       </div>

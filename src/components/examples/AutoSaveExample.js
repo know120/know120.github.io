@@ -35,7 +35,7 @@ const AutoSaveExample = () => {
     saveNow,
     resetSaveStatus
   } = useAutoSave(content, saveContent, {
-    delay: 2000, // 2 second delay
+    delay: 1000, // 1 second delay
     maxRetries: 3,
     onSave: (data) => console.log('Auto-save successful:', data),
     onError: (error) => console.error('Auto-save failed:', error)

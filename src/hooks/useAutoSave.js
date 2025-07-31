@@ -18,7 +18,7 @@ export const SAVE_STATUS = {
  * @param {any} data - Data to auto-save
  * @param {Function} saveFunction - Function to call for saving (should return Promise<boolean>)
  * @param {Object} options - Configuration options
- * @param {number} [options.delay=2000] - Debounce delay in milliseconds
+ * @param {number} [options.delay=1000] - Debounce delay in milliseconds
  * @param {boolean} [options.enabled=true] - Whether auto-save is enabled
  * @param {number} [options.maxRetries=3] - Maximum retry attempts on save failure
  * @param {number} [options.retryDelay=1000] - Delay between retry attempts
@@ -33,7 +33,7 @@ const useAutoSave = (
   options = {}
 ) => {
   const {
-    delay = 2000,
+    delay = 1000,
     enabled = true,
     maxRetries = 3,
     retryDelay = 1000,
@@ -53,6 +53,8 @@ const useAutoSave = (
   const lastDataRef = useRef(data);
   const isMountedRef = useRef(true);
   const saveInProgressRef = useRef(false);
+  
+
 
   /**
    * Clears any pending save operations
@@ -72,25 +74,17 @@ const useAutoSave = (
    * Performs the actual save operation with retry logic
    */
   const performSave = useCallback(async (dataToSave, attempt = 1) => {
-    console.log('performSave called with:', { dataToSave, attempt, isMounted: isMountedRef.current, saveInProgress: saveInProgressRef.current });
-    
-    if (!isMountedRef.current || saveInProgressRef.current) {
-      console.log('performSave early return:', { isMounted: isMountedRef.current, saveInProgress: saveInProgressRef.current });
+    if (saveInProgressRef.current) {
       return;
     }
 
     saveInProgressRef.current = true;
     setSaveStatus(SAVE_STATUS.SAVING);
     setLastError(null);
-    console.log('performSave status set to SAVING');
 
     try {
       // Call the save function
-      console.log('performSave calling saveFunction with:', dataToSave);
       const result = await saveFunction(dataToSave);
-      console.log('performSave saveFunction result:', result);
-
-      if (!isMountedRef.current) return;
 
       if (result === true || (result && result.success !== false)) {
         // Save successful
@@ -110,17 +104,13 @@ const useAutoSave = (
 
         // Reset to idle after showing saved status
         setTimeout(() => {
-          if (isMountedRef.current) {
-            setSaveStatus(SAVE_STATUS.IDLE);
-          }
-        }, 2000);
+          setSaveStatus(SAVE_STATUS.IDLE);
+        }, 1000);
       } else {
         throw new Error(result?.error || 'Save operation failed');
       }
     } catch (error) {
       console.error('Auto-save error:', error);
-
-      if (!isMountedRef.current) return;
 
       setLastError(error.message || 'Save failed');
 
@@ -130,9 +120,7 @@ const useAutoSave = (
         setSaveStatus(SAVE_STATUS.PENDING);
 
         retryTimeoutRef.current = setTimeout(() => {
-          if (isMountedRef.current) {
-            performSave(dataToSave, attempt + 1);
-          }
+          performSave(dataToSave, attempt + 1);
         }, retryDelay);
       } else {
         // Max retries reached
@@ -174,9 +162,7 @@ const useAutoSave = (
 
     // Schedule the save
     saveTimeoutRef.current = setTimeout(() => {
-      if (isMountedRef.current) {
-        performSave(dataToSave);
-      }
+      performSave(dataToSave);
     }, delay);
   }, [enabled, saveFunction, shouldSave, delay, clearPendingSave, performSave]);
 
@@ -184,22 +170,16 @@ const useAutoSave = (
    * Manually trigger a save operation (bypasses debouncing)
    */
   const saveNow = useCallback(async () => {
-    console.log('saveNow called with:', { enabled, saveFunction: !!saveFunction, data });
-    
     if (!enabled || !saveFunction) {
-      console.log('saveNow early return:', { enabled, hasSaveFunction: !!saveFunction });
       return false;
     }
 
     clearPendingSave();
 
     try {
-      console.log('saveNow calling performSave with data:', data);
       await performSave(data);
-      console.log('saveNow performSave completed successfully');
       return true;
     } catch (error) {
-      console.error('saveNow performSave error:', error);
       return false;
     }
   }, [enabled, saveFunction, data, clearPendingSave, performSave]);

@@ -23,7 +23,7 @@ const BACKUP_KEY = 'portfolio-notes-backup';
 const DEFAULT_STORAGE = {
   notes: [],
   settings: {
-    autoSaveInterval: 2000,
+    autoSaveInterval: 1000,
     defaultFontSize: '16px',
     theme: 'dark'
   },

@@ -30,14 +30,9 @@ const NoteEditor = ({ note, onSave, onBack }) => {
   } = useAutoSave(
     noteData,
     async (data) => {
-      console.log('useAutoSave save function called with:', { data, onSave: !!onSave, noteId: note?.id });
-
       if (onSave) {
         try {
-          console.log('Auto-saving note data:', data);
           const result = await onSave(note?.id, data);
-          console.log('onSave result:', result);
-
           if (result?.success === false) {
             throw new Error(result.error || 'Save operation failed');
           }
@@ -47,35 +42,24 @@ const NoteEditor = ({ note, onSave, onBack }) => {
           throw error;
         }
       }
-
-      console.log('No save function provided, throwing error');
       throw new Error('No save function provided');
     },
     {
-      delay: 2000,
+      delay: 1000,
       enabled: true, // Always enable auto-save, let shouldSave handle the logic
       shouldSave: (newData, oldData) => {
         // Don't save if there's no meaningful content
         if (!newData.title.trim() && !newData.content.trim()) {
-          console.log('Should save check: No content to save');
-          return false;
-        }
-
-        // Don't save if we're not in editing mode (initial load)
-        if (!isEditing) {
-          console.log('Should save check: Not in editing mode');
           return false;
         }
 
         // Only save if content has actually changed
         if (!oldData) {
-          console.log('Should save check: First save');
           return true;
         }
 
         const titleChanged = newData.title !== oldData.title;
         const contentChanged = newData.content !== oldData.content;
-        console.log('Should save check:', { titleChanged, contentChanged, newData, oldData });
         return titleChanged || contentChanged;
       },
       maxRetries: 3,
@@ -204,7 +188,6 @@ const NoteEditor = ({ note, onSave, onBack }) => {
     // Get the content directly from the event target to ensure we have the latest content
     if (e.target && e.target === contentEditableRef.current) {
       const newContent = e.target.innerHTML;
-      console.log('Content input detected:', newContent);
       // Save current content to undo stack before changing
       saveToUndoStack(content);
       // Mark this as user input to prevent sync loop
@@ -629,34 +612,6 @@ const NoteEditor = ({ note, onSave, onBack }) => {
             <i className="pi pi-arrow-left me-2"></i>
             {/* Back */}
           </button>
-        </div>
-
-        <div className="editor-status">
-          {/* Debug: Manual save button */}
-          <button
-            className="btn btn-sm btn-outline-primary me-2"
-            onClick={async () => {
-              console.log('Manual save triggered with data:', noteData);
-              console.log('isEditing state:', isEditing);
-              
-              // Try direct save first
-              if (onSave) {
-                console.log('Calling onSave directly');
-                const result = await onSave(note?.id, noteData);
-                console.log('Direct onSave result:', result);
-              }
-              
-              // Also try saveNow
-              if (saveNow) {
-                console.log('Also calling saveNow');
-                const saveNowResult = await saveNow();
-                console.log('saveNow result:', saveNowResult);
-              }
-            }}
-          >
-            Manual Save
-          </button>
-          <span className="text-muted small">Status: {saveStatus}</span>
         </div>
       </div>
 

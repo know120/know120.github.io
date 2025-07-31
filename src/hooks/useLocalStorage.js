@@ -119,7 +119,6 @@ const useLocalStorage = (key = STORAGE_KEY) => {
     
     try {
       const success = saveToStorage(newData, key);
-      console.log('saveToStorage result:', success);
       
       if (success) {
         setData(newData);

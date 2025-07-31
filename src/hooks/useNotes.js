@@ -157,7 +157,6 @@ const useNotes = () => {
    * @returns {Promise<{success: boolean, note?: Note, error?: string}>}
    */
   const updateNote = useCallback(async (id, updates) => {
-    console.log('updateNote called with:', { id, updates, storageReady });
 
     if (!storageReady) {
       console.log('Storage not ready');
@@ -200,16 +199,13 @@ const useNotes = () => {
       }
 
       // Update storage
-      console.log('Calling updateData...');
       const success = await updateData(currentData => {
-        console.log('updateData callback called with currentData:', currentData);
         const newData = {
           ...currentData,
           notes: currentData.notes.map(note =>
             note.id === id ? updatedNote : note
           )
         };
-        console.log('Returning new data:', newData);
         return newData;
       });
 

@@ -11,14 +11,14 @@ const Note = () => {
   const [selectedNote, setSelectedNote] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [recoveryNotification, setRecoveryNotification] = useState(null);
-  
-  const { 
-    notes, 
-    createNote, 
-    updateNote, 
-    deleteNote, 
-    isLoading, 
-    error 
+
+  const {
+    notes,
+    createNote,
+    updateNote,
+    deleteNote,
+    isLoading,
+    error
   } = useNotes();
 
   // Check for recovery scenarios on mount
@@ -27,7 +27,7 @@ const Note = () => {
       try {
         const { recoverFromEmergencyBackup } = await import('../utils/localStorage');
         const emergencyData = recoverFromEmergencyBackup();
-        
+
         if (emergencyData) {
           setRecoveryNotification({
             type: 'success',
@@ -119,7 +119,7 @@ const Note = () => {
       title: '',
       content: ''
     });
-    
+
     if (result.success) {
       setSelectedNote(result.note);
       setCurrentView('editor');
@@ -131,21 +131,16 @@ const Note = () => {
 
   // Handle saving a note
   const handleSaveNote = useCallback(async (noteId, updates) => {
-    console.log('handleSaveNote called with:', { noteId, updates });
     if (noteId) {
       // Update existing note
-      console.log('Updating existing note with ID:', noteId);
       const result = await updateNote(noteId, updates);
-      console.log('Update result:', result);
       if (result.success) {
         setSelectedNote(result.note);
       }
       return result;
     } else {
       // Create new note if no ID
-      console.log('Creating new note');
       const result = await createNote(updates);
-      console.log('Create result:', result);
       if (result.success) {
         setSelectedNote(result.note);
       }
@@ -191,7 +186,7 @@ const Note = () => {
             </Link>
           </div>
         </nav>
-        
+
         <div className="container-fluid vh-100 d-flex align-items-center justify-content-center bg-dark" style={{ paddingTop: '80px' }}>
           <div className="text-center text-white">
             <i className="pi pi-spin pi-spinner" style={{ fontSize: '3rem', color: '#6366f1' }}></i>
@@ -219,13 +214,13 @@ const Note = () => {
             </Link>
           </div>
         </nav>
-        
+
         <div className="container-fluid vh-100 d-flex align-items-center justify-content-center bg-dark" style={{ paddingTop: '80px' }}>
           <div className="text-center text-white">
             <i className="pi pi-exclamation-triangle" style={{ fontSize: '3rem', color: '#ef4444' }}></i>
             <h3 className="mt-3 mb-3">Error Loading Notes</h3>
             <p className="mb-4">{error}</p>
-            <button 
+            <button
               className="btn btn-primary"
               onClick={() => window.location.reload()}
             >
@@ -269,8 +264,8 @@ const Note = () => {
 
       <div className="notes-container" style={{ paddingTop: currentView === 'list' ? '80px' : '0' }}>
         {currentView === 'list' ? (
-          <div className="container-fluid bg-dark min-vh-100" style={{  }}>
-            <NotesList 
+          <div className="container-fluid bg-dark min-vh-100" style={{}}>
+            <NotesList
               notes={notes}
               onSelectNote={handleSelectNote}
               onCreateNote={handleCreateNote}
