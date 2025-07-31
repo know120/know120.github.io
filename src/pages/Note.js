@@ -131,16 +131,21 @@ const Note = () => {
 
   // Handle saving a note
   const handleSaveNote = useCallback(async (noteId, updates) => {
+    console.log('handleSaveNote called with:', { noteId, updates });
     if (noteId) {
       // Update existing note
+      console.log('Updating existing note with ID:', noteId);
       const result = await updateNote(noteId, updates);
+      console.log('Update result:', result);
       if (result.success) {
         setSelectedNote(result.note);
       }
       return result;
     } else {
       // Create new note if no ID
+      console.log('Creating new note');
       const result = await createNote(updates);
+      console.log('Create result:', result);
       if (result.success) {
         setSelectedNote(result.note);
       }

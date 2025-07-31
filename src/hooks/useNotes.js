@@ -47,7 +47,7 @@ const useNotes = () => {
       filtered = filtered.filter(note => {
         const titleMatch = note.title.toLowerCase().includes(query);
         const contentMatch = note.content.toLowerCase().includes(query);
-        const tagMatch = note.tags?.some(tag => 
+        const tagMatch = note.tags?.some(tag =>
           tag.toLowerCase().includes(query)
         );
         return titleMatch || contentMatch || tagMatch;
@@ -57,7 +57,7 @@ const useNotes = () => {
     // Apply tag filter
     if (selectedTags.length > 0) {
       filtered = filtered.filter(note => {
-        return selectedTags.every(selectedTag => 
+        return selectedTags.every(selectedTag =>
           note.tags?.includes(selectedTag)
         );
       });
@@ -124,9 +124,9 @@ const useNotes = () => {
       // Validate the note
       const validation = validateNote(newNote);
       if (!validation.isValid) {
-        return { 
-          success: false, 
-          error: `Invalid note data: ${validation.errors.join(', ')}` 
+        return {
+          success: false,
+          error: `Invalid note data: ${validation.errors.join(', ')}`
         };
       }
 
@@ -157,17 +157,24 @@ const useNotes = () => {
    * @returns {Promise<{success: boolean, note?: Note, error?: string}>}
    */
   const updateNote = useCallback(async (id, updates) => {
+    console.log('updateNote called with:', { id, updates, storageReady });
+
     if (!storageReady) {
+      console.log('Storage not ready');
       return { success: false, error: 'Storage not ready' };
     }
 
     if (!id || typeof id !== 'string') {
+      console.log('Invalid note ID:', id);
       return { success: false, error: 'Invalid note ID' };
     }
 
     try {
       const existingNote = allNotes.find(note => note.id === id);
+      console.log('Existing note found:', existingNote);
+
       if (!existingNote) {
+        console.log('Note not found with ID:', id);
         return { success: false, error: 'Note not found' };
       }
 
@@ -179,22 +186,34 @@ const useNotes = () => {
         createdAt: existingNote.createdAt // Preserve creation date
       });
 
+      console.log('Updated note created:', updatedNote);
+
       // Validate the updated note
       const validation = validateNote(updatedNote);
+      console.log('Validation result:', validation);
+
       if (!validation.isValid) {
-        return { 
-          success: false, 
-          error: `Invalid note data: ${validation.errors.join(', ')}` 
+        return {
+          success: false,
+          error: `Invalid note data: ${validation.errors.join(', ')}`
         };
       }
 
       // Update storage
-      const success = await updateData(currentData => ({
-        ...currentData,
-        notes: currentData.notes.map(note => 
-          note.id === id ? updatedNote : note
-        )
-      }));
+      console.log('Calling updateData...');
+      const success = await updateData(currentData => {
+        console.log('updateData callback called with currentData:', currentData);
+        const newData = {
+          ...currentData,
+          notes: currentData.notes.map(note =>
+            note.id === id ? updatedNote : note
+          )
+        };
+        console.log('Returning new data:', newData);
+        return newData;
+      });
+
+      console.log('updateData success:', success);
 
       if (success) {
         return { success: true, note: updatedNote };
@@ -229,14 +248,14 @@ const useNotes = () => {
       }
 
       // Show confirmation dialog unless skipped
-      if (!skipConfirmation) {
-        const confirmed = window.confirm(
-          `Are you sure you want to delete "${existingNote.title}"? This action cannot be undone.`
-        );
-        if (!confirmed) {
-          return { success: false, error: 'Deletion cancelled by user' };
-        }
-      }
+      // if (!skipConfirmation) {
+      //   const confirmed = window.confirm(
+      //     `Are you sure you want to delete "${existingNote.title}"? This action cannot be undone.`
+      //   );
+      //   if (!confirmed) {
+      //     return { success: false, error: 'Deletion cancelled by user' };
+      //   }
+      // }
 
       // Update storage by removing the note
       const success = await updateData(currentData => ({
@@ -294,14 +313,14 @@ const useNotes = () => {
       return { success: false, deletedCount: 0, errors: ['No notes selected'] };
     }
 
-    if (!skipConfirmation) {
-      const confirmed = window.confirm(
-        `Are you sure you want to delete ${ids.length} note(s)? This action cannot be undone.`
-      );
-      if (!confirmed) {
-        return { success: false, deletedCount: 0, errors: ['Deletion cancelled by user'] };
-      }
-    }
+    // if (!skipConfirmation) {
+    //   const confirmed = window.confirm(
+    //     `Are you sure you want to delete ${ids.length} note(s)? This action cannot be undone.`
+    //   );
+    //   if (!confirmed) {
+    //     return { success: false, deletedCount: 0, errors: ['Deletion cancelled by user'] };
+    //   }
+    // }
 
     const errors = [];
     let deletedCount = 0;
@@ -334,7 +353,7 @@ const useNotes = () => {
     return allNotes.map(note => {
       const titleMatch = note.title.toLowerCase().includes(searchTerm);
       const contentMatch = note.content.toLowerCase().includes(searchTerm);
-      const tagMatches = note.tags?.filter(tag => 
+      const tagMatches = note.tags?.filter(tag =>
         tag.toLowerCase().includes(searchTerm)
       ) || [];
 
@@ -353,10 +372,10 @@ const useNotes = () => {
   // Statistics
   const stats = useMemo(() => {
     const totalNotes = allNotes.length;
-    const totalWords = allNotes.reduce((sum, note) => 
+    const totalWords = allNotes.reduce((sum, note) =>
       sum + (note.metadata?.wordCount || 0), 0
     );
-    const totalCharacters = allNotes.reduce((sum, note) => 
+    const totalCharacters = allNotes.reduce((sum, note) =>
       sum + (note.metadata?.characterCount || 0), 0
     );
     const averageWordsPerNote = totalNotes > 0 ? Math.round(totalWords / totalNotes) : 0;

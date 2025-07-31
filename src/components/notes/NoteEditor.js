@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import useAutoSave from '../../hooks/useAutoSave';
 import NoteToolbar from './NoteToolbar';
 import './NoteEditor.css';
@@ -11,27 +11,33 @@ const NoteEditor = ({ note, onSave, onBack }) => {
   const [redoStack, setRedoStack] = useState([]);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
-  
+
   const titleInputRef = useRef(null);
   const contentEditableRef = useRef(null);
   const undoTimeoutRef = useRef(null);
 
   // Auto-save functionality with enhanced error handling
-  const noteData = { title, content };
-  const { 
-    saveStatus, 
-    isSaving, 
-    lastSaved, 
-    lastError, 
+  const noteData = useMemo(() => ({ title, content }), [title, content]);
+
+  const {
+    saveStatus,
+    isSaving,
+    lastSaved,
+    lastError,
     retryCount,
     saveNow,
-    resetSaveStatus 
+    resetSaveStatus
   } = useAutoSave(
     noteData,
     async (data) => {
+      console.log('useAutoSave save function called with:', { data, onSave: !!onSave, noteId: note?.id });
+
       if (onSave) {
         try {
+          console.log('Auto-saving note data:', data);
           const result = await onSave(note?.id, data);
+          console.log('onSave result:', result);
+
           if (result?.success === false) {
             throw new Error(result.error || 'Save operation failed');
           }
@@ -41,27 +47,57 @@ const NoteEditor = ({ note, onSave, onBack }) => {
           throw error;
         }
       }
+
+      console.log('No save function provided, throwing error');
       throw new Error('No save function provided');
     },
     {
       delay: 2000,
-      enabled: isEditing && (title.trim() || content.trim()),
+      enabled: true, // Always enable auto-save, let shouldSave handle the logic
       shouldSave: (newData, oldData) => {
+        // Don't save if there's no meaningful content
+        if (!newData.title.trim() && !newData.content.trim()) {
+          console.log('Should save check: No content to save');
+          return false;
+        }
+
+        // Don't save if we're not in editing mode (initial load)
+        if (!isEditing) {
+          console.log('Should save check: Not in editing mode');
+          return false;
+        }
+
         // Only save if content has actually changed
-        if (!oldData) return true;
-        return newData.title !== oldData.title || newData.content !== oldData.content;
+        if (!oldData) {
+          console.log('Should save check: First save');
+          return true;
+        }
+
+        const titleChanged = newData.title !== oldData.title;
+        const contentChanged = newData.content !== oldData.content;
+        console.log('Should save check:', { titleChanged, contentChanged, newData, oldData });
+        return titleChanged || contentChanged;
       },
       maxRetries: 3,
       retryDelay: 1000,
       onSave: (data, result) => {
-        console.log('Note auto-saved successfully:', result);
+        console.log('Note auto-saved successfully:', { data, result });
       },
       onError: (error, data) => {
-        console.error('Auto-save failed after retries:', error);
+        console.error('Auto-save failed after retries:', error, data);
         // Could show a toast notification here
       }
     }
   );
+
+  // Debug logging for save status and data changes
+  useEffect(() => {
+    console.log('Save status changed:', saveStatus);
+  }, [saveStatus]);
+
+  useEffect(() => {
+    console.log('Note data changed:', noteData, 'isEditing:', isEditing);
+  }, [noteData, isEditing]);
 
   // Track if content change is from user input
   const isUserInputRef = useRef(false);
@@ -91,16 +127,16 @@ const NoteEditor = ({ note, onSave, onBack }) => {
   useEffect(() => {
     if (contentEditableRef.current) {
       const codeBlocks = contentEditableRef.current.querySelectorAll('.code-block code');
-      
+
       codeBlocks.forEach(codeElement => {
         // Add input event listener for syntax highlighting
         const handleCodeInput = () => {
           const language = codeElement.className.replace('language-', '');
           setTimeout(() => applySyntaxHighlighting(codeElement, language), 10);
         };
-        
+
         codeElement.addEventListener('input', handleCodeInput);
-        
+
         // Apply initial highlighting
         const language = codeElement.className.replace('language-', '');
         applySyntaxHighlighting(codeElement, language);
@@ -108,10 +144,11 @@ const NoteEditor = ({ note, onSave, onBack }) => {
     }
   }, [content]);
 
-  // Focus title input on mount for new notes
+  // Focus title input on mount for new notes and set editing mode
   useEffect(() => {
     if (!note?.id && titleInputRef.current) {
       titleInputRef.current.focus();
+      setIsEditing(true); // Set editing mode for new notes
     }
   }, [note?.id]);
 
@@ -164,16 +201,39 @@ const NoteEditor = ({ note, onSave, onBack }) => {
 
   // Handle input events on contentEditable
   const handleContentInput = useCallback((e) => {
-    handleContentChange();
-  }, [handleContentChange]);
+    // Get the content directly from the event target to ensure we have the latest content
+    if (e.target && e.target === contentEditableRef.current) {
+      const newContent = e.target.innerHTML;
+      console.log('Content input detected:', newContent);
+      // Save current content to undo stack before changing
+      saveToUndoStack(content);
+      // Mark this as user input to prevent sync loop
+      isUserInputRef.current = true;
+      setContent(newContent);
+      setIsEditing(true);
+    }
+  }, [content, saveToUndoStack]);
+
+  // Additional content capture for better reliability
+  const captureCurrentContent = useCallback(() => {
+    if (contentEditableRef.current) {
+      const currentContent = contentEditableRef.current.innerHTML;
+      if (currentContent !== content) {
+        console.log('Capturing content change:', { current: currentContent, state: content });
+        isUserInputRef.current = true;
+        setContent(currentContent);
+        setIsEditing(true);
+      }
+    }
+  }, [content]);
 
   // Handle paste events to clean up formatting
   const handlePaste = useCallback((e) => {
     e.preventDefault();
-    
+
     // Get plain text from clipboard
     const text = e.clipboardData.getData('text/plain');
-    
+
     // Insert text at cursor position
     const selection = window.getSelection();
     if (selection.rangeCount > 0) {
@@ -184,7 +244,7 @@ const NoteEditor = ({ note, onSave, onBack }) => {
       selection.removeAllRanges();
       selection.addRange(range);
     }
-    
+
     handleContentChange();
   }, [handleContentChange]);
 
@@ -208,7 +268,7 @@ const NoteEditor = ({ note, onSave, onBack }) => {
     if (selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
       const selectedText = range.toString();
-      
+
       if (selectedText) {
         // Wrap selected text in header tag
         const headerTag = `h${level}`;
@@ -218,13 +278,13 @@ const NoteEditor = ({ note, onSave, onBack }) => {
         const headerElement = document.createElement(`h${level}`);
         headerElement.textContent = `Header ${level}`;
         range.insertNode(headerElement);
-        
+
         // Select the header text for easy editing
         const newRange = document.createRange();
         newRange.selectNodeContents(headerElement);
         selection.removeAllRanges();
         selection.addRange(newRange);
-        
+
         handleContentChange();
       }
     }
@@ -240,19 +300,19 @@ const NoteEditor = ({ note, onSave, onBack }) => {
     if (selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
       const selectedText = range.toString();
-      
+
       // Create code block wrapper
       const codeBlockWrapper = document.createElement('div');
       codeBlockWrapper.className = 'code-block-wrapper';
       codeBlockWrapper.contentEditable = false;
-      
+
       // Create language selector
       const languageSelector = document.createElement('div');
       languageSelector.className = 'code-block-header';
-      
+
       const languageSelect = document.createElement('select');
       languageSelect.className = 'language-select';
-      
+
       const languages = [
         { value: 'javascript', label: 'JavaScript' },
         { value: 'python', label: 'Python' },
@@ -265,7 +325,7 @@ const NoteEditor = ({ note, onSave, onBack }) => {
         { value: 'bash', label: 'Bash' },
         { value: 'plaintext', label: 'Plain Text' }
       ];
-      
+
       languages.forEach(lang => {
         const option = document.createElement('option');
         option.value = lang.value;
@@ -273,33 +333,33 @@ const NoteEditor = ({ note, onSave, onBack }) => {
         option.selected = lang.value === language;
         languageSelect.appendChild(option);
       });
-      
+
       languageSelector.appendChild(languageSelect);
-      
+
       // Create code block element
       const preElement = document.createElement('pre');
       preElement.className = 'code-block';
-      
+
       const codeElement = document.createElement('code');
       codeElement.className = `language-${language}`;
       codeElement.contentEditable = true;
-      
+
       if (selectedText) {
         codeElement.textContent = selectedText;
         range.deleteContents();
       } else {
         codeElement.textContent = getDefaultCodeForLanguage(language);
       }
-      
+
       preElement.appendChild(codeElement);
-      
+
       // Assemble the code block
       codeBlockWrapper.appendChild(languageSelector);
       codeBlockWrapper.appendChild(preElement);
-      
+
       // Insert the code block
       range.insertNode(codeBlockWrapper);
-      
+
       // Add event listener for language changes
       languageSelect.addEventListener('change', (e) => {
         const newLanguage = e.target.value;
@@ -309,16 +369,16 @@ const NoteEditor = ({ note, onSave, onBack }) => {
         }
         applySyntaxHighlighting(codeElement, newLanguage);
       });
-      
+
       // Position cursor inside the code block
       const newRange = document.createRange();
       newRange.selectNodeContents(codeElement);
       selection.removeAllRanges();
       selection.addRange(newRange);
-      
+
       // Apply initial syntax highlighting
       applySyntaxHighlighting(codeElement, language);
-      
+
       handleContentChange();
       codeElement.focus();
     }
@@ -344,17 +404,17 @@ const NoteEditor = ({ note, onSave, onBack }) => {
   // Basic syntax highlighting function
   const applySyntaxHighlighting = (codeElement, language) => {
     if (!codeElement || !language) return;
-    
+
     const code = codeElement.textContent;
     if (!code) return;
-    
+
     // Escape HTML to prevent injection
     const escapeHtml = (text) => {
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
     };
-    
+
     let highlightedCode = escapeHtml(code);
 
     // Basic highlighting patterns for different languages
@@ -406,14 +466,14 @@ const NoteEditor = ({ note, onSave, onBack }) => {
       patterns[language].forEach(pattern => {
         highlightedCode = highlightedCode.replace(pattern.regex, `<span class="syntax-${pattern.className}">$&</span>`);
       });
-      
+
       // Preserve cursor position
       const selection = window.getSelection();
       const range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
       const cursorOffset = range && range.startContainer === codeElement ? range.startOffset : 0;
-      
+
       codeElement.innerHTML = highlightedCode;
-      
+
       // Restore cursor position if it was in this element
       if (range && range.startContainer === codeElement) {
         try {
@@ -434,18 +494,18 @@ const NoteEditor = ({ note, onSave, onBack }) => {
     if (undoStack.length > 0) {
       const newUndoStack = [...undoStack];
       const previousContent = newUndoStack.pop();
-      
+
       // Save current content to redo stack
       setRedoStack(prev => [...prev, content]);
       setCanRedo(true);
-      
+
       // Restore previous content
       isUserInputRef.current = true; // Prevent sync loop
       setContent(previousContent);
       if (contentEditableRef.current) {
         contentEditableRef.current.innerHTML = previousContent;
       }
-      
+
       setUndoStack(newUndoStack);
       setCanUndo(newUndoStack.length > 0);
     }
@@ -455,18 +515,18 @@ const NoteEditor = ({ note, onSave, onBack }) => {
     if (redoStack.length > 0) {
       const newRedoStack = [...redoStack];
       const nextContent = newRedoStack.pop();
-      
+
       // Save current content to undo stack
       setUndoStack(prev => [...prev, content]);
       setCanUndo(true);
-      
+
       // Restore next content
       isUserInputRef.current = true; // Prevent sync loop
       setContent(nextContent);
       if (contentEditableRef.current) {
         contentEditableRef.current.innerHTML = nextContent;
       }
-      
+
       setRedoStack(newRedoStack);
       setCanRedo(newRedoStack.length > 0);
     }
@@ -477,37 +537,42 @@ const NoteEditor = ({ note, onSave, onBack }) => {
     // Ctrl+S for manual save
     if (e.ctrlKey && e.key === 's') {
       e.preventDefault();
-      if (saveNow) {
-        saveNow();
-      } else if (onSave) {
-        onSave(note?.id, { title, content });
-      }
+      // Capture current content before saving
+      captureCurrentContent();
+      setTimeout(() => {
+        if (saveNow) {
+          saveNow();
+        } else if (onSave) {
+          const currentContent = contentEditableRef.current?.innerHTML || content;
+          onSave(note?.id, { title, content: currentContent });
+        }
+      }, 100); // Small delay to ensure state is updated
     }
-    
+
     // Ctrl+B for bold
     if (e.ctrlKey && e.key === 'b') {
       e.preventDefault();
       toggleBold();
     }
-    
+
     // Ctrl+I for italic
     if (e.ctrlKey && e.key === 'i') {
       e.preventDefault();
       toggleItalic();
     }
-    
+
     // Ctrl+Z for undo
     if (e.ctrlKey && e.key === 'z' && !e.shiftKey) {
       e.preventDefault();
       performUndo();
     }
-    
+
     // Ctrl+Y or Ctrl+Shift+Z for redo
     if (e.ctrlKey && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
       e.preventDefault();
       performRedo();
     }
-    
+
     // Escape to go back
     if (e.key === 'Escape') {
       e.preventDefault();
@@ -515,13 +580,24 @@ const NoteEditor = ({ note, onSave, onBack }) => {
         onBack();
       }
     }
-  }, [title, content, note?.id, onSave, onBack, toggleBold, toggleItalic, performUndo, performRedo]);
+  }, [title, content, note?.id, onSave, onBack, toggleBold, toggleItalic, performUndo, performRedo, captureCurrentContent, saveNow]);
 
   // Add keyboard event listener
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
+
+  // Periodic content sync to ensure we don't lose changes
+  useEffect(() => {
+    const syncInterval = setInterval(() => {
+      captureCurrentContent();
+    }, 1000); // Check every second
+
+    return () => {
+      clearInterval(syncInterval);
+    };
+  }, [captureCurrentContent]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -545,7 +621,7 @@ const NoteEditor = ({ note, onSave, onBack }) => {
     <div className="note-editor">
       <div className="editor-header">
         <div className="editor-nav">
-          <button 
+          <button
             className="btn btn-outline-secondary back-btn"
             onClick={handleBack}
             title="Back to notes list"
@@ -554,9 +630,33 @@ const NoteEditor = ({ note, onSave, onBack }) => {
             {/* Back */}
           </button>
         </div>
-        
+
         <div className="editor-status">
-          {/* Save status moved to toolbar */}
+          {/* Debug: Manual save button */}
+          <button
+            className="btn btn-sm btn-outline-primary me-2"
+            onClick={async () => {
+              console.log('Manual save triggered with data:', noteData);
+              console.log('isEditing state:', isEditing);
+              
+              // Try direct save first
+              if (onSave) {
+                console.log('Calling onSave directly');
+                const result = await onSave(note?.id, noteData);
+                console.log('Direct onSave result:', result);
+              }
+              
+              // Also try saveNow
+              if (saveNow) {
+                console.log('Also calling saveNow');
+                const saveNowResult = await saveNow();
+                console.log('saveNow result:', saveNowResult);
+              }
+            }}
+          >
+            Manual Save
+          </button>
+          <span className="text-muted small">Status: {saveStatus}</span>
         </div>
       </div>
 
@@ -599,6 +699,8 @@ const NoteEditor = ({ note, onSave, onBack }) => {
             suppressContentEditableWarning={true}
             onInput={handleContentInput}
             onPaste={handlePaste}
+            onBlur={captureCurrentContent}
+            onKeyUp={captureCurrentContent}
             data-placeholder="Start writing your note..."
           />
         </div>

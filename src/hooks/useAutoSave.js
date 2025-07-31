@@ -72,17 +72,23 @@ const useAutoSave = (
    * Performs the actual save operation with retry logic
    */
   const performSave = useCallback(async (dataToSave, attempt = 1) => {
+    console.log('performSave called with:', { dataToSave, attempt, isMounted: isMountedRef.current, saveInProgress: saveInProgressRef.current });
+    
     if (!isMountedRef.current || saveInProgressRef.current) {
+      console.log('performSave early return:', { isMounted: isMountedRef.current, saveInProgress: saveInProgressRef.current });
       return;
     }
 
     saveInProgressRef.current = true;
     setSaveStatus(SAVE_STATUS.SAVING);
     setLastError(null);
+    console.log('performSave status set to SAVING');
 
     try {
       // Call the save function
+      console.log('performSave calling saveFunction with:', dataToSave);
       const result = await saveFunction(dataToSave);
+      console.log('performSave saveFunction result:', result);
 
       if (!isMountedRef.current) return;
 
@@ -178,16 +184,22 @@ const useAutoSave = (
    * Manually trigger a save operation (bypasses debouncing)
    */
   const saveNow = useCallback(async () => {
+    console.log('saveNow called with:', { enabled, saveFunction: !!saveFunction, data });
+    
     if (!enabled || !saveFunction) {
+      console.log('saveNow early return:', { enabled, hasSaveFunction: !!saveFunction });
       return false;
     }
 
     clearPendingSave();
 
     try {
+      console.log('saveNow calling performSave with data:', data);
       await performSave(data);
+      console.log('saveNow performSave completed successfully');
       return true;
     } catch (error) {
+      console.error('saveNow performSave error:', error);
       return false;
     }
   }, [enabled, saveFunction, data, clearPendingSave, performSave]);

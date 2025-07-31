@@ -114,17 +114,21 @@ const useLocalStorage = (key = STORAGE_KEY) => {
    * @returns {Promise<boolean>} Success status
    */
   const saveData = useCallback(async (newData) => {
+    console.log('useLocalStorage saveData called with:', newData);
     setError(null);
     
     try {
       const success = saveToStorage(newData, key);
+      console.log('saveToStorage result:', success);
       
       if (success) {
         setData(newData);
         updateStorageInfo();
+        console.log('Data saved successfully to localStorage');
         return true;
       } else {
         const errorMsg = 'Failed to save data to storage';
+        console.error(errorMsg);
         setError(errorMsg);
         return false;
       }
@@ -141,7 +145,10 @@ const useLocalStorage = (key = STORAGE_KEY) => {
    * @returns {Promise<boolean>} Success status
    */
   const updateData = useCallback(async (updater) => {
+    console.log('useLocalStorage updateData called with:', { data, updater });
+    
     if (!data) {
+      console.log('No data available to update');
       setError('No data available to update');
       return false;
     }
@@ -151,7 +158,12 @@ const useLocalStorage = (key = STORAGE_KEY) => {
         ? updater(data) 
         : { ...data, ...updater };
       
-      return await saveData(newData);
+      console.log('useLocalStorage newData created:', newData);
+      
+      const result = await saveData(newData);
+      console.log('useLocalStorage saveData result:', result);
+      
+      return result;
     } catch (err) {
       console.error('Error updating data:', err);
       setError(err.message);
