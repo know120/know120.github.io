@@ -93,6 +93,7 @@ const Dashboard = () => {
     }
   ];
 
+  // Loaded will be applied later
   // if (isLoading) {
   //   return <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />;
   // }
@@ -175,15 +176,13 @@ const Dashboard = () => {
                     className="btn btn-outline-light btn-lg"
                     onClick={() => setShowAllProjects(false)}
                   >
-                    <i className="pi pi-arrow-up me-2"></i>
-                    Show Featured Only
+                    <i className="pi pi-arrow-up me-2"></i>Show Featured Only
                   </button>
                   <button
                     className="btn btn-primary btn-lg"
                     onClick={() => window.open('https://github.com/know120', '_blank')}
                   >
-                    <i className="pi pi-github me-2"></i>
-                    View GitHub Profile
+                    <i className="pi pi-github me-2"></i>View GitHub Profile
                   </button>
                 </div>
               )}
@@ -212,8 +211,7 @@ const Dashboard = () => {
                   </ul>
                 </div>
                 <button className="btn btn-primary btn-lg mt-3">
-                  <i className="pi pi-bell me-2"></i>
-                  Notify Me When Ready
+                  <i className="pi pi-bell me-2"></i>Notify Me When Ready
                 </button>
               </div>
             </div>
