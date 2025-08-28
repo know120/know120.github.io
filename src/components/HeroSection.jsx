@@ -43,7 +43,7 @@ const HeroSection = () => {
       <div className="container-fluid h-100 px-0 d-flex align-items-center hero-section">
         <div className="hero-particles">
           {[...Array(50)].map((_, i) => (
-            <div key={i} className={`hero-particle hero-particle-${i}`}></div>
+            <div key={`_${i}`} className={`hero-particle hero-particle-${i}`}></div>
           ))}
         </div>
         
@@ -83,15 +83,13 @@ const HeroSection = () => {
                   className="btn btn-primary btn-lg me-3 mb-2"
                   onClick={() => scrollToSection('contact')}
                 >
-                  <i className="pi pi-envelope me-2"></i>
-                  Get In Touch
+                  <i className="pi pi-envelope me-2"></i>Get In Touch
                 </button>
                 <button 
                   className="btn btn-outline-light btn-lg mb-2"
                   onClick={() => scrollToSection('projects')}
                 >
-                  <i className="pi pi-eye me-2"></i>
-                  View My Work
+                  <i className="pi pi-eye me-2"></i>View My Work
                 </button>
               </div>
               
