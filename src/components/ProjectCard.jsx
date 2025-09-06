@@ -21,13 +21,13 @@ const ProjectCard = ({ project }) => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    
+
     const rotateX = (y - centerY) / 10;
     const rotateY = (centerX - x) / 10;
-    
+
     setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`);
   };
 
@@ -42,28 +42,28 @@ const ProjectCard = ({ project }) => {
       const rect = card.getBoundingClientRect();
       const x = touch.clientX - rect.left;
       const y = touch.clientY - rect.top;
-      
+
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
-      
+
       const rotateX = (y - centerY) / 15;
       const rotateY = (centerX - x) / 15;
-      
+
       setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(15px)`);
     }
   };
 
   return (
-    <div 
-      className="bg-neutral-900 rounded-2xl w-full p-4"
+    <div
+      className=""
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleMouseLeave}
     >
-      <div 
-        className={` ${isFlipped ? '' : ''}`}
-        style={{ }}
+      <div
+        className='bg-neutral-900 rounded-2xl w-full p-4'
+        style={{ transform }}
       >
         <div className="">
           <div className="">
@@ -88,7 +88,7 @@ const ProjectCard = ({ project }) => {
             </div>
           </div>
         </div>
-        
+
         <div className="">
           <div className="">
             <h3 className="">{project.title || 'Untitled Project'}</h3>
@@ -130,7 +130,7 @@ const ProjectCard = ({ project }) => {
             </button> */}
           </div>
         </div>
-        
+
         <div className=""></div>
       </div>
     </div>

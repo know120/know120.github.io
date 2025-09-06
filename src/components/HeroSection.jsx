@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import './HeroSection.css';
 
 const HeroSection = () => {
   const [currentText, setCurrentText] = useState('');
