@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Card.css';
+// import './Card.css';
 
 const Card = ({ header, title, body, footer }) => {
   const [transform, setTransform] = useState('');
@@ -43,25 +43,25 @@ const Card = ({ header, title, body, footer }) => {
 
   return (
     <div
-      className="card-3d-container h-100"
+      className="rounded-2xl bg-neutral-900 p-2"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleMouseLeave}
     >
       <div
-        className="card card-3d h-100"
+        className=""
         style={{ transform }}
       >
-        <div className="card-header card-3d-header">
+        <div className="text-3xl p-2 font-bold text-purple-800">
           <h2>{header}</h2>
         </div>
-        <div className="card-body card-3d-body">
-          {title && <h3 className="card-title">{title}</h3>}
-          <p className="card-text">{body}</p>
+        <div className="">
+          {title && <h3 className="text-2xl p-2">{title}</h3>}
+          <p className="p-2">{body}</p>
         </div>
         {footer && (
-          <div className="card-footer card-3d-footer">
+          <div className="p-2">
             <h4>{footer}</h4>
           </div>
         )}
