@@ -75,11 +75,22 @@ const NoteCard = ({ note, onEdit, onDelete }) => {
     });
   };
 
+  // Helper to robustly strip HTML tags (handles nested or repeated tags)
+  const stripHtmlTags = (input) => {
+    if (!input) return '';
+    let prev;
+    do {
+      prev = input;
+      input = input.replace(/<[^>]*>/g, '');
+    } while (input !== prev);
+    return input;
+  };
+
   const getContentPreview = (content) => {
     if (!content) return 'No content';
     
     // Strip HTML tags for preview
-    const textContent = content.replace(/<[^>]*>/g, '');
+    const textContent = stripHtmlTags(content);
     return textContent.length > 150 
       ? textContent.substring(0, 150) + '...' 
       : textContent;
@@ -105,7 +116,7 @@ const NoteCard = ({ note, onEdit, onDelete }) => {
 
   const getWordCount = (content) => {
     if (!content) return 0;
-    const textContent = content.replace(/<[^>]*>/g, '');
+    const textContent = stripHtmlTags(content);
     return textContent.trim().split(/\s+/).filter(word => word.length > 0).length;
   };
 
