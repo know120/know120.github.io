@@ -134,8 +134,14 @@ export const updateNoteMetadata = (note) => {
 const calculateWordCount = (content) => {
   if (!content || typeof content !== 'string') return 0;
   
-  // Remove HTML tags and count words
-  const textContent = content.replace(/<[^>]*>/g, '').trim();
+  // Remove HTML tags (repeatedly) and count words
+  let textContent = content;
+  let previous;
+  do {
+    previous = textContent;
+    textContent = textContent.replace(/<[^>]*>/g, '');
+  } while (textContent !== previous);
+  textContent = textContent.trim();
   if (!textContent) return 0;
   
   return textContent.split(/\s+/).length;
