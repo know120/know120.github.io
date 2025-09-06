@@ -31,7 +31,6 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
 .sass-cache/
 /connect.lock
 /coverage
@@ -47,4 +46,4 @@ testem.log
 Thumbs.db
 
 
-package-lock.json
+# package-lock.json
