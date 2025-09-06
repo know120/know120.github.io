@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import './Card.css';
 
 const Card = ({ header, title, body, footer }) => {
   const [transform, setTransform] = useState('');
