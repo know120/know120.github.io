@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './ProjectCard.css';
+import PropTypes from 'prop-types';
 
 const ProjectCard = ({ project }) => {
   const [transform, setTransform] = useState('');
@@ -8,8 +8,8 @@ const ProjectCard = ({ project }) => {
   // Safety check for project data
   if (!project) {
     return (
-      <div className="project-card-container h-100">
-        <div className="project-card h-100" style={{ background: '#2a2a2a', padding: '2rem', borderRadius: '20px' }}>
+      <div className="">
+        <div className="" style={{ background: '#2a2a2a', padding: '2rem', borderRadius: '20px' }}>
           <p style={{ color: 'white', textAlign: 'center' }}>No project data available</p>
         </div>
       </div>
@@ -55,43 +55,44 @@ const ProjectCard = ({ project }) => {
 
   return (
     <div 
-      className="project-card-container h-100"
+      className="bg-neutral-900 rounded-2xl w-full p-4"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleMouseLeave}
     >
       <div 
-        className={`project-card h-100 ${isFlipped ? 'flipped' : ''}`}
-        style={{ transform }}
+        className={` ${isFlipped ? '' : ''}`}
+        style={{ }}
       >
-        <div className="project-card-front">
-          <div className="project-image">
-            <img src={project.image || 'https://via.placeholder.com/400x200/6366f1/ffffff?text=Project'} alt={project.title || 'Project'} />
-            <div className="project-overlay">
+        <div className="">
+          <div className="">
+            {/* to be handled later */}
+            {/* <img src={project.image || 'https://via.placeholder.com/400x200/6366f1/ffffff?text=Project'} alt={project.title || 'Project'} /> */}
+            {/* <div className="">
               <button 
                 className="flip-btn"
                 onClick={() => setIsFlipped(true)}
               >
                 <i className="pi pi-info-circle"></i>
               </button>
-            </div>
+            </div> */}
           </div>
-          <div className="project-content">
-            <h3 className="project-title">{project.title || 'Untitled Project'}</h3>
-            <p className="project-description">{project.description || 'No description available'}</p>
-            <div className="project-tech">
+          <div className="">
+            <h3 className="font-bold text-center text-2xl text-purple-700">{project.title || 'Untitled Project'}</h3>
+            <p className="">{project.description || 'No description available'}</p>
+            <div className="flex flex-wrap justify-center gap-2 mt-4">
               {(project.technologies || []).map((tech, index) => (
-                <span key={index} className="tech-tag">{tech}</span>
+                <span key={index} className="">{tech}</span>
               ))}
             </div>
           </div>
         </div>
         
-        <div className="project-card-back">
-          <div className="project-details">
-            <h3 className="project-title">{project.title || 'Untitled Project'}</h3>
-            <div className="project-features">
+        <div className="">
+          <div className="">
+            <h3 className="">{project.title || 'Untitled Project'}</h3>
+            <div className="">
               <h4>Key Features:</h4>
               <ul>
                 {(project.features || []).map((feature, index) => (
@@ -99,17 +100,17 @@ const ProjectCard = ({ project }) => {
                 ))}
               </ul>
             </div>
-            <div className="project-stats">
-              <div className="stat">
-                <span className="stat-label">Duration:</span>
-                <span className="stat-value">{project.duration || 'N/A'}</span>
+            <div className="">
+              <div className="">
+                <span className="">Duration:</span>
+                <span className="">{project.duration || 'N/A'}</span>
               </div>
-              <div className="stat">
-                <span className="stat-label">Team Size:</span>
-                <span className="stat-value">{project.teamSize || 'N/A'}</span>
+              <div className="">
+                <span className="">Team Size:</span>
+                <span className="">{project.teamSize || 'N/A'}</span>
               </div>
             </div>
-            <div className="project-actions">
+            {/* <div className="">
               {project.liveDemo && (
                 <a href={project.liveDemo} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                   <i className="pi pi-external-link me-2"></i>Live Demo
@@ -120,20 +121,34 @@ const ProjectCard = ({ project }) => {
                   <i className="pi pi-github me-2"></i>Code
                 </a>
               )}
-            </div>
-            <button 
-              className="back-btn"
+            </div> */}
+            {/* <button 
+              className=""
               onClick={() => setIsFlipped(false)}
             >
               <i className="pi pi-arrow-left"></i>
-            </button>
+            </button> */}
           </div>
         </div>
         
-        <div className="project-card-shine"></div>
+        <div className=""></div>
       </div>
     </div>
   );
+};
+
+ProjectCard.propTypes = {
+  project: PropTypes.shape({
+    title: PropTypes.string,
+    description: PropTypes.string,
+    technologies: PropTypes.arrayOf(PropTypes.string),
+    features: PropTypes.arrayOf(PropTypes.string),
+    duration: PropTypes.string,
+    teamSize: PropTypes.string,
+    liveDemo: PropTypes.string,
+    github: PropTypes.string,
+    image: PropTypes.string,
+  }),
 };
 
 export default ProjectCard;

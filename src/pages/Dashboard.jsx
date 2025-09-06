@@ -3,10 +3,8 @@ import { useInView } from 'react-intersection-observer';
 import Card from '../components/Card';
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
-import SkillsSection from '../components/SkillsSection';
 import ProjectCard from '../components/ProjectCard';
 import ContactForm from '../components/ContactForm';
-import LoadingScreen from '../components/LoadingScreen';
 
 
 const Dashboard = () => {
@@ -93,11 +91,6 @@ const Dashboard = () => {
     }
   ];
 
-  // Loaded will be applied later
-  // if (isLoading) {
-  //   return <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />;
-  // }
-
   return (
     <div className="app mx-5">
       <Navigation />
@@ -109,44 +102,34 @@ const Dashboard = () => {
       {/* <SkillsSection /> */}
 
       {/* Enhanced About/Experience Section */}
-      <section id="about" className="flex items-center justify-content gap-5 h-screen" ref={aboutRef}>
-        {/* <div className={`container-fluid h-100 grid bg-secondary px-0 d-flex align-items-center ${aboutInView ? 'animate-in' : ''}`}> */}
-        {/* <div className="w-100 px-4"> */}
-        {/* <h1 className="section-title text-center mb-5">Work Experience</h1> */}
-        {/* <div className="row g-4 mx-0 justify-content-center"> */}
-        <div className="">
-          <Card
-            header={expASL.header}
-            title={expASL.title}
-            body={expASL.body}
-            footer={expASL.footer}
-          />
+      <section id="about" className="h-screen" ref={aboutRef}>
+        <h1 className="text-4xl text-center mb-5">Work Experience</h1>
+        <div className='flex flex-col md:flex-row items-center justify-content gap-5'>
+          <div className="w-full md:w-1/2">
+            <Card
+              header={expASL.header}
+              title={expASL.title}
+              body={expASL.body}
+              footer={expASL.footer}
+            />
+          </div>
+          <div className="w-full md:w-1/2">
+            <Card
+              header={expDSS.header}
+              title={expDSS.title}
+              body={expDSS.body}
+              footer={expDSS.footer}
+            />
+          </div>
         </div>
-        <div className="">
-          <Card
-            header={expDSS.header}
-            title={expDSS.title}
-            body={expDSS.body}
-            footer={expDSS.footer}
-          />
-        </div>
-        {/* </div> */}
-        {/* </div> */}
-        {/* </div> */}
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className={`flex items-center justify-content h-screen`} ref={projectsRef}>
-        <div className="flex items-center justify-content flex-wrap">
+      <section id="projects" className={`h-screen bg-blue-950`} ref={projectsRef}>
+        <div className="grid grid-cols-2 grid-rows-2 gap-2 items-center justify-center">
           {projects.length > 0 ? (
             projects.map((project, index) => (
-              <div
-                key={`project-${index}`}
-                className=""
-                style={{}}
-              >
-                <ProjectCard project={project} />
-              </div>
+              <ProjectCard key={`project-${index}`} project={project} />
             ))
           ) : (
             <div className="w-100 text-center">
@@ -185,10 +168,8 @@ const Dashboard = () => {
 
       {/* Blog Section */}
       <section id="blog" className="flex flex-column items-center justify-content h-screen bg-blue-500" ref={blogRef}>
-        {/* <div className={`container-fluid h-100 grid bg-secondary bg-gradient px-0 d-flex align-items-center ${blogInView ? 'animate-in' : ''}`}> */}
-        {/* <div className="flex flex-column items-center justify-content bg-black-300"> */}
-        {/* <h1 className="section-title text-center mb-4">Latest Insights</h1> */}
         <div className="text-center w-screen">
+          <h1 className="section-title text-center mb-4">Latest Insights</h1>
           <div className="">
             <i className="pi pi-file-edit" style={{ fontSize: '4rem', color: '#6366f1', marginBottom: '2rem' }}></i>
             <h3 className="mb-3">Blog Coming Soon!</h3>
@@ -207,14 +188,11 @@ const Dashboard = () => {
             </button>
           </div>
         </div>
-        {/* </div> */}
-        {/* </div> */}
       </section>
 
       {/* Contact Section */}
       <section id="contact" className="mt-10 h-screen" ref={contactRef}>
         <div className={`container-fluid bg-dark px-0 h-100 d-flex flex-column justify-content-center ${contactInView ? 'animate-in' : ''}`}>
-          {/* <div className=""> */}
           <ContactForm />
 
           <div className="text-center mt-3">
@@ -239,10 +217,9 @@ const Dashboard = () => {
                   Sujay Halder
                 </a>
               </p>
-              <p className="text-muted small mb-0">Built with React, Bootstrap & Modern Web Technologies</p>
+              <p className="text-muted small mb-0">Built with React, Tailwind CSS & Modern Web Technologies</p>
             </div>
           </div>
-          {/* </div> */}
         </div>
       </section>
     </div>
