@@ -43,14 +43,14 @@ const Card = ({ header, title, body, footer }) => {
 
   return (
     <div
-      className="rounded-2xl bg-neutral-900 p-2"
+      className=""
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleMouseLeave}
     >
       <div
-        className=""
+        className="rounded-2xl bg-neutral-900 p-2"
         style={{ transform }}
       >
         <div className="text-3xl p-2 font-bold text-purple-800">
