@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import App from './App';
 
 test('renders portfolio app', () => {
   render(
-    <BrowserRouter>
+    <HashRouter>
       <App />
-    </BrowserRouter>
+    </HashRouter>
   );
   const nameElement = screen.getByText(/Hi, I'm Sujay/i);
   expect(nameElement).toBeInTheDocument();

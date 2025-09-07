@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SuperApp = () => {
+const AdLibrary = () => {
     return (
         <div className="app min-vh-100">
             {/* <div className="container-fluid bg-dark min-vh-100"> */}
@@ -12,4 +12,4 @@ const SuperApp = () => {
     );
 };
 
-export default SuperApp;
+export default AdLibrary;

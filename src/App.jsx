@@ -4,7 +4,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { HelmetProvider } from 'react-helmet-async';
 import Dashboard from './pages/Dashboard';
 import Note from './pages/Note';
-import AdLibray from './pages/AdLibrary';
+import AdLibrary from './pages/AdLibrary';
 import './App.css';
 
 
@@ -27,7 +27,7 @@ function App() {
               <Route path="/home" element={<Dashboard />} />
               <Route path="/super" element={<SuperApp />} />
               <Route path="/note" element={<Note />} />
-              <Route path="/ad-library" element={<AdLibray />} />
+              <Route path="/ad-library" element={<AdLibrary />} />
               <Route path="*" element={<Dashboard />} />
             </Routes>
           </Suspense>
