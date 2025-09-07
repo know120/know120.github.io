@@ -55,6 +55,15 @@ const Navigation = () => {
             <li className="nav-item">
               <a
                 className="nav-link"
+                href="/#/tools"
+                // onClick={() => window.location.href = '/#/tools'}
+              >
+                Tools
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
                 href="#about"
                 onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}
               >

@@ -1,12 +1,10 @@
 import { Tldraw } from 'tldraw'
 import 'tldraw/tldraw.css'
 
-const Design = () => { 	
-  return (
-		// <div className="tldraw__editor">
+export default function Design() {
+	return (
+		<div style={{ position: 'fixed', inset: 0 }}>
 			<Tldraw />
-		// </div>
-	) 		
+		</div>
+	)
 }
-
-export default Design;
