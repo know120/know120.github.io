@@ -36,7 +36,7 @@ const Dashboard = () => {
   const expDSS = {
     header: 'Divsoft Software Solutions',
     title: 'Software Engineer',
-    body: 'Developed a Over Speed Detection System using CPP and OpenCV. That can receive the speed of the vehicle from a remote server using TCP Connection and Capture the image of vehicle.',
+    body: 'Developed a Over Speed Detection System using CPP and OpenCV. That can receive the speed of the vehicle from a remote server using TCP Connection and Capture the image.',
     footer: 'August 2021 - July 2022'
   };
 
@@ -102,31 +102,34 @@ const Dashboard = () => {
       {/* <SkillsSection /> */}
 
       {/* Enhanced About/Experience Section */}
-      <section id="about" className="h-screen" ref={aboutRef}>
-        <h1 className="text-4xl text-center mb-5">Work Experience</h1>
-        <div className='flex flex-col md:flex-row items-center justify-content gap-5'>
-          <div className="w-full md:w-1/2">
-            <Card
-              header={expASL.header}
-              title={expASL.title}
-              body={expASL.body}
-              footer={expASL.footer}
-            />
-          </div>
-          <div className="w-full md:w-1/2">
-            <Card
-              header={expDSS.header}
-              title={expDSS.title}
-              body={expDSS.body}
-              footer={expDSS.footer}
-            />
-          </div>
+      <section id="about" className="flex flex-col items-center justify-center h-screen" ref={aboutRef}>
+        {/* <div className='flex flex-col items-center justify-center'> */}
+          <h1 className="text-4xl text-center mb-5">Work Experience</h1>
+          <div className='flex flex-col md:flex-row items-center justify-content gap-5'>
+            <div className="w-full md:w-1/2">
+              <Card
+                header={expASL.header}
+                title={expASL.title}
+                body={expASL.body}
+                footer={expASL.footer}
+              />
+            </div>
+            <div className="w-full md:w-1/2">
+              <Card
+                header={expDSS.header}
+                title={expDSS.title}
+                body={expDSS.body}
+                footer={expDSS.footer}
+              />
+            </div>
+          {/* </div> */}
         </div>
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className={`h-screen bg-blue-950`} ref={projectsRef}>
-        <div className="grid grid-cols-2 grid-rows-2 gap-2 items-center justify-center">
+      <section id="projects" className="h-screen" ref={projectsRef}>
+        {/* <div className="grid grid-cols-2 grid-rows-2 gap-2 items-center justify-items-center place-items-center"> */}
+        <div className="grid grid-cols-2 gap-2 place-items-center">
           {projects.length > 0 ? (
             projects.map((project, index) => (
               <ProjectCard key={`project-${index}`} project={project} />
