@@ -42,7 +42,7 @@ const Card = ({ header, title, body, footer }) => {
 
   return (
     <div
-      className=""
+      className="w-2xl h-xl"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onTouchMove={handleTouchMove}

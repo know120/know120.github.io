@@ -55,7 +55,7 @@ const ProjectCard = ({ project }) => {
 
   return (
     <div
-      className=""
+      className="w-2xl"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onTouchMove={handleTouchMove}

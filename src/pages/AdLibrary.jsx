@@ -2,12 +2,8 @@ import React from 'react';
 
 const AdLibrary = () => {
     return (
-        <div className="app min-vh-100">
-            {/* <div className="container-fluid bg-dark min-vh-100"> */}
-                <h1 className='text-center'>Facebook Ad Library</h1>
-
-            {/* </div> */}
-            {/* <p>Facebook Ad Library</p> */}
+        <div className="flex flex-col items-center justify-center h-screen">
+            <h1 className='text-5xl font-bold'>Facebook Ad Library</h1>
         </div>
     );
 };
