@@ -34,11 +34,10 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-5xl z-50 transition-all duration-300 rounded-2xl ${
-        isScrolled || isMobileMenuOpen
+      className={`fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-5xl z-50 transition-all duration-300 rounded-2xl ${isScrolled || isMobileMenuOpen
           ? 'bg-slate-900/90 backdrop-blur-md border border-white/10 shadow-lg shadow-indigo-500/10'
           : 'bg-transparent border border-transparent'
-      }`}
+        }`}
     >
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
@@ -78,7 +77,7 @@ const Navigation = () => {
                   </button>
                 )
               ))}
-              
+
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}

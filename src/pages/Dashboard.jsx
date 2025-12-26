@@ -37,6 +37,7 @@ const Dashboard = () => {
     header: 'Divsoft Software Solutions',
     title: 'Software Engineer',
     body: 'Developed a Over Speed Detection System using CPP and OpenCV. That can receive the speed of the vehicle from a remote server using TCP Connection and Capture the image.',
+    body: 'Developed a Over Speed Detection System using CPP and OpenCV. That can receive the speed of the vehicle from a remote server using TCP Connection and Capture the image.',
     footer: 'August 2021 - July 2022'
   };
 
