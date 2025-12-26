@@ -65,31 +65,31 @@ const Dashboard = () => {
       duration: '6 months',
       teamSize: '4 developers'
     },
-    {
-      title: 'Budget Evaluation System',
-      description: 'Full-stack web application for budget management built with Angular, .NET Framework, and SQL Server.',
-      technologies: ['Angular 7', 'TypeScript', '.NET Framework', 'SQL Server', 'Bootstrap'],
-      image: 'https://via.placeholder.com/400x200/a855f7/ffffff?text=Budget+System',
-      features: ['Budget tracking', 'Financial reports', 'User management', 'Dashboard analytics'],
-      duration: '8 months',
-      teamSize: '2 developers'
-    },
-    {
-      title: 'Speed Detection System',
-      description: 'Over-speed detection system using C++ and OpenCV with TCP connection for real-time vehicle monitoring.',
-      technologies: ['C++', 'OpenCV', 'TCP/IP', 'Computer Vision'],
-      image: 'https://via.placeholder.com/400x200/06b6d4/ffffff?text=Speed+Detection',
-      liveDemo: null,
-      github: 'https://github.com/know120/speed-detection-system',
-      features: [
-        'Real-time speed calculation',
-        'Automatic image capture',
-        'TCP server communication',
-        'Alert system integration'
-      ],
-      duration: '6 months',
-      teamSize: '3 developers'
-    }
+    // {
+    //   title: 'Budget Evaluation System',
+    //   description: 'Full-stack web application for budget management built with Angular, .NET Framework, and SQL Server.',
+    //   technologies: ['Angular 7', 'TypeScript', '.NET Framework', 'SQL Server', 'Bootstrap'],
+    //   image: 'https://via.placeholder.com/400x200/a855f7/ffffff?text=Budget+System',
+    //   features: ['Budget tracking', 'Financial reports', 'User management', 'Dashboard analytics'],
+    //   duration: '8 months',
+    //   teamSize: '2 developers'
+    // },
+    // {
+    //   title: 'Speed Detection System',
+    //   description: 'Over-speed detection system using C++ and OpenCV with TCP connection for real-time vehicle monitoring.',
+    //   technologies: ['C++', 'OpenCV', 'TCP/IP', 'Computer Vision'],
+    //   image: 'https://via.placeholder.com/400x200/06b6d4/ffffff?text=Speed+Detection',
+    //   liveDemo: null,
+    //   github: 'https://github.com/know120/speed-detection-system',
+    //   features: [
+    //     'Real-time speed calculation',
+    //     'Automatic image capture',
+    //     'TCP server communication',
+    //     'Alert system integration'
+    //   ],
+    //   duration: '6 months',
+    //   teamSize: '3 developers'
+    // }
   ];
 
   return (
