@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Button from "../components/common/Button"
 
 const HeroSection = () => {
   const [currentText, setCurrentText] = useState('');
@@ -60,7 +61,7 @@ const HeroSection = () => {
             </h1>
 
             <div className="text-2xl md:text-3xl mb-8 text-slate-300 h-[40px]">
-              I am a <span className="text-indigo-400 font-semibold">{currentText}</span>
+              A <span className="text-indigo-400 font-semibold">{currentText}</span>
               <span className="animate-pulse">|</span>
             </div>
 
@@ -70,6 +71,8 @@ const HeroSection = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <Button text="Get In Touch" onClick={() => scrollToSection('contact')} />
+              <Button text="View My Work" onClick={() => scrollToSection('projects')} />
               <button
                 onClick={() => scrollToSection('contact')}
                 className="btn-primary w-full sm:w-auto group"
@@ -81,7 +84,7 @@ const HeroSection = () => {
                 </span>
               </button>
 
-              <button
+              {/* <button
                 onClick={() => scrollToSection('projects')}
                 className="btn-secondary w-full sm:w-auto"
               >
@@ -89,7 +92,7 @@ const HeroSection = () => {
                   <i className="pi pi-eye"></i>
                   View My Work
                 </span>
-              </button>
+              </button> */}
             </div>
 
             <div className="mt-12 flex items-center justify-center lg:justify-start gap-6">

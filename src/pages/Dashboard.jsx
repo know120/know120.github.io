@@ -4,12 +4,12 @@ import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
 import ProjectCard from '../components/ProjectCard';
 import ContactForm from '../components/ContactForm';
-import SkillsSection from '../components/SkillsSection';
+import GlowingLine from '../components/common/GlowingLine';
+import Tools from '../pages/Tools';
 import Card from '../components/Card';
 
 const Dashboard = () => {
   const currentYear = new Date().getFullYear();
-  const [showAllProjects, setShowAllProjects] = useState(false);
 
   // Social links data
   const socialLinks = [
@@ -36,7 +36,6 @@ const Dashboard = () => {
   const expDSS = {
     header: 'Divsoft Software Solutions',
     title: 'Software Engineer',
-    body: 'Developed a Over Speed Detection System using CPP and OpenCV. That can receive the speed of the vehicle from a remote server using TCP Connection and Capture the image.',
     body: 'Developed a Over Speed Detection System using CPP and OpenCV. That can receive the speed of the vehicle from a remote server using TCP Connection and Capture the image.',
     footer: 'August 2021 - July 2022'
   };
@@ -103,11 +102,12 @@ const Dashboard = () => {
       {/* <SkillsSection /> */}
 
       {/* Experience Section */}
-      <section id="about" className="py-20 relative" ref={aboutRef}>
+      <section id="about" className="py-10 relative" ref={aboutRef}>
         <div className="section-container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               <span className="heading-gradient">Work Experience</span>
+              <GlowingLine />
             </h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
               My professional journey and the companies I've had the privilege to work with.
@@ -133,14 +133,15 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section>      
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 bg-slate-900/50" ref={projectsRef}>
+      <section id="projects" className="py-10 bg-slate-900/50" ref={projectsRef}>
         <div className="section-container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               <span className="heading-gradient">Featured Projects</span>
+              <GlowingLine />
             </h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
               A selection of projects that demonstrate my skills and passion for building impactful solutions.
@@ -169,20 +170,20 @@ const Dashboard = () => {
         </div>
       </section>
 
+      {/* Tools Section */}
+      <Tools />
+
       {/* Blog Section */}
-      <section id="blog" className="py-20 relative overflow-hidden" ref={blogRef}>
+      <section id="blog" className="py-10 relative overflow-hidden" ref={blogRef}>
         <div className="absolute inset-0 bg-gradient-to-b from-indigo-900/20 to-transparent -z-10"></div>
         <div className="section-container">
           <div className={`text-center transition-all duration-1000 ${blogInView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
             <h2 className="text-3xl md:text-4xl font-bold mb-8">
               <span className="heading-gradient">Latest Insights</span>
+              <GlowingLine />
             </h2>
 
             <div className="glass-panel max-w-3xl mx-auto rounded-2xl p-10 text-center">
-              <div className="w-20 h-20 bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <i className="pi pi-pencil text-4xl text-indigo-400"></i>
-              </div>
-
               <h3 className="text-2xl font-bold text-white mb-4">Blog Coming Soon!</h3>
               <p className="text-slate-400 mb-8 leading-relaxed">
                 I'm working on a series of articles sharing my insights about web development,
@@ -221,6 +222,7 @@ const Dashboard = () => {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               <span className="heading-gradient">Get In Touch</span>
+              <GlowingLine />
             </h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
               Have a project in mind or just want to say hi? Feel free to reach out!

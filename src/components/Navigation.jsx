@@ -79,24 +79,24 @@ const Navigation = () => {
               ))}
 
               {/* Theme Toggle */}
-              <button
+              {/* <button
                 onClick={toggleTheme}
                 className="ml-4 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-all"
                 aria-label="Toggle Theme"
               >
                 {darkMode ? '🌙' : '☀️'}
-              </button>
+              </button> */}
             </div>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
-            <button
+            {/* <button
               onClick={toggleTheme}
               className="mr-4 p-2 rounded-full bg-white/5 text-slate-300"
             >
               {darkMode ? '🌙' : '☀️'}
-            </button>
+            </button> */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-white/10 focus:outline-none"
