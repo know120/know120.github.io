@@ -6,10 +6,10 @@ const HeroSection = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const texts = [
-    'Full Stack Developer',
-    'React Expert',
-    'UI/UX Enthusiast',
-    'Problem Solver'
+    'Full Stack .NET Developer with React',
+    // 'React Expert',
+    // 'UI/UX Enthusiast',
+    // 'Problem Solver'
   ];
 
   useEffect(() => {
