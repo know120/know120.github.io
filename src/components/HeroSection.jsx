@@ -7,10 +7,7 @@ const HeroSection = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const texts = [
-    'Full Stack .NET Developer with React',
-    // 'React Expert',
-    // 'UI/UX Enthusiast',
-    // 'Problem Solver'
+    'Full Stack .NET Developer with React'
   ];
 
   useEffect(() => {
@@ -39,7 +36,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-10">
       {/* Background Effects */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-600/20 blur-[120px] animate-pulse"></div>
@@ -73,7 +70,7 @@ const HeroSection = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
               <Button text="Get In Touch" onClick={() => scrollToSection('contact')} />
               <Button text="View My Work" onClick={() => scrollToSection('projects')} />
-              <button
+              {/* <button
                 onClick={() => scrollToSection('contact')}
                 className="btn-primary w-full sm:w-auto group"
               >
@@ -82,7 +79,7 @@ const HeroSection = () => {
                   Get In Touch
                   <i className="pi pi-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </span>
-              </button>
+              </button> */}
 
               {/* <button
                 onClick={() => scrollToSection('projects')}
