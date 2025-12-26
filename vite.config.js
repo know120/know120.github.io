@@ -8,6 +8,16 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  // server: {
+  //   proxy: {
+  //     // Proxy /api requests to the Meta Graph API
+  //     '/api': {
+  //       target: 'https://graph.facebook.com',
+  //       changeOrigin: true,
+  //       rewrite: (path) => path.replace(/^\/api/, ''),
+  //     },
+  //   },
+  // },
   // The base path for GitHub Pages. For a user page like `know120.github.io`, this is '/'.
   base: '/',
   build: {

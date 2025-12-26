@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkportfolio_react=self.webpackChunkportfolio_react||[]).push([[61],{61:(e,r,s)=>{s.r(r),s.d(r,{default:()=>i});s(43);var t=s(579);const i=()=>(0,t.jsxs)("div",{className:"container mt-5",children:[(0,t.jsx)("h1",{children:"Super App"}),(0,t.jsx)("p",{children:"This is the Super App page. Content will be migrated from the Angular version."})]})}}]);
-//# sourceMappingURL=61.4a66c886.chunk.js.map

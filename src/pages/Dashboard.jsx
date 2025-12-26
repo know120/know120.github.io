@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import Card from '../components/Card';
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
 import ProjectCard from '../components/ProjectCard';
 import ContactForm from '../components/ContactForm';
-
+import SkillsSection from '../components/SkillsSection';
+import Card from '../components/Card';
 
 const Dashboard = () => {
   const currentYear = new Date().getFullYear();
@@ -21,10 +21,10 @@ const Dashboard = () => {
   ];
 
   // Intersection Observer for animations
-  const [aboutRef, aboutInView] = useInView({ threshold: 0.3, triggerOnce: true });
-  const [projectsRef, projectsInView] = useInView({ threshold: 0.3, triggerOnce: true });
-  const [blogRef, blogInView] = useInView({ threshold: 0.3, triggerOnce: true });
-  const [contactRef, contactInView] = useInView({ threshold: 0.3, triggerOnce: true });
+  const [aboutRef, aboutInView] = useInView({ threshold: 0.1, triggerOnce: true });
+  const [projectsRef, projectsInView] = useInView({ threshold: 0.1, triggerOnce: true });
+  const [blogRef, blogInView] = useInView({ threshold: 0.1, triggerOnce: true });
+  const [contactRef, contactInView] = useInView({ threshold: 0.1, triggerOnce: true });
 
   const expASL = {
     header: 'Alumnus Software Limited',
@@ -92,21 +92,29 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="app mx-5">
+    <div className="min-h-screen bg-slate-900 text-slate-50">
       <Navigation />
 
-      {/* Enhanced Hero Section */}
+      {/* Hero Section */}
       <HeroSection />
 
       {/* Skills Section */}
       {/* <SkillsSection /> */}
 
-      {/* Enhanced About/Experience Section */}
-      <section id="about" className="flex flex-col items-center justify-center h-screen" ref={aboutRef}>
-        {/* <div className='flex flex-col items-center justify-center'> */}
-          <h1 className="text-4xl text-center mb-5">Work Experience</h1>
-          <div className='flex flex-col md:flex-row items-center justify-content gap-5'>
-            <div className="w-full md:w-1/2">
+      {/* Experience Section */}
+      <section id="about" className="py-20 relative" ref={aboutRef}>
+        <div className="section-container">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <span className="heading-gradient">Work Experience</span>
+            </h2>
+            <p className="text-slate-400 max-w-2xl mx-auto">
+              My professional journey and the companies I've had the privilege to work with.
+            </p>
+          </div>
+
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 transition-all duration-1000 ${aboutInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className="glass-panel rounded-2xl p-6 hover:bg-slate-800/80 transition-colors">
               <Card
                 header={expASL.header}
                 title={expASL.title}
@@ -114,7 +122,7 @@ const Dashboard = () => {
                 footer={expASL.footer}
               />
             </div>
-            <div className="w-full md:w-1/2">
+            <div className="glass-panel rounded-2xl p-6 hover:bg-slate-800/80 transition-colors">
               <Card
                 header={expDSS.header}
                 title={expDSS.title}
@@ -122,106 +130,126 @@ const Dashboard = () => {
                 footer={expDSS.footer}
               />
             </div>
-          {/* </div> */}
+          </div>
         </div>
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="h-screen" ref={projectsRef}>
-        {/* <div className="grid grid-cols-2 grid-rows-2 gap-2 items-center justify-items-center place-items-center"> */}
-        <div className="grid grid-cols-2 gap-2 place-items-center">
-          {projects.length > 0 ? (
-            projects.map((project, index) => (
-              <ProjectCard key={`project-${index}`} project={project} />
-            ))
-          ) : (
-            <div className="w-100 text-center">
-              <p className="text-white">No projects found</p>
-            </div>
-          )}
-        </div>
+      <section id="projects" className="py-20 bg-slate-900/50" ref={projectsRef}>
+        <div className="section-container">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <span className="heading-gradient">Featured Projects</span>
+            </h2>
+            <p className="text-slate-400 max-w-2xl mx-auto">
+              A selection of projects that demonstrate my skills and passion for building impactful solutions.
+            </p>
+          </div>
 
-        {/* <div className="flex justify-content-center">
-          {!showAllProjects ? (
-            <button
-              className="btn btn-outline-light btn-lg"
-              onClick={() => setShowAllProjects(true)}
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 transition-all duration-1000 ${projectsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            {projects.map((project, index) => (
+              <div key={`project-${index}`} className="h-full">
+                <ProjectCard project={project} />
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <a
+              href="https://github.com/know120"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-600 hover:border-indigo-500 hover:text-indigo-400 transition-colors"
             >
-              <i className="pi pi-eye me-2"></i>
-              View All Projects ({projects.length})
-            </button>
-          ) : (
-            <div className="btn-group-projects">
-              <button
-                className="btn btn-outline-light btn-lg"
-                onClick={() => setShowAllProjects(false)}
-              >
-                <i className="pi pi-arrow-up me-2"></i>Show Featured Only
-              </button>
-              <button
-                className="btn btn-primary btn-lg"
-                onClick={() => window.open('https://github.com/know120', '_blank')}
-              >
-                <i className="pi pi-github me-2"></i>View GitHub Profile
-              </button>
-            </div>
-          )}
-        </div> */}
+              <i className="pi pi-github"></i>
+              <span>View More on GitHub</span>
+            </a>
+          </div>
+        </div>
       </section>
 
       {/* Blog Section */}
-      <section id="blog" className="flex flex-column items-center justify-content h-screen bg-blue-500" ref={blogRef}>
-        <div className="text-center w-screen">
-          <h1 className="section-title text-center mb-4">Latest Insights</h1>
-          <div className="">
-            <i className="pi pi-file-edit" style={{ fontSize: '4rem', color: '#6366f1', marginBottom: '2rem' }}></i>
-            <h3 className="mb-3">Blog Coming Soon!</h3>
-            <p className="lead mb-4">Sharing insights about web development, best practices, and latest technologies.</p>
-            <div className="upcoming-topics">
-              <h4 className="mb-3">Upcoming Topics:</h4>
-              <ul className="list-unstyled">
-                <li className="mb-2">🚀 Modern React Development Patterns</li>
-                <li className="mb-2">⚡ Performance Optimization Techniques</li>
-                <li className="mb-2">🎨 Advanced CSS and Animations</li>
-                <li className="mb-2">🔧 Full-Stack Development Best Practices</li>
-              </ul>
+      <section id="blog" className="py-20 relative overflow-hidden" ref={blogRef}>
+        <div className="absolute inset-0 bg-gradient-to-b from-indigo-900/20 to-transparent -z-10"></div>
+        <div className="section-container">
+          <div className={`text-center transition-all duration-1000 ${blogInView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+            <h2 className="text-3xl md:text-4xl font-bold mb-8">
+              <span className="heading-gradient">Latest Insights</span>
+            </h2>
+
+            <div className="glass-panel max-w-3xl mx-auto rounded-2xl p-10 text-center">
+              <div className="w-20 h-20 bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i className="pi pi-pencil text-4xl text-indigo-400"></i>
+              </div>
+
+              <h3 className="text-2xl font-bold text-white mb-4">Blog Coming Soon!</h3>
+              <p className="text-slate-400 mb-8 leading-relaxed">
+                I'm working on a series of articles sharing my insights about web development,
+                best practices, and the latest technologies. Stay tuned!
+              </p>
+
+              <div className="bg-slate-900/50 rounded-xl p-6 mb-8 text-left">
+                <h4 className="text-indigo-300 font-semibold mb-4">Upcoming Topics:</h4>
+                <ul className="space-y-3">
+                  <li className="flex items-center text-slate-300">
+                    <i className="pi pi-check text-green-400 mr-3"></i>
+                    Modern React Development Patterns
+                  </li>
+                  <li className="flex items-center text-slate-300">
+                    <i className="pi pi-check text-green-400 mr-3"></i>
+                    Performance Optimization Techniques
+                  </li>
+                  <li className="flex items-center text-slate-300">
+                    <i className="pi pi-check text-green-400 mr-3"></i>
+                    Advanced CSS and Animations
+                  </li>
+                </ul>
+              </div>
+
+              <button className="btn-primary">
+                <i className="pi pi-bell mr-2"></i>Notify Me When Ready
+              </button>
             </div>
-            <button className="btn btn-primary btn-lg mt-3">
-              <i className="pi pi-bell me-2"></i>Notify Me When Ready
-            </button>
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="mt-10 h-screen" ref={contactRef}>
-        <div className={`container-fluid bg-dark px-0 h-100 d-flex flex-column justify-content-center ${contactInView ? 'animate-in' : ''}`}>
+      <section id="contact" className="py-20" ref={contactRef}>
+        <div className={`section-container transition-all duration-1000 ${contactInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <span className="heading-gradient">Get In Touch</span>
+            </h2>
+            <p className="text-slate-400 max-w-2xl mx-auto">
+              Have a project in mind or just want to say hi? Feel free to reach out!
+            </p>
+          </div>
+
           <ContactForm />
 
-          <div className="text-center mt-3">
-            <div className="social-links mb-2">
+          <div className="mt-20 pt-10 border-t border-slate-800 text-center">
+            <div className="flex justify-center gap-6 mb-8">
               {socialLinks.map((link, index) => (
                 <a
                   key={index}
-                  className="btn btn-outline-light btn-social mx-2 mb-2"
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-indigo-600 hover:text-white transition-all transform hover:-translate-y-1"
                   aria-label={link.label}
                 >
                   <i className={`pi ${link.icon}`}></i>
                 </a>
               ))}
             </div>
-            <div className="footer-text text-white">
-              <p className="mb-1">
-                © {currentYear}{' '}
-                <a className="text-white text-decoration-none" href="https://know120.github.io/">
-                  Sujay Halder
-                </a>
-              </p>
-              <p className="text-muted small mb-0">Built with React, Tailwind CSS & Modern Web Technologies</p>
-            </div>
+
+            <p className="text-slate-500 text-sm">
+              © {currentYear} Sujay Halder. All rights reserved.
+            </p>
+            <p className="text-slate-600 text-xs mt-2">
+              Built with React, Tailwind CSS & Modern Web Technologies
+            </p>
           </div>
         </div>
       </section>

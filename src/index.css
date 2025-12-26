@@ -1,1 +1,88 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Modern Color Palette - Dark Mode First Approach */
+    --bg-primary: #0f172a; /* Slate 900 */
+    --bg-secondary: #1e293b; /* Slate 800 */
+    --bg-tertiary: #334155; /* Slate 700 */
+    
+    --text-primary: #f8fafc; /* Slate 50 */
+    --text-secondary: #cbd5e1; /* Slate 300 */
+    --text-tertiary: #94a3b8; /* Slate 400 */
+    
+    --accent-primary: #6366f1; /* Indigo 500 */
+    --accent-secondary: #818cf8; /* Indigo 400 */
+    --accent-glow: rgba(99, 102, 241, 0.5);
+    
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-slate-900 text-slate-50 font-sans antialiased;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    overflow-x: hidden;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--bg-tertiary);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply backdrop-blur-md border border-white/10 bg-slate-800/50;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+  }
+
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20;
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    box-shadow: 0 4px 14px 0 var(--accent-glow);
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300 border border-slate-600 hover:border-slate-400 hover:bg-slate-800;
+    color: var(--text-secondary);
+  }
+
+  .heading-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+  
+  .glow {
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+}

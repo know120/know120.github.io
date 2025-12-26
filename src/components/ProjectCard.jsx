@@ -1,137 +1,86 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const ProjectCard = ({ project }) => {
-  const [transform, setTransform] = useState('');
-  const [isFlipped, setIsFlipped] = useState(false);
-
-  // Safety check for project data
-  if (!project) {
-    return (
-      <div className="">
-        <div className="" style={{ background: '#2a2a2a', padding: '2rem', borderRadius: '20px' }}>
-          <p style={{ color: 'white', textAlign: 'center' }}>No project data available</p>
-        </div>
-      </div>
-    );
-  }
-
-  const handleMouseMove = (e) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotateX = (y - centerY) / 10;
-    const rotateY = (centerX - x) / 10;
-
-    setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`);
-  };
-
-  const handleMouseLeave = () => {
-    setTransform('perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)');
-  };
-
-  const handleTouchMove = (e) => {
-    if (e.touches.length === 1) {
-      const touch = e.touches[0];
-      const card = e.currentTarget;
-      const rect = card.getBoundingClientRect();
-      const x = touch.clientX - rect.left;
-      const y = touch.clientY - rect.top;
-
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-
-      const rotateX = (y - centerY) / 15;
-      const rotateY = (centerX - x) / 15;
-
-      setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(15px)`);
-    }
-  };
+  if (!project) return null;
 
   return (
-    <div
-      className="w-2xl"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleMouseLeave}
-    >
-      <div
-        className='bg-neutral-900 rounded-2xl w-full p-4'
-        style={{ transform }}
-      >
-        <div className="">
-          <div className="">
-            {/* to be handled later */}
-            {/* <img src={project.image || 'https://via.placeholder.com/400x200/6366f1/ffffff?text=Project'} alt={project.title || 'Project'} /> */}
-            {/* <div className="">
-              <button 
-                className="flip-btn"
-                onClick={() => setIsFlipped(true)}
+    <div className="group relative h-full">
+      <div className="glass-panel rounded-2xl overflow-hidden h-full transition-all duration-500 hover:shadow-[0_0_30px_rgba(99,102,241,0.3)] hover:-translate-y-2 flex flex-col">
+
+        {/* Image Container */}
+        <div className="relative h-48 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent z-10 opacity-60"></div>
+          <img
+            src={project.image || 'https://via.placeholder.com/400x200/6366f1/ffffff?text=Project'}
+            alt={project.title}
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+          />
+
+          {/* Floating Tech Stack */}
+          <div className="absolute bottom-3 left-3 z-20 flex flex-wrap gap-2">
+            {(project.technologies || []).slice(0, 3).map((tech, index) => (
+              <span
+                key={index}
+                className="text-xs font-medium px-2 py-1 rounded-md bg-slate-900/80 text-indigo-300 border border-indigo-500/30 backdrop-blur-sm"
               >
-                <i className="pi pi-info-circle"></i>
-              </button>
-            </div> */}
+                {tech}
+              </span>
+            ))}
+            {(project.technologies || []).length > 3 && (
+              <span className="text-xs font-medium px-2 py-1 rounded-md bg-slate-900/80 text-slate-400 border border-slate-700 backdrop-blur-sm">
+                +{project.technologies.length - 3}
+              </span>
+            )}
           </div>
-          <div className="">
-            <h3 className="font-bold text-center text-2xl text-purple-700">{project.title || 'Untitled Project'}</h3>
-            <p className="">{project.description || 'No description available'}</p>
-            <div className="flex flex-wrap justify-center gap-2 mt-4">
-              {(project.technologies || []).map((tech, index) => (
-                <span key={index} className="">{tech}</span>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 flex-1 flex flex-col">
+          <h3 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors">
+            {project.title}
+          </h3>
+
+          <p className="text-slate-400 text-sm mb-4 line-clamp-3 flex-1">
+            {project.description}
+          </p>
+
+          {/* Features List (Mini) */}
+          {project.features && project.features.length > 0 && (
+            <div className="mb-4 space-y-1">
+              {project.features.slice(0, 2).map((feature, idx) => (
+                <div key={idx} className="flex items-center text-xs text-slate-500">
+                  <i className="pi pi-check-circle text-indigo-500/70 mr-2"></i>
+                  {feature}
+                </div>
               ))}
             </div>
+          )}
+
+          {/* Actions */}
+          <div className="flex items-center gap-3 mt-auto pt-4 border-t border-white/5">
+            {project.liveDemo && (
+              <a
+                href={project.liveDemo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 text-center py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors"
+              >
+                <i className="pi pi-external-link mr-2"></i>Live Demo
+              </a>
+            )}
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex-1 text-center py-2 rounded-lg border border-slate-600 hover:border-slate-400 hover:bg-slate-800 text-slate-300 text-sm font-medium transition-all ${!project.liveDemo ? 'w-full' : ''}`}
+              >
+                <i className="pi pi-github mr-2"></i>Code
+              </a>
+            )}
           </div>
         </div>
-
-        <div className="">
-          <div className="">
-            <h3 className="">{project.title || 'Untitled Project'}</h3>
-            <div className="">
-              <h4>Key Features:</h4>
-              <ul>
-                {(project.features || []).map((feature, index) => (
-                  <li key={index}>{feature}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="">
-              <div className="">
-                <span className="">Duration:</span>
-                <span className="">{project.duration || 'N/A'}</span>
-              </div>
-              <div className="">
-                <span className="">Team Size:</span>
-                <span className="">{project.teamSize || 'N/A'}</span>
-              </div>
-            </div>
-            {/* <div className="">
-              {project.liveDemo && (
-                <a href={project.liveDemo} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-                  <i className="pi pi-external-link me-2"></i>Live Demo
-                </a>
-              )}
-              {project.github && (
-                <a href={project.github} target="_blank" rel="noopener noreferrer" className="btn btn-outline-light">
-                  <i className="pi pi-github me-2"></i>Code
-                </a>
-              )}
-            </div> */}
-            {/* <button 
-              className=""
-              onClick={() => setIsFlipped(false)}
-            >
-              <i className="pi pi-arrow-left"></i>
-            </button> */}
-          </div>
-        </div>
-
-        <div className=""></div>
       </div>
     </div>
   );

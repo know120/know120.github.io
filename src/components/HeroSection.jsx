@@ -8,8 +8,8 @@ const HeroSection = () => {
   const texts = [
     'Full Stack Developer',
     'React Expert',
-    // 'Angular Expert',
-    // 'Problem Solver'
+    'UI/UX Enthusiast',
+    'Problem Solver'
   ];
 
   useEffect(() => {
@@ -38,68 +38,103 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="home" className="h-screen md:mx-5">
-      <div className="flex flex-col md:flex-row justify-between items-center h-full">
-        <div className='border border-purple-600 rounded-full overflow-hidden hover:scale-110 transform transition-all duration-300 ease-in-out'>
-          <img
-            className="w-md"
-            src="assets/img/me.jpg"
-            alt="Sujay Halder"
-            loading="lazy"
-          />
-        </div>
-        <div className="md:mx-2.5 md:max-w-1/2">
-          {/* <div className="items-center"> */}
-            <div className="text-left">
-              <div className="text-2xl mb-2">👋 Hello, I'm</div>
-              <h1 className="text-5xl font-bold mb-5 text-violet-800">Sujay Halder</h1>
-              <div className="text-2xl mb-2">
-                <span className="">A </span>
-                <span className=" text-indigo-700 font-bold">
-                  {currentText}
-                  <span className="">|</span>
+    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+      {/* Background Effects */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-600/20 blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-600/20 blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+      </div>
+
+      <div className="section-container w-full">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
+
+          {/* Text Content */}
+          <div className="flex-1 text-center lg:text-left z-10">
+            <div className="inline-block px-4 py-2 mb-6 rounded-full bg-indigo-500/10 border border-indigo-500/20 backdrop-blur-sm">
+              <span className="text-indigo-400 font-medium">👋 Welcome to my portfolio</span>
+            </div>
+
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+              Hi, I'm <br />
+              <span className="heading-gradient">Sujay Halder</span>
+            </h1>
+
+            <div className="text-2xl md:text-3xl mb-8 text-slate-300 h-[40px]">
+              I am a <span className="text-indigo-400 font-semibold">{currentText}</span>
+              <span className="animate-pulse">|</span>
+            </div>
+
+            <p className="text-lg text-slate-400 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+              Creating innovative solutions and building amazing web experiences
+              with modern technologies. I specialize in building scalable, high-performance applications.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="btn-primary w-full sm:w-auto group"
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <i className="pi pi-envelope"></i>
+                  Get In Touch
+                  <i className="pi pi-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </span>
+              </button>
+
+              <button
+                onClick={() => scrollToSection('projects')}
+                className="btn-secondary w-full sm:w-auto"
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <i className="pi pi-eye"></i>
+                  View My Work
+                </span>
+              </button>
+            </div>
+
+            <div className="mt-12 flex items-center justify-center lg:justify-start gap-6">
+              <a href="https://github.com/know120" target="_blank" rel="noopener noreferrer"
+                className="text-slate-400 hover:text-white transition-colors transform hover:scale-110">
+                <i className="pi pi-github text-2xl"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/sujayhalder" target="_blank" rel="noopener noreferrer"
+                className="text-slate-400 hover:text-white transition-colors transform hover:scale-110">
+                <i className="pi pi-linkedin text-2xl"></i>
+              </a>
+              <a href="https://twitter.com/TheSujayHalder" target="_blank" rel="noopener noreferrer"
+                className="text-slate-400 hover:text-white transition-colors transform hover:scale-110">
+                <i className="pi pi-twitter text-2xl"></i>
+              </a>
+            </div>
+          </div>
+
+          {/* Image/Visual */}
+          <div className="flex-1 flex justify-center items-center relative">
+            <div className="relative w-72 h-72 md:w-96 md:h-96">
+              {/* Decorative circles */}
+              <div className="absolute inset-0 rounded-full border-2 border-indigo-500/30 animate-[spin_10s_linear_infinite]"></div>
+              <div className="absolute inset-4 rounded-full border-2 border-purple-500/30 animate-[spin_15s_linear_infinite_reverse]"></div>
+
+              {/* Main Image Container */}
+              <div className="absolute inset-8 rounded-full overflow-hidden border-4 border-slate-800 shadow-2xl shadow-indigo-500/20">
+                <img
+                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+                  src="assets/img/me.jpg"
+                  alt="Sujay Halder"
+                  loading="lazy"
+                />
               </div>
 
-              <p className="mt-5 text-xl text-neutral-400">
-                Creating innovative solutions and building amazing web experiences
-                with modern technologies. Let's build something great together!
-              </p>
-
-              <div className="mt-10">
-                <button
-                  className="rounded-md border border-neutral-800 m-2 p-2 bg-indigo-700 transform transition-all duration-300 ease-in-out hover:-translate-y-1"
-                  onClick={() => scrollToSection('contact')}
-                >
-                  <i className="pi pi-envelope me-2"></i>Get In Touch
-                </button>
-                <button
-                  className="rounded-md border border-neutral-800 m-2 p-2 hover:bg-neutral-200 transform transition-all duration-300 ease-in-out hover:-translate-y-1 hover:text-neutral-800"
-                  onClick={() => scrollToSection('projects')}
-                >
-                  <i className="pi pi-eye me-2"></i>View My Work
-                </button>
+              {/* Floating badges */}
+              <div className="absolute -right-4 top-20 glass-panel p-3 rounded-xl animate-bounce" style={{ animationDuration: '3s' }}>
+                <i className="pi pi-code text-indigo-400 text-xl"></i>
               </div>
-
-              <div className="rounded space-x-4 mt-5">
-                <a href="https://github.com/know120" target="_blank" rel="noopener noreferrer" className="social-link">
-                  <i className="pi pi-github"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/sujayhalder" target="_blank" rel="noopener noreferrer" className="social-link">
-                  <i className="pi pi-linkedin"></i>
-                </a>
-                <a href="https://twitter.com/TheSujayHalder" target="_blank" rel="noopener noreferrer" className="social-link">
-                  <i className="pi pi-twitter"></i>
-                </a>
+              <div className="absolute -left-4 bottom-20 glass-panel p-3 rounded-xl animate-bounce" style={{ animationDuration: '4s' }}>
+                <i className="pi pi-database text-purple-400 text-xl"></i>
               </div>
-            {/* </div> */}
+            </div>
           </div>
         </div>
-
-        {/* <div className="scroll-indicator">
-          <div className="scroll-arrow"></div>
-          <span>Scroll Down</span>
-        </div> */}
       </div>
     </section>
   );
