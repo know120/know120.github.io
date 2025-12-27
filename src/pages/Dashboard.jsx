@@ -171,7 +171,7 @@ const Dashboard = () => {
       </section>
 
       {/* Tools Section */}
-      <Tools />
+      {/* <Tools /> */}
 
       {/* Blog Section */}
       <section id="blog" className="py-10 relative overflow-hidden" ref={blogRef}>
