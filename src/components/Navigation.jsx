@@ -42,14 +42,14 @@ const Navigation = () => {
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <a
               href="#home"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('home');
               }}
-              className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400 hover:opacity-80 transition-opacity"
+              className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-indigo-400 to-cyan-400 hover:opacity-80 transition-opacity"
             >
               Sujay Halder
             </a>

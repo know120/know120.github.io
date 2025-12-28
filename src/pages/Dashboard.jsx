@@ -175,7 +175,7 @@ const Dashboard = () => {
 
       {/* Blog Section */}
       <section id="blog" className="py-10 relative overflow-hidden" ref={blogRef}>
-        <div className="absolute inset-0 bg-gradient-to-b from-indigo-900/20 to-transparent -z-10"></div>
+        <div className="absolute inset-0 bg-linear-to-b from-indigo-900/20 to-transparent -z-10"></div>
         <div className="section-container">
           <div className={`text-center transition-all duration-1000 ${blogInView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
             <h2 className="text-3xl md:text-4xl font-bold mb-8">
