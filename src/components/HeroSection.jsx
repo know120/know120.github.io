@@ -49,7 +49,7 @@ const HeroSection = () => {
           {/* Text Content */}
           <div className="flex-1 text-center lg:text-left z-10">
             <div className="inline-block px-4 py-2 mb-6 rounded-full bg-indigo-500/10 border border-indigo-500/20 backdrop-blur-sm">
-              <span className="text-indigo-400 font-medium">👋 Welcome to my portfolio</span>
+              <span className="text-indigo-400 font-medium">👋 Welcome Welcome Welcome</span>
             </div>
 
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
