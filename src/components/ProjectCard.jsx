@@ -9,7 +9,7 @@ const ProjectCard = ({ project }) => {
 
         {/* Image Container */}
         <div className="relative h-48 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent z-10 opacity-60"></div>
+          <div className="absolute inset-0 bg-linear-to-t from-slate-900 to-transparent z-10 opacity-60"></div>
           <img
             src={project.image || 'https://via.placeholder.com/400x200/6366f1/ffffff?text=Project'}
             alt={project.title}

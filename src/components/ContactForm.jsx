@@ -150,7 +150,7 @@ const ContactForm = () => {
 
           <button
             type="submit"
-            className={`w-full py-4 rounded-lg font-bold text-white transition-all transform hover:-translate-y-1 ${isSubmitting ? 'bg-indigo-600/50 cursor-not-allowed' : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-lg hover:shadow-indigo-500/30'}`}
+            className={`w-full py-4 rounded-lg font-bold text-white transition-all transform hover:-translate-y-1 ${isSubmitting ? 'bg-indigo-600/50 cursor-not-allowed' : 'bg-linear-to-r from-indigo-600 to-purple-600 hover:shadow-lg hover:shadow-indigo-500/30'}`}
             disabled={isSubmitting}
           >
             {isSubmitting ? (

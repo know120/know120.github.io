@@ -1,5 +1,3 @@
-import React from 'react';
-
 const SkillsSection = () => {
   const skillCategories = [
     {
@@ -68,7 +66,7 @@ const SkillsSection = () => {
                     </div>
                     <div className="h-2 bg-slate-700/50 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
+                        className="h-full bg-linear-to-r from-indigo-500 to-purple-500 rounded-full"
                         style={{ width: `${skill.level}%` }}
                       ></div>
                     </div>

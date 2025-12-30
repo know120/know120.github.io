@@ -73,7 +73,7 @@
   }
 
   .heading-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400;
+    @apply bg-clip-text text-transparent bg-linear-to-r from-indigo-400 to-cyan-400;
   }
 }
 

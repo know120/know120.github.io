@@ -1,6 +1,5 @@
 import GlowingLine from "./common/GlowingLine";
 import ProjectCard from "./ProjectCard";
-import { useInView } from 'react-intersection-observer';
 
 const projects = [
     {
@@ -53,8 +52,6 @@ const projects = [
   ];
 
 const Projects = () => {
-
-    // const [projectsRef, projectsInView] = useInView({ threshold: 0.1, triggerOnce: true });
 
     return (
         <section id="projects" className="py-10 bg-slate-900/50">
