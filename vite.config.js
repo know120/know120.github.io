@@ -1,14 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite'
-import typography from '@tailwindcss/typography'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    typography(),
   ],
   // server: {
   //   proxy: {
@@ -29,6 +27,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/setupTests.js', // File for test environment setup.
+    setupFiles: './tests/setupTests.js', // File for test environment setup.
   },
 });
