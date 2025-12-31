@@ -5,6 +5,7 @@ import Experience from '../components/Experience';
 import Projects from '../components/Projects';
 import Blog from '../components/Blog';
 import Contact from '../components/Contact'
+import VerticalLines from '../components/common/VerticalLines';
 
 const Dashboard = () => {
 
@@ -15,7 +16,8 @@ const Dashboard = () => {
   const [contactRef, contactInView] = useInView({ threshold: 0.1, triggerOnce: true });
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-50">
+    <div className="min-h-screen bg-slate-900 text-slate-50 relative">
+      {/* <VerticalLines /> */}
       <Navigation />
 
       {/* Hero Section */}
@@ -25,7 +27,7 @@ const Dashboard = () => {
       {/* <SkillsSection /> */}
 
       {/* Experience Section */}
-      <Experience />      
+      <Experience />
 
       {/* Projects Section */}
       <Projects />
