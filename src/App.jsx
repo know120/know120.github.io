@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard';
 import Note from './pages/Note';
 import AdLibrary from './pages/AdLibrary';
 import Tools from './pages/Tools';
+import BlogList from './pages/BlogList';
+import BlogPost from './pages/BlogPost';
 
 
 // Lazy load other components for better performance
@@ -26,6 +28,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/home" element={<Dashboard />} />
+              <Route path="/blog" element={<BlogList />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/tools" element={<Tools />} />
               <Route path="/tools/design" element={<Design />} />
               <Route path="/tools/super" element={<SuperApp />} />
