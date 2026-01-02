@@ -1,18 +1,7 @@
-import React, { Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Suspense } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { HelmetProvider } from 'react-helmet-async';
-import Dashboard from './pages/Dashboard';
-import Note from './pages/Note';
-import AdLibrary from './pages/AdLibrary';
-import Tools from './pages/Tools';
-import BlogList from './pages/BlogList';
-import BlogPost from './pages/BlogPost';
-
-
-// Lazy load other components for better performance
-const SuperApp = React.lazy(() => import('./pages/SuperApp'));
-const Design = React.lazy(() => import('./pages/Design'));
+import Router from './router';
 
 function App() {
   return (
@@ -25,18 +14,7 @@ function App() {
               <p className="mt-4 text-lg">Loading...</p>
             </div>
           }>
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/home" element={<Dashboard />} />
-              <Route path="/blog" element={<BlogList />} />
-              <Route path="/blog/:slug" element={<BlogPost />} />
-              <Route path="/tools" element={<Tools />} />
-              <Route path="/tools/design" element={<Design />} />
-              <Route path="/tools/super" element={<SuperApp />} />
-              <Route path="/tools/note" element={<Note />} />
-              <Route path="/tools/ad-library" element={<AdLibrary />} />
-              <Route path="*" element={<Dashboard />} />
-            </Routes>
+            <Router />
           </Suspense>
         </div>
       </ThemeProvider>
