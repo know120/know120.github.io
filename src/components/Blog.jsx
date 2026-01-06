@@ -4,7 +4,7 @@ import BlogCard from "./BlogCard";
 
 const latestPosts = [
     {
-        slug: "modern-react-patterns",
+        slug: "add-bloging-with-markdown",
         title: "Bloging feature in Portfolio with Markdown",
         date: "2026-01-01",
         category: "Development",
