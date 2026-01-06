@@ -11,7 +11,7 @@ export default function BlogPost() {
   console.log(content);
 
   return (
-    <div className="max-w-4xl mx-auto p-8">
+    <div className="section-container">
       <Link to="/blog" className="text-blue-500 hover:underline mb-4 inline-block">&larr; Back to Blog</Link>
       <article className="prose lg:prose-xl dark:prose-invert dark:text-slate-300 max-w-none">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
