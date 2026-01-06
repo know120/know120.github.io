@@ -18,8 +18,9 @@ const posts = Object.entries(postModules)
 
 export default function BlogList() {
   return (
-    <div className="max-w-4xl mx-auto p-8 text-slate-900 dark:text-slate-100">
-      <h1 className="text-4xl font-bold mb-8 text-slate-900 dark:text-white">Blog</h1>
+    <div className="section-container">
+      <Link to="/" className="text-blue-500 hover:underline mb-4 inline-block">&larr; Back to Home</Link>
+      <h1 className="text-4xl text-center font-bold mb-8 text-slate-900 dark:text-white">Blogs</h1>
       {posts.length === 0 ? (
         <p className="text-slate-500">No posts yet!</p>
       ) : (
