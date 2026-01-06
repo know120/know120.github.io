@@ -1,45 +1,49 @@
+import { Link } from "react-router-dom";
 import GlowingLine from "./common/GlowingLine";
+import BlogCard from "./BlogCard";
+
+const latestPosts = [
+    {
+        slug: "modern-react-patterns",
+        title: "Bloging feature in Portfolio with Markdown",
+        date: "2026-01-01",
+        category: "Development",
+        readTime: "8 min",
+        excerpt: "Adding a blog to your portfolio is a great way to share your thoughts and document your learning journey.",
+        image: null
+    },
+];
 
 const Blog = () => {
     return (
-        <section id="blog" className="py-10 relative overflow-hidden">
-            <div className="absolute inset-0 bg-linear-to-b from-indigo-900/20 to-transparent -z-10"></div>
+        <section id="blog" className="py-20 relative overflow-hidden">
+            <div className="absolute inset-0 bg-linear-to-b from-indigo-900/10 to-transparent -z-10"></div>
+
             <div className="section-container">
-                <div className={`text-center transition-all duration-1000 opacity-100 scale-100`}>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-8">
+                <div className="text-center mb-16">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4">
                         <span className="heading-gradient">Latest Insights</span>
-                        <GlowingLine />
-                    </h2>
-
-                    <div className="glass-panel max-w-3xl mx-auto rounded-2xl p-10 text-center">
-                        <h3 className="text-2xl font-bold text-white mb-4">Blog Coming Soon!</h3>
-                        <p className="text-slate-400 mb-8 leading-relaxed">
-                            I'm working on a series of articles sharing my insights about web development,
-                            best practices, and the latest technologies. Stay tuned!
-                        </p>
-
-                        <div className="bg-slate-900/50 rounded-xl p-6 mb-8 text-left">
-                            <h4 className="text-indigo-300 font-semibold mb-4">Upcoming Topics:</h4>
-                            <ul className="space-y-3">
-                                <li className="flex items-center text-slate-300">
-                                    <i className="pi pi-check text-green-400 mr-3"></i>
-                                    Modern React Development Patterns
-                                </li>
-                                <li className="flex items-center text-slate-300">
-                                    <i className="pi pi-check text-green-400 mr-3"></i>
-                                    Performance Optimization Techniques
-                                </li>
-                                <li className="flex items-center text-slate-300">
-                                    <i className="pi pi-check text-green-400 mr-3"></i>
-                                    Advanced CSS and Animations
-                                </li>
-                            </ul>
+                        <div className="max-w-[200px] mx-auto">
+                            <GlowingLine />
                         </div>
+                    </h2>
+                    <p className="text-slate-400 max-w-2xl mx-auto">
+                        Exploring the frontiers of web technology, sharing experiences,
+                        and documenting the journey of building modern digital experiences.
+                    </p>
+                </div>
 
-                        <button className="btn-primary">
-                            <i className="pi pi-bell mr-2"></i>Notify Me When Ready
-                        </button>
-                    </div>
+                <div className="flex items-center justify-center gap-8">
+                    {latestPosts.map((post) => (
+                        <BlogCard key={post.slug} post={post} />
+                    ))}
+                </div>
+
+                <div className="mt-16 text-center">
+                    <Link to="/blog" className="btn-secondary group">
+                        View All Articles
+                        <i className="pi pi-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </Link>
                 </div>
             </div>
         </section>
