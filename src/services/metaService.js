@@ -19,7 +19,7 @@ const fetchAdCampaigns = async (accessToken, countryCode) => {
 };
 
 
-const API_KEY = 'EAAHjPAzkZCH0BPWMMFV9WJv4k0W9v4voX6SSUzsznBvMkHiKlXKT6U6NlKEe0vfEMpJzbPHYbVKwE04FeZBDlvkBnjBggwOncMd6U4ynfxpKucyZAFnaUK9PlvneeVS5xZCSfZAgFt9vb0DA34hHZAOy1CWyMI6iYhvH6e32ofnm9I0zGAecKoJwKzOjo1IrrmgQJGEcVcVGBTvXrQZA2NBrBdbdCVpD4W2ouUmr3FIHwZDZD'; // Replace with your ScrapeCreators API key
+const API_KEY = ''; // Replace with your ScrapeCreators API key
 const getData = async () => {
   const params = new URLSearchParams({
     access_token: API_KEY,

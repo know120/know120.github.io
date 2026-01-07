@@ -1,20 +1,19 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { posts } from "../utils/postUtils";
 import GlowingLine from "./common/GlowingLine";
 import BlogCard from "./BlogCard";
 
-const latestPosts = [
-    {
-        slug: "add-bloging-with-markdown",
-        title: "Bloging feature in Portfolio with Markdown",
-        date: "2026-01-01",
-        category: "Development",
-        readTime: "8 min",
-        excerpt: "Adding a blog to your portfolio is a great way to share your thoughts and document your learning journey.",
-        image: null
-    },
-];
 
 const Blog = () => {
+    // Store latest posts from posts
+    const [latestPosts, setLatestPosts] = useState([]);
+
+    // Fetch latest posts
+    useEffect(() => {
+        setLatestPosts(posts.slice(0, 3));
+    }, []);
+
     return (
         <section id="blog" className="py-20 relative overflow-hidden">
             <div className="absolute inset-0 bg-linear-to-b from-indigo-900/10 to-transparent -z-10"></div>
