@@ -10,7 +10,7 @@ const posts = Object.entries(postModules)
         if (/^\d{4}-\d{2}-\d{2}$/.test(datePart)) {
             date = new Date(datePart);
         }
-        return { slug: fileName, title: title, date: date, category: null, readTime: null, excerpt: null, image: null };
+        return { slug: fileName, title: title, date: date, category: null, readTime: null, excerpt: null, image: null, content: content };
     })
     .sort((a, b) => (b.date || new Date(0)) - (a.date || new Date(0)));
 
