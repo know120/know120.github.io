@@ -14,4 +14,8 @@ const posts = Object.entries(postModules)
     })
     .sort((a, b) => (b.date || new Date(0)) - (a.date || new Date(0)));
 
-export { posts };
+const getPost = (slug) => {
+    return Object.entries(postModules).find(([path]) => path.endsWith(slug))?.[1] || '# Post Not Found';
+}
+
+export { posts, getPost };
