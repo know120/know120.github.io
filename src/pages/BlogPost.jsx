@@ -1,14 +1,13 @@
 import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-
-const postModules = import.meta.glob('../blog/posts/*.md', { eager: true, query: '?raw', import: 'default' });  // Adjust path if needed
+import { getPost } from '../utils/postUtils';
 
 export default function BlogPost() {
   const { slug } = useParams();
   const fullSlug = slug + '.md';
-  const content = Object.entries(postModules).find(([path]) => path.endsWith(fullSlug))?.[1] || '# Post Not Found';
-  console.log(content);
+  const content = getPost(fullSlug);
+  // console.log(content);
 
   return (
     <div className="section-container">
