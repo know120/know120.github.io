@@ -10,6 +10,7 @@ import AdLibrary from './pages/AdLibrary';
 
 const SuperApp = React.lazy(() => import('./pages/SuperApp'));
 const Design = React.lazy(() => import('./pages/Design'));
+const DoctorLanding = React.lazy(() => import('./pages/DoctorLanding'));
 
 export default function Router() {
     return (
@@ -23,6 +24,7 @@ export default function Router() {
             <Route path="/tools/super" element={<SuperApp />} />
             <Route path="/tools/note" element={<Note />} />
             <Route path="/tools/ad-library" element={<AdLibrary />} />
+            <Route path="/dr" element={<DoctorLanding />} />
             <Route path="*" element={<Dashboard />} />
         </Routes>
     );
