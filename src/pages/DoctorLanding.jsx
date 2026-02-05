@@ -11,10 +11,10 @@ const DoctorLanding = () => {
                         <span className="text-2xl font-bold text-teal-600">Dr. Rakesh Halder</span>
                     </div>
                     <nav className="hidden md:flex space-x-8">
-                        <a href="#home" className="text-slate-600 hover:text-teal-600 font-medium">Home</a>
+                        {/* <a href="#home" className="text-slate-600 hover:text-teal-600 font-medium">Home</a>
                         <a href="#about" className="text-slate-600 hover:text-teal-600 font-medium">About</a>
                         <a href="#services" className="text-slate-600 hover:text-teal-600 font-medium">Services</a>
-                        <a href="#contact" className="text-slate-600 hover:text-teal-600 font-medium">Contact</a>
+                        <a href="#contact" className="text-slate-600 hover:text-teal-600 font-medium">Contact</a> */}
                     </nav>
                     <button className="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-full font-medium transition-colors">
                         Book Appointment
@@ -155,7 +155,7 @@ const DoctorLanding = () => {
                             Book Appointment Now
                         </button>
                         <button className="bg-transparent border-2 border-white text-white hover:bg-teal-700 px-8 py-3 rounded-full font-bold text-lg transition-colors">
-                            Call (555) 123-4567
+                            Call +91 9851184414
                         </button>
                     </div>
                 </div>
@@ -170,21 +170,20 @@ const DoctorLanding = () => {
                             Providing exceptional gynecological and obstetric care with dignity and respect.
                         </p>
                     </div>
-                    <div>
+                    {/* <div>
                         <h4 className="text-white font-bold mb-4 uppercase text-sm tracking-wider">Quick Links</h4>
                         <ul className="space-y-2">
                             <li><a href="#home" className="hover:text-teal-400 transition-colors">Home</a></li>
                             <li><a href="#about" className="hover:text-teal-400 transition-colors">About</a></li>
                             <li><a href="#services" className="hover:text-teal-400 transition-colors">Services</a></li>
                         </ul>
-                    </div>
+                    </div> */}
                     <div>
                         <h4 className="text-white font-bold mb-4 uppercase text-sm tracking-wider">Contact</h4>
                         <ul className="space-y-2">
-                            <li>123 Medical Center Dr.</li>
-                            <li>Suite 400</li>
-                            <li>Cityville, ST 12345</li>
-                            <li>contact@drHalder.com</li>
+                            <li>Jotekamal, Jangipur, Raghunathganj</li>
+                            <li>Murshidabad, 742213</li>
+                            <li>irakeshhalder@gmail.com</li>
                         </ul>
                     </div>
                 </div>
