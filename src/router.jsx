@@ -24,7 +24,7 @@ export default function Router() {
             <Route path="/tools/super" element={<SuperApp />} />
             <Route path="/tools/note" element={<Note />} />
             <Route path="/tools/ad-library" element={<AdLibrary />} />
-            <Route path="/dr" element={<DoctorLanding />} />
+            <Route path="/dr-rakesh-halder" element={<DoctorLanding />} />
             <Route path="*" element={<Dashboard />} />
         </Routes>
     );
