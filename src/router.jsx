@@ -7,6 +7,7 @@ import BlogPost from './pages/BlogPost';
 import Tools from './pages/Tools';
 import Note from './pages/Note';
 import AdLibrary from './pages/AdLibrary';
+import TokenUsage from './pages/TokenUsage';
 
 const SuperApp = React.lazy(() => import('./pages/SuperApp'));
 const Design = React.lazy(() => import('./pages/Design'));
@@ -24,6 +25,7 @@ export default function Router() {
             <Route path="/tools/super" element={<SuperApp />} />
             <Route path="/tools/note" element={<Note />} />
             <Route path="/tools/ad-library" element={<AdLibrary />} />
+            <Route path="/tools/token-usage" element={<TokenUsage />} />
             <Route path="/dr-rakesh-halder" element={<DoctorLanding />} />
             <Route path="*" element={<Dashboard />} />
         </Routes>
