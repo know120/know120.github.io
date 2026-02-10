@@ -20,6 +20,9 @@ export default function Tools() {
         <Button text="Ad Library"
           onClick={() => window.location.href = '/#/tools/ad-library'} />
 
+        <Button text="Token Usage"
+          onClick={() => window.location.href = '/#/tools/token-usage'} />
+
       </div>
     </div>
   )
