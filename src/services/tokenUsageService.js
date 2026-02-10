@@ -89,9 +89,32 @@ export const checkTokenUsage = async (provider, apiKey) => {
       })
     );
 
+    // Check if any request failed with an authentication error
+    const authErrors = results.filter(
+      r => r.status === 'rejected' && 
+      (r.reason.message.toLowerCase().includes('invalid') || 
+       r.reason.message.toLowerCase().includes('unauthorized') ||
+       r.reason.message.toLowerCase().includes('authentication') ||
+       r.reason.message.toLowerCase().includes('401') ||
+       r.reason.message.toLowerCase().includes('403'))
+    );
+    
+    // If any request failed due to authentication, throw the first error
+    if (authErrors.length > 0) {
+      throw authErrors[0].reason;
+    }
+
     const usageData = results[0].status === 'fulfilled' ? results[0].value : null;
     const billingData = results[1]?.status === 'fulfilled' ? results[1].value : null;
     const modelsData = results[2]?.status === 'fulfilled' ? results[2].value : null;
+    
+    // For providers with only 1 endpoint (Anthropic, Google), if it fails, throw the error
+    // For OpenAI (3 endpoints), we can proceed if at least the models endpoint succeeds
+    if (provider === 'anthropic' || provider === 'google') {
+      if (results[0].status === 'rejected') {
+        throw results[0].reason;
+      }
+    }
     
     // Format response based on provider
     switch (provider) {

@@ -202,6 +202,64 @@ const TokenUsage = () => {
               </p>
             </div>
 
+            {/* Status Information */}
+            {usageData.usage.status && (
+              <div className="mb-8 p-4 rounded-lg bg-green-500/10 border border-green-500/20">
+                <div className="flex items-center gap-2 text-green-400">
+                  <i className="pi pi-check-circle"></i>
+                  <span className="font-medium">Status: {usageData.usage.status}</span>
+                </div>
+                {usageData.usage.message && (
+                  <p className="text-sm text-slate-300 mt-2">{usageData.usage.message}</p>
+                )}
+              </div>
+            )}
+
+            {/* Models Information */}
+            {usageData.usage.models && (
+              <div className="glass-panel rounded-xl p-6 mb-8">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <i className="pi pi-list"></i>
+                  Available Models ({usageData.usage.total_models || usageData.usage.models.length})
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
+                  {usageData.usage.models.map((model, index) => (
+                    <div key={index} className="p-4 bg-slate-800/50 rounded-lg hover:bg-slate-800/70 transition-colors">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="font-medium text-slate-200 mb-1">
+                            {model.displayName || model.id}
+                          </div>
+                          <div className="text-xs text-slate-400 mb-2">
+                            {model.family && `${model.family} • ${model.type}`}
+                          </div>
+                          {model.description && (
+                            <div className="text-xs text-slate-500 line-clamp-2">
+                              {model.description}
+                            </div>
+                          )}
+                          {model.supportedGenerationMethods && (
+                            <div className="mt-2 flex flex-wrap gap-1">
+                              {model.supportedGenerationMethods.slice(0, 3).map((method, i) => (
+                                <span key={i} className="text-xs px-2 py-1 bg-slate-700/50 rounded text-slate-400">
+                                  {method}
+                                </span>
+                              ))}
+                              {model.supportedGenerationMethods.length > 3 && (
+                                <span className="text-xs px-2 py-1 bg-slate-700/50 rounded text-slate-400">
+                                  +{model.supportedGenerationMethods.length - 3}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Key Metrics Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <MetricCard
@@ -278,64 +336,6 @@ const TokenUsage = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <CostAnalysis modelAnalytics={usageData.usage.model_analytics} />
                 <RecentActivity modelAnalytics={usageData.usage.model_analytics} />
-              </div>
-            )}
-
-            {/* Models Information */}
-            {usageData.usage.models && (
-              <div className="glass-panel rounded-xl p-6">
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <i className="pi pi-list"></i>
-                  Available Models ({usageData.usage.total_models || usageData.usage.models.length})
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
-                  {usageData.usage.models.map((model, index) => (
-                    <div key={index} className="p-4 bg-slate-800/50 rounded-lg hover:bg-slate-800/70 transition-colors">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="font-medium text-slate-200 mb-1">
-                            {model.displayName || model.id}
-                          </div>
-                          <div className="text-xs text-slate-400 mb-2">
-                            {model.family && `${model.family} • ${model.type}`}
-                          </div>
-                          {model.description && (
-                            <div className="text-xs text-slate-500 line-clamp-2">
-                              {model.description}
-                            </div>
-                          )}
-                          {model.supportedGenerationMethods && (
-                            <div className="mt-2 flex flex-wrap gap-1">
-                              {model.supportedGenerationMethods.slice(0, 3).map((method, i) => (
-                                <span key={i} className="text-xs px-2 py-1 bg-slate-700/50 rounded text-slate-400">
-                                  {method}
-                                </span>
-                              ))}
-                              {model.supportedGenerationMethods.length > 3 && (
-                                <span className="text-xs px-2 py-1 bg-slate-700/50 rounded text-slate-400">
-                                  +{model.supportedGenerationMethods.length - 3}
-                                </span>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Status Information */}
-            {usageData.usage.status && (
-              <div className="mt-6 p-4 rounded-lg bg-green-500/10 border border-green-500/20">
-                <div className="flex items-center gap-2 text-green-400">
-                  <i className="pi pi-check-circle"></i>
-                  <span className="font-medium">Status: {usageData.usage.status}</span>
-                </div>
-                {usageData.usage.message && (
-                  <p className="text-sm text-slate-300 mt-2">{usageData.usage.message}</p>
-                )}
               </div>
             )}
           </div>
