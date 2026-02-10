@@ -342,9 +342,37 @@ const TokenUsage = () => {
         )}
 
         {submitStatus === 'error' && (
-          <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 flex items-center gap-3 animate-fade-in">
-            <i className="pi pi-exclamation-triangle text-xl"></i>
-            <span>{errors.apiError || 'Something went wrong. Please check your API key and try again.'}</span>
+          <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 animate-fade-in">
+            <div className="flex items-start gap-3">
+              <i className="pi pi-exclamation-triangle text-xl text-red-400 mt-0.5"></i>
+              <div className="flex-1">
+                {errors.apiError?.toLowerCase().includes('invalid') || errors.apiError?.toLowerCase().includes('unauthorized') || errors.apiError?.toLowerCase().includes('authentication') ? (
+                  <>
+                    <h4 className="font-semibold text-red-400 mb-1">Invalid API Key</h4>
+                    <p className="text-sm text-red-300/80 mb-2">
+                      The API key you provided is invalid or has been revoked.
+                    </p>
+                    <ul className="text-sm text-slate-400 list-disc list-inside space-y-1">
+                      <li>Double-check that you've copied the entire key correctly</li>
+                      <li>Verify the key hasn't expired or been deleted in your {formData.provider} dashboard</li>
+                      <li>Make sure you're using the correct provider for this key</li>
+                    </ul>
+                  </>
+                ) : errors.apiError?.toLowerCase().includes('network') || errors.apiError?.toLowerCase().includes('fetch') ? (
+                  <>
+                    <h4 className="font-semibold text-red-400 mb-1">Connection Error</h4>
+                    <p className="text-sm text-red-300/80">
+                      Unable to connect to {formData.provider}'s API. Please check your internet connection and try again.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h4 className="font-semibold text-red-400 mb-1">Error</h4>
+                    <p className="text-sm text-red-300/80">{errors.apiError || 'Something went wrong. Please check your API key and try again.'}</p>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
         )}
 

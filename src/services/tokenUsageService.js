@@ -71,7 +71,18 @@ export const checkTokenUsage = async (provider, apiKey) => {
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
-          throw new Error(errorData.error?.message || `HTTP ${response.status}: ${response.statusText}`);
+          let errorMessage = errorData.error?.message || errorData.error?.code || `${response.statusText}`;
+          
+          // Provide clearer messages for common errors
+          if (response.status === 401) {
+            errorMessage = 'Invalid API key. Please check your key and try again.';
+          } else if (response.status === 429) {
+            errorMessage = 'Rate limit exceeded. Please wait a moment and try again.';
+          } else if (response.status >= 500) {
+            errorMessage = `${provider} server error. Please try again later.`;
+          }
+          
+          throw new Error(errorMessage);
         }
 
         return response.json();
@@ -193,6 +204,13 @@ export const checkTokenUsage = async (provider, apiKey) => {
         return { provider, usage: usageData };
     }
   } catch (error) {
+    // If it's already a user-friendly error message, don't wrap it
+    const userFriendlyMessages = ['invalid', 'unauthorized', 'rate limit', 'server error'];
+    const isUserFriendly = userFriendlyMessages.some(msg => error.message.toLowerCase().includes(msg));
+    
+    if (isUserFriendly) {
+      throw error;
+    }
     throw new Error(`Failed to check ${provider} usage: ${error.message}`);
   }
 };
