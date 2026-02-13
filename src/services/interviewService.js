@@ -1,4 +1,4 @@
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
 const techStackPrompts = {
   javascript: 'JavaScript fundamentals, ES6+, async/await, closures, prototypes, event loop',
@@ -83,34 +83,34 @@ Important: Return ONLY the JSON array, no markdown formatting, no explanation te
     }
 
     const data = await response.json();
-    
+
     if (!data.candidates || !data.candidates[0]?.content?.parts[0]?.text) {
       throw new Error('Invalid response from Gemini API');
     }
 
     const text = data.candidates[0].content.parts[0].text;
-    
+
     // Try to extract JSON from the response
     let jsonStr = text;
-    
+
     // Remove markdown code blocks if present
     if (text.includes('```json')) {
       jsonStr = text.replace(/```json\n?/g, '').replace(/```\n?/g, '');
     } else if (text.includes('```')) {
       jsonStr = text.replace(/```\n?/g, '');
     }
-    
+
     // Trim whitespace
     jsonStr = jsonStr.trim();
-    
+
     try {
       const questions = JSON.parse(jsonStr);
-      
+
       // Validate and ensure proper structure
       if (!Array.isArray(questions)) {
         throw new Error('Response is not an array');
       }
-      
+
       return questions.map((q, idx) => ({
         techStack: q.techStack || techStack[idx % techStack.length],
         question: q.question || 'Question generation failed',
@@ -122,18 +122,18 @@ Important: Return ONLY the JSON array, no markdown formatting, no explanation te
     } catch (parseError) {
       console.error('JSON parse error:', parseError);
       console.error('Response text:', text);
-      
+
       // Fallback: create basic questions if parsing fails
       return createFallbackQuestions(techStack, questionCount, difficulty, difficultyConfig);
     }
   } catch (error) {
     console.error('Error generating questions:', error);
-    
+
     // If API fails, create fallback questions
     if (error.message.includes('API key') || error.message.includes('quota')) {
       throw error;
     }
-    
+
     return createFallbackQuestions(techStack, questionCount, difficulty, difficultyConfig);
   }
 };
@@ -189,7 +189,7 @@ const createFallbackQuestions = (techStack, count, difficulty, difficultyConfig)
     const stack = techStack[i % techStack.length];
     const stackQuestions = baseQuestions[stack] || baseQuestions.javascript;
     const question = stackQuestions[i % stackQuestions.length];
-    
+
     questions.push({
       techStack: stack,
       question: `[${difficulty.toUpperCase()}] ${question}`,
@@ -265,29 +265,29 @@ Important: Return ONLY the JSON object, no markdown formatting, no explanation t
     }
 
     const data = await response.json();
-    
+
     if (!data.candidates || !data.candidates[0]?.content?.parts[0]?.text) {
       throw new Error('Invalid response from Gemini API');
     }
 
     const text = data.candidates[0].content.parts[0].text;
-    
+
     // Try to extract JSON from the response
     let jsonStr = text;
-    
+
     // Remove markdown code blocks if present
     if (text.includes('```json')) {
       jsonStr = text.replace(/```json\n?/g, '').replace(/```\n?/g, '');
     } else if (text.includes('```')) {
       jsonStr = text.replace(/```\n?/g, '');
     }
-    
+
     // Trim whitespace
     jsonStr = jsonStr.trim();
-    
+
     try {
       const evaluation = JSON.parse(jsonStr);
-      
+
       // Validate and ensure proper structure
       return {
         score: Math.max(0, Math.min(10, parseFloat(evaluation.score) || 0)),
@@ -298,7 +298,7 @@ Important: Return ONLY the JSON object, no markdown formatting, no explanation t
     } catch (parseError) {
       console.error('JSON parse error:', parseError);
       console.error('Response text:', text);
-      
+
       // Fallback evaluation
       return createFallbackEvaluation(answer);
     }
@@ -310,7 +310,7 @@ Important: Return ONLY the JSON object, no markdown formatting, no explanation t
 
 const createFallbackEvaluation = (answer) => {
   const answerLength = answer.trim().length;
-  
+
   if (answerLength < 50) {
     return {
       score: 3,
