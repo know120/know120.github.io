@@ -23,6 +23,9 @@ export default function Tools() {
         <Button text="Token Usage"
           onClick={() => window.location.href = '/#/tools/token-usage'} />
 
+        <Button text="AI Interview"
+          onClick={() => window.location.href = '/#/tools/ai-interview'} />
+
       </div>
     </div>
   )
