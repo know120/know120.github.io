@@ -7,6 +7,7 @@ import {
   generateInterviewLink 
 } from '../services/interviewStorage';
 import { generateInterviewQuestions } from '../services/interviewService';
+import ExportModal from '../components/ExportModal';
 
 const TECH_STACKS = [
   { id: 'javascript', name: 'JavaScript', icon: 'pi-bolt' },
@@ -33,6 +34,8 @@ const AdminInterview = () => {
   const [generatedLink, setGeneratedLink] = useState(null);
   const [errors, setErrors] = useState({});
   const [expandedSession, setExpandedSession] = useState(null);
+  const [exportModalOpen, setExportModalOpen] = useState(false);
+  const [exportSession, setExportSession] = useState(null);
   
   const [formData, setFormData] = useState({
     candidateName: '',
@@ -532,26 +535,13 @@ const AdminInterview = () => {
                         
                         <button
                           onClick={() => {
-                            const reportData = {
-                              ...session.result,
-                              candidateName: session.candidateName,
-                              candidateEmail: session.candidateEmail,
-                              techStack: session.techStack,
-                              difficulty: session.difficulty,
-                              completedAt: session.completedAt
-                            };
-                            const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
-                            const url = URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = url;
-                            a.download = `interview-report-${session.candidateName}-${Date.now()}.json`;
-                            a.click();
-                            URL.revokeObjectURL(url);
+                            setExportSession(session);
+                            setExportModalOpen(true);
                           }}
                           className="w-full py-2 rounded-lg text-sm font-medium text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 transition-all flex items-center justify-center gap-2"
                         >
                           <i className="pi pi-download"></i>
-                          Download Full Report
+                          Export Report
                         </button>
                       </div>
                     )}
@@ -621,6 +611,15 @@ const AdminInterview = () => {
           </div>
         </div>
       </div>
+      
+      <ExportModal
+        isOpen={exportModalOpen}
+        onClose={() => {
+          setExportModalOpen(false);
+          setExportSession(null);
+        }}
+        session={exportSession}
+      />
     </div>
   );
 };
