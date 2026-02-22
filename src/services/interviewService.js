@@ -24,12 +24,23 @@ const difficultySettings = {
   expert: { complexity: 'architecture decisions, trade-offs, and advanced optimization', timeLimit: 15 }
 };
 
-export const generateInterviewQuestions = async ({ techStack, questionCount, difficulty, apiKey }) => {
+export const generateInterviewQuestions = async ({ techStack, questionCount, difficulty, apiKey, customTechStacks = [] }) => {
   if (!apiKey) {
     throw new Error('API key is required');
   }
 
-  const stackDescriptions = techStack.map(stack => techStackPrompts[stack]).join('; ');
+  const allTechStackPrompts = { ...techStackPrompts };
+  customTechStacks.forEach(stack => {
+    allTechStackPrompts[stack.id] = stack.prompt || stack.name;
+  });
+
+  const stackDescriptions = techStack.map(stackId => {
+    if (stackId.startsWith('custom_')) {
+      const customStack = customTechStacks.find(s => s.id === stackId);
+      return customStack ? (customStack.prompt || customStack.name) : stackId;
+    }
+    return allTechStackPrompts[stackId] || stackId;
+  }).join('; ');
   const difficultyConfig = difficultySettings[difficulty];
 
   const prompt = `Generate ${questionCount} technical interview questions for the following tech stacks: ${stackDescriptions}.

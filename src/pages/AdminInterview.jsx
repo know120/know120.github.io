@@ -8,8 +8,9 @@ import {
 } from '../services/interviewStorage';
 import { generateInterviewQuestions } from '../services/interviewService';
 import ExportModal from '../components/ExportModal';
+import AddTechStackModal from '../components/AddTechStackModal';
 
-const TECH_STACKS = [
+const DEFAULT_TECH_STACKS = [
   { id: 'javascript', name: 'JavaScript', icon: 'pi-bolt' },
   { id: 'typescript', name: 'TypeScript', icon: 'pi-file-edit' },
   { id: 'react', name: 'React', icon: 'pi-refresh' },
@@ -36,6 +37,8 @@ const AdminInterview = () => {
   const [expandedSession, setExpandedSession] = useState(null);
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const [exportSession, setExportSession] = useState(null);
+  const [customTechStacks, setCustomTechStacks] = useState([]);
+  const [showAddTechStack, setShowAddTechStack] = useState(false);
   
   const [formData, setFormData] = useState({
     candidateName: '',
@@ -54,7 +57,17 @@ const AdminInterview = () => {
     if (savedApiKey) {
       setFormData(prev => ({ ...prev, apiKey: savedApiKey }));
     }
+    const savedCustomStacks = localStorage.getItem('aiInterview_customTechStacks');
+    if (savedCustomStacks) {
+      setCustomTechStacks(JSON.parse(savedCustomStacks));
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('aiInterview_customTechStacks', JSON.stringify(customTechStacks));
+  }, [customTechStacks]);
+
+  const TECH_STACKS = [...DEFAULT_TECH_STACKS, ...customTechStacks];
 
   const loadSessions = () => {
     const allSessions = getAllSessions();
@@ -109,7 +122,8 @@ const AdminInterview = () => {
         techStack: formData.techStack,
         questionCount: formData.questionCount,
         difficulty: formData.difficulty,
-        apiKey: formData.apiKey
+        apiKey: formData.apiKey,
+        customTechStacks: customTechStacks
       });
 
       const session = saveInterviewSession({
@@ -120,7 +134,8 @@ const AdminInterview = () => {
         difficulty: formData.difficulty,
         timeLimit: formData.timeLimit,
         notes: formData.notes,
-        questions: questions
+        questions: questions,
+        customTechStacks: customTechStacks
       });
 
       const link = generateInterviewLink(session.id);
@@ -221,9 +236,18 @@ const AdminInterview = () => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-3">
-          Select Tech Stack <span className="text-red-400">*</span>
-        </label>
+        <div className="flex items-center justify-between mb-3">
+          <label className="block text-sm font-medium text-slate-300">
+            Select Tech Stack <span className="text-red-400">*</span>
+          </label>
+          <button
+            onClick={() => setShowAddTechStack(true)}
+            className="px-3 py-1.5 rounded-lg text-sm font-medium text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 transition-all flex items-center gap-1"
+          >
+            <i className="pi pi-plus"></i>
+            Add Custom
+          </button>
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
           {TECH_STACKS.map(stack => (
             <button
@@ -619,6 +643,14 @@ const AdminInterview = () => {
           setExportSession(null);
         }}
         session={exportSession}
+      />
+
+      <AddTechStackModal
+        isOpen={showAddTechStack}
+        onClose={() => setShowAddTechStack(false)}
+        customTechStacks={customTechStacks}
+        onAddStack={(newStack) => setCustomTechStacks(prev => [...prev, newStack])}
+        onDeleteStack={(stackId) => setCustomTechStacks(prev => prev.filter(s => s.id !== stackId))}
       />
     </div>
   );
