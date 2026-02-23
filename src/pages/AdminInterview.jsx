@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  saveInterviewSession, 
-  getAllSessions, 
-  deleteSession, 
+import {
+  saveInterviewSession,
+  getAllSessions,
+  deleteSession,
   clearAllSessions,
-  generateInterviewLink 
+  generateInterviewLink
 } from '../services/interviewStorage';
 import { generateInterviewQuestions } from '../services/interviewService';
 import ExportModal from '../components/ExportModal';
+import AddTechStackModal from '../components/AddTechStackModal';
 
-const TECH_STACKS = [
+const DEFAULT_TECH_STACKS = [
   { id: 'javascript', name: 'JavaScript', icon: 'pi-bolt' },
   { id: 'typescript', name: 'TypeScript', icon: 'pi-file-edit' },
   { id: 'react', name: 'React', icon: 'pi-refresh' },
@@ -36,7 +37,9 @@ const AdminInterview = () => {
   const [expandedSession, setExpandedSession] = useState(null);
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const [exportSession, setExportSession] = useState(null);
-  
+  const [customTechStacks, setCustomTechStacks] = useState([]);
+  const [showAddTechStack, setShowAddTechStack] = useState(false);
+
   const [formData, setFormData] = useState({
     candidateName: '',
     candidateEmail: '',
@@ -54,7 +57,17 @@ const AdminInterview = () => {
     if (savedApiKey) {
       setFormData(prev => ({ ...prev, apiKey: savedApiKey }));
     }
+    const savedCustomStacks = localStorage.getItem('aiInterview_customTechStacks');
+    if (savedCustomStacks) {
+      setCustomTechStacks(JSON.parse(savedCustomStacks));
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('aiInterview_customTechStacks', JSON.stringify(customTechStacks));
+  }, [customTechStacks]);
+
+  const TECH_STACKS = [...DEFAULT_TECH_STACKS, ...customTechStacks];
 
   const loadSessions = () => {
     const allSessions = getAllSessions();
@@ -104,12 +117,13 @@ const AdminInterview = () => {
 
     try {
       localStorage.setItem('aiInterview_adminApiKey', formData.apiKey);
-      
+
       const questions = await generateInterviewQuestions({
         techStack: formData.techStack,
         questionCount: formData.questionCount,
         difficulty: formData.difficulty,
-        apiKey: formData.apiKey
+        apiKey: formData.apiKey,
+        customTechStacks: customTechStacks
       });
 
       const session = saveInterviewSession({
@@ -120,7 +134,8 @@ const AdminInterview = () => {
         difficulty: formData.difficulty,
         timeLimit: formData.timeLimit,
         notes: formData.notes,
-        questions: questions
+        questions: questions,
+        customTechStacks: customTechStacks
       });
 
       const link = generateInterviewLink(session.id);
@@ -131,7 +146,7 @@ const AdminInterview = () => {
       });
 
       loadSessions();
-      
+
       setFormData({
         candidateName: '',
         candidateEmail: '',
@@ -221,19 +236,27 @@ const AdminInterview = () => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-3">
-          Select Tech Stack <span className="text-red-400">*</span>
-        </label>
+        <div className="flex items-center justify-between mb-3">
+          <label className="block text-sm font-medium text-slate-300">
+            Select Tech Stack <span className="text-red-400">*</span>
+          </label>
+          <button
+            onClick={() => setShowAddTechStack(true)}
+            className="px-3 py-1.5 rounded-lg text-sm font-medium text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 transition-all flex items-center gap-1"
+          >
+            <i className="pi pi-plus"></i>
+            Add Custom
+          </button>
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
           {TECH_STACKS.map(stack => (
             <button
               key={stack.id}
               onClick={() => handleTechStackToggle(stack.id)}
-              className={`p-3 rounded-lg border transition-all text-sm font-medium ${
-                formData.techStack.includes(stack.id)
+              className={`p-3 rounded-lg border transition-all text-sm font-medium ${formData.techStack.includes(stack.id)
                   ? 'bg-indigo-600 border-indigo-500 text-white'
                   : 'bg-slate-900/50 border-slate-700 text-slate-300 hover:border-slate-600'
-              }`}
+                }`}
             >
               <i className={`pi ${stack.icon} block mb-1`}></i>
               {stack.name}
@@ -341,11 +364,10 @@ const AdminInterview = () => {
       <button
         onClick={handleCreateInterview}
         disabled={isGenerating}
-        className={`w-full py-4 rounded-lg font-bold text-white transition-all ${
-          isGenerating
+        className={`w-full py-4 rounded-lg font-bold text-white transition-all ${isGenerating
             ? 'bg-indigo-600/50 cursor-not-allowed'
             : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-lg hover:scale-[1.02]'
-        }`}
+          }`}
       >
         {isGenerating ? (
           <div className="flex items-center justify-center gap-2">
@@ -532,7 +554,7 @@ const AdminInterview = () => {
                             </div>
                           </div>
                         </div>
-                        
+
                         <button
                           onClick={() => {
                             setExportSession(session);
@@ -570,22 +592,20 @@ const AdminInterview = () => {
           <div className="flex gap-4 mb-8 border-b border-slate-700">
             <button
               onClick={() => setActiveTab('create')}
-              className={`pb-4 px-4 font-medium transition-all ${
-                activeTab === 'create'
+              className={`pb-4 px-4 font-medium transition-all ${activeTab === 'create'
                   ? 'text-indigo-400 border-b-2 border-indigo-500'
                   : 'text-slate-400 hover:text-white'
-              }`}
+                }`}
             >
               <i className="pi pi-plus mr-2"></i>
               Create Interview
             </button>
             <button
               onClick={() => setActiveTab('manage')}
-              className={`pb-4 px-4 font-medium transition-all ${
-                activeTab === 'manage'
+              className={`pb-4 px-4 font-medium transition-all ${activeTab === 'manage'
                   ? 'text-indigo-400 border-b-2 border-indigo-500'
                   : 'text-slate-400 hover:text-white'
-              }`}
+                }`}
             >
               <i className="pi pi-list mr-2"></i>
               Manage Sessions
@@ -611,7 +631,7 @@ const AdminInterview = () => {
           </div>
         </div>
       </div>
-      
+
       <ExportModal
         isOpen={exportModalOpen}
         onClose={() => {
@@ -619,6 +639,14 @@ const AdminInterview = () => {
           setExportSession(null);
         }}
         session={exportSession}
+      />
+
+      <AddTechStackModal
+        isOpen={showAddTechStack}
+        onClose={() => setShowAddTechStack(false)}
+        customTechStacks={customTechStacks}
+        onAddStack={(newStack) => setCustomTechStacks(prev => [...prev, newStack])}
+        onDeleteStack={(stackId) => setCustomTechStacks(prev => prev.filter(s => s.id !== stackId))}
       />
     </div>
   );

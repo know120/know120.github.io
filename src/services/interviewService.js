@@ -24,12 +24,23 @@ const difficultySettings = {
   expert: { complexity: 'architecture decisions, trade-offs, and advanced optimization', timeLimit: 15 }
 };
 
-export const generateInterviewQuestions = async ({ techStack, questionCount, difficulty, apiKey }) => {
+export const generateInterviewQuestions = async ({ techStack, questionCount, difficulty, apiKey, customTechStacks = [] }) => {
   if (!apiKey) {
     throw new Error('API key is required');
   }
 
-  const stackDescriptions = techStack.map(stack => techStackPrompts[stack]).join('; ');
+  const allTechStackPrompts = { ...techStackPrompts };
+  customTechStacks.forEach(stack => {
+    allTechStackPrompts[stack.id] = stack.prompt || stack.name;
+  });
+
+  const stackDescriptions = techStack.map(stackId => {
+    if (stackId.startsWith('custom_')) {
+      const customStack = customTechStacks.find(s => s.id === stackId);
+      return customStack ? (customStack.prompt || customStack.name) : stackId;
+    }
+    return allTechStackPrompts[stackId] || stackId;
+  }).join('; ');
   const difficultyConfig = difficultySettings[difficulty];
 
   const prompt = `Generate ${questionCount} technical interview questions for the following tech stacks: ${stackDescriptions}.
@@ -42,6 +53,8 @@ Requirements:
 3. For coding questions, include relevant code snippets
 4. Questions should test both knowledge and problem-solving skills
 5. Assign appropriate time limits based on complexity
+6. Mark questions as voiceEnabled: true for questions that are better answered verbally (conceptual, explaining, describing), and voiceEnabled: false for coding questions where text answer is preferred
+7. About 40-50% of questions should be voiceEnabled: true
 
 Format the response as a JSON array with this structure:
 [
@@ -51,7 +64,8 @@ Format the response as a JSON array with this structure:
     "code": "optional code snippet if applicable (null if not needed)",
     "difficulty": "${difficulty}",
     "timeLimit": ${difficultyConfig.timeLimit},
-    "type": "theoretical|coding|scenario"
+    "type": "theoretical|coding|scenario",
+    "voiceEnabled": true|false
   }
 ]
 
@@ -117,7 +131,8 @@ Important: Return ONLY the JSON array, no markdown formatting, no explanation te
         code: q.code || null,
         difficulty: q.difficulty || difficulty,
         timeLimit: q.timeLimit || difficultyConfig.timeLimit,
-        type: q.type || 'theoretical'
+        type: q.type || 'theoretical',
+        voiceEnabled: q.voiceEnabled === true
       }));
     } catch (parseError) {
       console.error('JSON parse error:', parseError);
@@ -196,7 +211,8 @@ const createFallbackQuestions = (techStack, count, difficulty, difficultyConfig)
       code: null,
       difficulty: difficulty,
       timeLimit: difficultyConfig.timeLimit,
-      type: 'theoretical'
+      type: 'theoretical',
+      voiceEnabled: true
     });
   }
 
