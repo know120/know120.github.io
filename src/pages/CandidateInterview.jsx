@@ -18,6 +18,11 @@ const CandidateInterview = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [interviewTime, setInterviewTime] = useState(0);
   const [totalTimeRemaining, setTotalTimeRemaining] = useState(0);
+  const [isRecording, setIsRecording] = useState(false);
+  const [inputMode, setInputMode] = useState('text');
+  const [recognition, setRecognition] = useState(null);
+  const [transcript, setTranscript] = useState('');
+  const [isSpeechSupported, setIsSpeechSupported] = useState(true);
   
   const timerRef = useRef(null);
   const interviewTimerRef = useRef(null);
@@ -45,6 +50,61 @@ const CandidateInterview = () => {
 
     loadSession();
   }, [interviewId]);
+
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (SpeechRecognition) {
+      const recognitionInstance = new SpeechRecognition();
+      recognitionInstance.continuous = true;
+      recognitionInstance.interimResults = true;
+      recognitionInstance.lang = 'en-US';
+      
+      recognitionInstance.onresult = (event) => {
+        let interimTranscript = '';
+        let finalTranscript = '';
+        
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcriptPiece = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcriptPiece + ' ';
+          } else {
+            interimTranscript += transcriptPiece;
+          }
+        }
+        
+        if (finalTranscript) {
+          setTranscript(prev => prev + finalTranscript);
+          handleAnswerChange((answers[currentQuestionIndex] || '') + finalTranscript);
+        }
+      };
+      
+      recognitionInstance.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        setIsRecording(false);
+      };
+      
+      recognitionInstance.onend = () => {
+        setIsRecording(false);
+      };
+      
+      setRecognition(recognitionInstance);
+    } else {
+      setIsSpeechSupported(false);
+    }
+  }, [currentQuestionIndex]);
+
+  useEffect(() => {
+    if (!session || !session.questions || !session.questions[currentQuestionIndex]) return;
+    
+    const currentQuestion = session.questions[currentQuestionIndex];
+    
+    if (currentQuestion.voiceEnabled === true && isSpeechSupported) {
+      setInputMode('voice');
+    } else {
+      setInputMode('text');
+    }
+  }, [currentQuestionIndex, session, isSpeechSupported]);
 
   useEffect(() => {
     if (currentStep === 'interview' && session) {
@@ -94,6 +154,32 @@ const CandidateInterview = () => {
       ...prev,
       [currentQuestionIndex]: value
     }));
+  };
+
+  const startRecording = () => {
+    if (recognition && !isRecording) {
+      setTranscript('');
+      recognition.start();
+      setIsRecording(true);
+    }
+  };
+
+  const stopRecording = () => {
+    if (recognition && isRecording) {
+      recognition.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const toggleInputMode = () => {
+    if (inputMode === 'text') {
+      setInputMode('voice');
+    } else {
+      setInputMode('text');
+      if (isRecording) {
+        stopRecording();
+      }
+    }
   };
 
   const handleNextQuestion = async () => {
@@ -247,6 +333,7 @@ const CandidateInterview = () => {
                       <li>Your answers will be evaluated by AI</li>
                       <li>You can navigate between questions</li>
                       <li>Make sure you have a stable internet connection</li>
+                      <li>Voice input works best in Chrome desktop browser</li>
                     </ul>
                   </div>
                 </div>
@@ -316,7 +403,15 @@ const CandidateInterview = () => {
                   <i className="pi pi-question-circle text-white"></i>
                 </div>
                 <div className="flex-1">
-                  <span className="text-xs text-slate-500 uppercase tracking-wider">{currentQuestion.type}</span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-xs text-slate-500 uppercase tracking-wider">{currentQuestion.type}</span>
+                    {currentQuestion.voiceEnabled && (
+                      <span className="px-2 py-0.5 rounded-full bg-purple-600/20 text-purple-400 text-xs flex items-center gap-1">
+                        <i className="pi pi-microphone"></i>
+                        Voice
+                      </span>
+                    )}
+                  </div>
                   <h3 className="text-lg text-white font-medium leading-relaxed mt-1">
                     {currentQuestion.question}
                   </h3>
@@ -330,16 +425,70 @@ const CandidateInterview = () => {
             </div>
 
             <div className="mb-6">
-              <label className="block text-sm font-medium text-slate-300 mb-2">
-                Your Answer
-              </label>
-              <textarea
-                value={answers[currentQuestionIndex] || ''}
-                onChange={(e) => handleAnswerChange(e.target.value)}
-                placeholder="Type your answer here..."
-                rows={8}
-                className="w-full px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none"
-              />
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-sm font-medium text-slate-300">
+                  Your Answer
+                </label>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-500">Input Mode:</span>
+                  <button
+                    onClick={toggleInputMode}
+                    disabled={!isSpeechSupported}
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-all flex items-center gap-1 ${
+                      inputMode === 'voice'
+                        ? 'bg-purple-600 text-white'
+                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    } ${!isSpeechSupported ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    <i className={`pi ${inputMode === 'voice' ? 'pi-microphone' : 'pi-pencil'}`}></i>
+                    {inputMode === 'voice' ? 'Voice' : 'Text'}
+                  </button>
+                </div>
+              </div>
+              
+              {inputMode === 'voice' ? (
+                <div className="space-y-3">
+                  <div className="p-4 rounded-lg bg-slate-900/50 border border-slate-700 text-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <button
+                        onClick={isRecording ? stopRecording : startRecording}
+                        className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
+                          isRecording
+                            ? 'bg-red-600 hover:bg-red-500 animate-pulse'
+                            : 'bg-purple-600 hover:bg-purple-500'
+                        }`}
+                      >
+                        <i className={`pi ${isRecording ? 'pi-stop' : 'pi-microphone'} text-xl text-white`}></i>
+                      </button>
+                      <div>
+                        <p className="text-white font-medium">
+                          {isRecording ? 'Recording... Click to stop' : 'Click to start recording'}
+                        </p>
+                        <p className="text-sm text-slate-400 mt-1">
+                          Speak clearly and click stop when done
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <textarea
+                    value={answers[currentQuestionIndex] || ''}
+                    onChange={(e) => handleAnswerChange(e.target.value)}
+                    placeholder="Your answer will appear here as you speak..."
+                    rows={6}
+                    className="w-full px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-purple-500 resize-none"
+                  />
+                </div>
+              ) : (
+                <textarea
+                  value={answers[currentQuestionIndex] || ''}
+                  onChange={(e) => handleAnswerChange(e.target.value)}
+                  placeholder="Type your answer here..."
+                  rows={8}
+                  className="w-full px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none"
+                />
+              )}
+              
               <div className="flex justify-between mt-2 text-sm text-slate-400">
                 <span>{(answers[currentQuestionIndex] || '').length} characters</span>
                 <span className="capitalize">{currentQuestion.difficulty}</span>
