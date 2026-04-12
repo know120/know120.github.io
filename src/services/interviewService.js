@@ -1,4 +1,5 @@
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+const getGeminiUrl = (model = 'gemini-2.5-flash') => `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+const MODELS_LIST_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
 
 const techStackPrompts = {
   javascript: 'JavaScript fundamentals, ES6+, async/await, closures, prototypes, event loop',
@@ -24,7 +25,32 @@ const difficultySettings = {
   expert: { complexity: 'architecture decisions, trade-offs, and advanced optimization', timeLimit: 15 }
 };
 
-export const generateInterviewQuestions = async ({ techStack, questionCount, difficulty, apiKey, customTechStacks = [] }) => {
+export const fetchAvailableModels = async (apiKey) => {
+  if (!apiKey) return [];
+  
+  try {
+    const response = await fetch(`${MODELS_LIST_URL}?key=${apiKey}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch available models');
+    }
+    const data = await response.json();
+    
+    if (!data.models) return [];
+    
+    return data.models
+      .filter(model => model.name.startsWith('models/gemini'))
+      .map(model => ({
+        id: model.name.replace('models/', ''),
+        name: model.displayName || model.name.replace('models/', ''),
+        description: model.description
+      }));
+  } catch (error) {
+    console.error('Error fetching models:', error);
+    throw error;
+  }
+};
+
+export const generateInterviewQuestions = async ({ techStack, questionCount, difficulty, apiKey, customTechStacks = [], model = 'gemini-2.5-flash', company = '' }) => {
   if (!apiKey) {
     throw new Error('API key is required');
   }
@@ -43,9 +69,10 @@ export const generateInterviewQuestions = async ({ techStack, questionCount, dif
   }).join('; ');
   const difficultyConfig = difficultySettings[difficulty];
 
-  const prompt = `Generate ${questionCount} technical interview questions for the following tech stacks: ${stackDescriptions}.
-
+   const prompt = `Generate ${questionCount} technical interview questions for the following tech stacks: ${stackDescriptions}.
+${company ? `Target Company: ${company} - Please align the questions with the interview style and expectations of ${company}.` : ''}
 Difficulty level: ${difficulty} - focus on ${difficultyConfig.complexity}
+
 
 Requirements:
 1. Each question should be clear and specific
@@ -71,9 +98,10 @@ Format the response as a JSON array with this structure:
 
 Important: Return ONLY the JSON array, no markdown formatting, no explanation text.`;
 
-  try {
-    const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
-      method: 'POST',
+    try {
+      const response = await fetch(`${getGeminiUrl(model)}?key=${apiKey}`, {
+        method: 'POST',
+
       headers: {
         'Content-Type': 'application/json',
       },
@@ -258,9 +286,10 @@ Format your response as JSON with this exact structure:
 
 Important: Return ONLY the JSON object, no markdown formatting, no explanation text before or after.`;
 
-  try {
-    const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
-      method: 'POST',
+    try {
+      const response = await fetch(`${getGeminiUrl(model)}?key=${apiKey}`, {
+        method: 'POST',
+
       headers: {
         'Content-Type': 'application/json',
       },
