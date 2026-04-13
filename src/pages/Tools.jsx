@@ -27,6 +27,8 @@ export default function Tools() {
           onClick={() => window.location.href = '/#/tools/ai-interview'} />
         <Button text="Interview Practice"
           onClick={() => window.location.href = '/#/tools/interview-practice'} />
+        <Button text="DB Migration"
+          onClick={() => window.location.href = '/#/tools/db-migration'} />
 
       </div>
     </div>
