@@ -1,7 +1,13 @@
 const INTERVIEW_STORAGE_KEY = 'aiInterview_sessions';
 
+const generateSecureRandomSuffix = (length = 9) => {
+  const bytes = new Uint8Array(length);
+  window.crypto.getRandomValues(bytes);
+  return Array.from(bytes, (byte) => (byte % 36).toString(36)).join('');
+};
+
 export const generateInterviewId = () => {
-  return 'int_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 9);
+  return 'int_' + Date.now().toString(36) + '_' + generateSecureRandomSuffix(9);
 };
 
 export const generateInterviewLink = (interviewId) => {
