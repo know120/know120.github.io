@@ -14,25 +14,21 @@ const TokenUsage = () => {
   const [showApiKey, setShowApiKey] = useState(false);
 
   useEffect(() => {
-    const savedApiKey = localStorage.getItem('tokenUsage_apiKey');
     const savedProvider = localStorage.getItem('tokenUsage_provider');
 
-    if (savedApiKey || savedProvider) {
+    if (savedProvider) {
       setFormData(prev => ({
-        apiKey: savedApiKey || '',
+        apiKey: '',
         provider: savedProvider || 'openai'
       }));
     }
   }, []);
 
   useEffect(() => {
-    if (formData.apiKey) {
-      localStorage.setItem('tokenUsage_apiKey', formData.apiKey);
-    }
     if (formData.provider) {
       localStorage.setItem('tokenUsage_provider', formData.provider);
     }
-  }, [formData]);
+  }, [formData.provider]);
 
   const validateForm = () => {
     const newErrors = {};
