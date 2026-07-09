@@ -79,6 +79,34 @@
   font-size: 0.875rem;
 }
 
+.toolbar-btn strong,
+.toolbar-btn em {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.toolbar-btn em {
+  font-style: italic;
+  font-family: 'Georgia', serif;
+}
+
+.toolbar-btn-redo i {
+  transform: scaleX(-1);
+}
+
+.toolbar-btn-save {
+  width: auto !important;
+  padding: 0 0.75rem;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.toolbar-btn-save i {
+  font-size: 0.8rem;
+}
+
 /* Save status styles */
 .save-status {
   display: flex;
@@ -150,9 +178,10 @@
 .toolbar-btn::after {
   content: attr(title);
   position: absolute;
-  bottom: -35px;
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
+  margin-top: 6px;
   background: rgba(0, 0, 0, 0.9);
   color: white;
   padding: 0.25rem 0.5rem;

@@ -493,8 +493,7 @@ function ApiForm({ label, form, setForm, updateForm, handleRowChange, addRow, re
 
       <div className="flex gap-3">
         <div className="flex-1">
-          <label className="block text-xs font-medium text-slate-400 mb-1.5">URL <span className="text-slate-600">(use {'{'}
-            {'{id}'}'} as placeholder)</span></label>
+          <label className="block text-xs font-medium text-slate-400 mb-1.5">URL <span className="text-slate-600">(use {'{{id}}'} as placeholder)</span></label>
           <input
             value={form.url}
             onChange={(e) => updateForm(setForm, 'url', e.target.value)}

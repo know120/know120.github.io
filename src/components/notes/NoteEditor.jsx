@@ -609,8 +609,8 @@ const NoteEditor = ({ note, onSave, onBack }) => {
             onClick={handleBack}
             title="Back to notes list"
           >
-            <i className="pi pi-arrow-left me-2"></i>
-            {/* Back */}
+            <i className="pi pi-arrow-left"></i>
+            Back
           </button>
         </div>
       </div>

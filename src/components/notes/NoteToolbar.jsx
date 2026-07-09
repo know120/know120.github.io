@@ -67,7 +67,8 @@ const NoteToolbar = ({
                   onClick={onManualSave}
                   title="Try saving manually"
                 >
-                  <i className="pi pi-refresh">Save</i>
+                  <i className="pi pi-refresh"></i>
+                  <span>Save</span>
                 </button>
               )}
               {onResetSaveStatus && (
@@ -105,7 +106,7 @@ const NoteToolbar = ({
             title="Bold (Ctrl+B)"
             type="button"
           >
-            <i className="pi pi-bold">B</i>
+            <strong>B</strong>
           </button>
           <button
             className="toolbar-btn"
@@ -113,7 +114,7 @@ const NoteToolbar = ({
             title="Italic (Ctrl+I)"
             type="button"
           >
-            <i className="pi pi-italic">i</i>
+            <em>I</em>
           </button>
         </div>
 
@@ -189,24 +190,25 @@ const NoteToolbar = ({
             <i className="pi pi-undo"></i>
           </button>
           <button
-            className="toolbar-btn"
+            className="toolbar-btn toolbar-btn-redo"
             onClick={onRedo}
             disabled={!canRedo}
             title="Redo (Ctrl+Y)"
             type="button"
           >
-            <i className="pi pi-redo"></i>
+            <i className="pi pi-undo"></i>
           </button>
         </div>
 
         <div className="toolbar-group">
           <button
-            className="toolbar-btn"
+            className="toolbar-btn toolbar-btn-save"
             onClick={onManualSave}
-            // disabled={!canUndo}
-            title="Save"
+            title="Save (Ctrl+S)"
             type="button"
-          >Save
+          >
+            <i className="pi pi-save"></i>
+            <span>Save</span>
           </button>
         </div>
       </div>

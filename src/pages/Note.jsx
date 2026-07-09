@@ -262,9 +262,9 @@ const Note = () => {
         </nav>
       )}
 
-      <div className="notes-container" style={{ paddingTop: currentView === 'list' ? '80px' : '0' }}>
+      <div className="notes-container">
         {currentView === 'list' ? (
-          <div className="container-fluid bg-dark min-vh-100" style={{}}>
+          <div className="container-fluid bg-dark min-vh-100">
             <NotesList
               notes={notes}
               onSelectNote={handleSelectNote}
