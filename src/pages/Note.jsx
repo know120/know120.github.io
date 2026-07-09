@@ -175,11 +175,6 @@ const Note = () => {
       <div className="app">
         <nav className="navbar navbar-dark bg-dark fixed-top">
           <div className="container-fluid">
-            <Link className="navbar-brand" to="/">
-              <span style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                Sujay Halder
-              </span>
-            </Link>
             <Link to="/" className="btn btn-outline-light btn-sm">
               <i className="pi pi-home me-2"></i>
               Home
@@ -203,11 +198,6 @@ const Note = () => {
       <div className="app">
         <nav className="navbar navbar-dark bg-dark fixed-top">
           <div className="container-fluid">
-            <Link className="navbar-brand" to="/">
-              <span style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                Sujay Halder
-              </span>
-            </Link>
             <Link to="/" className="btn btn-outline-light btn-sm">
               <i className="pi pi-home me-2"></i>
               Home
@@ -248,12 +238,7 @@ const Note = () => {
       {/* Navigation - only show when in list view */}
       {currentView === 'list' && (
         <nav className="navbar navbar-dark bg-dark fixed-top">
-          <div className="container-fluid">
-            <Link className="navbar-brand" to="/">
-              <span style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                Sujay Halder
-              </span>
-            </Link>
+          <div className="container-fluid d-flex justify-content-end">
             <Link to="/" className="btn btn-outline-light btn-sm">
               <i className="pi pi-home me-2"></i>
               Home
