@@ -1,20 +1,10 @@
 import React, { useState, useCallback } from 'react';
 
-const DEFAULT_CONFIG = `{
-  "oldApi": {
-    "url": "https://jsonplaceholder.typicode.com/posts/{{id}}",
-    "method": "GET",
-    "headers": {},
-    "params": {}
-  },
-  "newApi": {
-    "url": "https://jsonplaceholder.typicode.com/posts/{{id}}",
-    "method": "GET",
-    "headers": {},
-    "params": {}
-  },
-  "ids": [1, 2, 3]
-}`;
+const METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
+
+function emptyRow() {
+  return { key: '', value: '', enabled: true };
+}
 
 function deepCompare(oldObj, newObj, path = '') {
   const missing = [];
@@ -113,10 +103,30 @@ function fillTemplate(template, id) {
   return template.replace(/\{\{id\}\}/g, id);
 }
 
+function rowsToObj(rows) {
+  const obj = {};
+  for (const row of rows) {
+    if (row.enabled && row.key.trim()) {
+      obj[row.key.trim()] = row.value;
+    }
+  }
+  return obj;
+}
+
+function buildApiConfig(form) {
+  return {
+    url: form.url,
+    method: form.method,
+    headers: rowsToObj(form.headers),
+    params: rowsToObj(form.params),
+    body: (form.method === 'POST' || form.method === 'PUT' || form.method === 'PATCH') ? form.body : undefined,
+  };
+}
+
 async function callApi(config, id) {
   const url = fillTemplate(config.url, id);
   const method = (config.method || 'GET').toUpperCase();
-  const headers = config.headers || {};
+  const headers = { ...(config.headers || {}) };
   const params = config.params || {};
 
   const urlObj = new URL(url);
@@ -126,7 +136,9 @@ async function callApi(config, id) {
 
   const fetchOptions = { method, headers };
   if (method === 'POST' || method === 'PUT' || method === 'PATCH') {
-    fetchOptions.body = config.body ? JSON.stringify(fillTemplate(JSON.stringify(config.body), id)) : undefined;
+    if (config.body) {
+      fetchOptions.body = fillTemplate(config.body, id);
+    }
     if (fetchOptions.body && !headers['Content-Type']) {
       headers['Content-Type'] = 'application/json';
     }
@@ -137,46 +149,90 @@ async function callApi(config, id) {
   return res.json();
 }
 
+const defaultForm = {
+  url: '',
+  method: 'GET',
+  headers: [emptyRow()],
+  params: [emptyRow()],
+  body: '',
+};
+
 export default function ApiComparator() {
-  const [configText, setConfigText] = useState(DEFAULT_CONFIG);
-  const [configError, setConfigError] = useState('');
+  const [oldForm, setOldForm] = useState({
+    ...defaultForm,
+    url: 'https://jsonplaceholder.typicode.com/posts/{{id}}',
+    params: [{ key: '', value: '', enabled: true }],
+  });
+  const [newForm, setNewForm] = useState({
+    ...defaultForm,
+    url: 'https://jsonplaceholder.typicode.com/posts/{{id}}',
+    params: [{ key: '', value: '', enabled: true }],
+  });
+  const [idsText, setIdsText] = useState('1, 2, 3');
+  const [configTab, setConfigTab] = useState('old');
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showConfig, setShowConfig] = useState(true);
+
+  const updateForm = useCallback((setter, field, value) => {
+    setter(prev => ({ ...prev, [field]: value }));
+  }, []);
+
+  const handleRowChange = useCallback((setter, rowsField, index, field, value) => {
+    setter(prev => {
+      const rows = [...prev[rowsField]];
+      rows[index] = { ...rows[index], [field]: value };
+      return { ...prev, [rowsField]: rows };
+    });
+  }, []);
+
+  const addRow = useCallback((setter, rowsField) => {
+    setter(prev => ({ ...prev, [rowsField]: [...prev[rowsField], emptyRow()] }));
+  }, []);
+
+  const removeRow = useCallback((setter, rowsField, index) => {
+    setter(prev => {
+      const rows = prev[rowsField].filter((_, i) => i !== index);
+      return { ...prev, [rowsField]: rows.length ? rows : [emptyRow()] };
+    });
+  }, []);
+
+  const toggleRow = useCallback((setter, rowsField, index) => {
+    setter(prev => {
+      const rows = [...prev[rowsField]];
+      rows[index] = { ...rows[index], enabled: !rows[index].enabled };
+      return { ...prev, [rowsField]: rows };
+    });
+  }, []);
 
   const handleCompare = useCallback(async () => {
     setLoading(true);
     setError('');
     setResults(null);
 
-    let config;
-    try {
-      config = JSON.parse(configText);
-    } catch (e) {
-      setError('Invalid JSON configuration: ' + e.message);
+    const ids = idsText.split(/[,;\s]+/).map(s => s.trim()).filter(Boolean);
+    if (!ids.length) {
+      setError('Provide at least one ID');
+      setLoading(false);
+      return;
+    }
+    if (!oldForm.url || !newForm.url) {
+      setError('Both old and new API URLs are required');
       setLoading(false);
       return;
     }
 
-    if (!config.oldApi?.url || !config.newApi?.url) {
-      setError('Both oldApi and newApi must have a url');
-      setLoading(false);
-      return;
-    }
-    if (!config.ids || !Array.isArray(config.ids) || config.ids.length === 0) {
-      setError('Provide at least one id in the ids array');
-      setLoading(false);
-      return;
-    }
+    const oldConfig = buildApiConfig(oldForm);
+    const newConfig = buildApiConfig(newForm);
 
     const allResults = [];
 
-    for (const id of config.ids) {
+    for (const id of ids) {
       try {
         const [oldData, newData] = await Promise.all([
-          callApi(config.oldApi, id),
-          callApi(config.newApi, id)
+          callApi(oldConfig, id),
+          callApi(newConfig, id)
         ]);
 
         const comparison = deepCompare(oldData, newData);
@@ -185,23 +241,18 @@ export default function ApiComparator() {
 
         allResults.push({
           id,
-          oldData,
-          newData,
-          oldFields,
-          newFields,
+          oldData, newData, oldFields, newFields,
           ...comparison
         });
       } catch (err) {
         allResults.push({
-          id,
-          error: err.message,
+          id, error: err.message,
           missing: [], extra: [], typeChanges: [],
           oldFields: [], newFields: []
         });
       }
     }
 
-    // Aggregate across all IDs
     const aggregatedMissing = new Map();
     const aggregatedExtra = new Map();
     const aggregatedTypeChanges = new Map();
@@ -228,7 +279,7 @@ export default function ApiComparator() {
     setResults({
       perId: allResults,
       summary: {
-        totalIds: config.ids.length,
+        totalIds: ids.length,
         successCount: allResults.filter(r => !r.error).length,
         errorCount: allResults.filter(r => r.error).length,
         aggregatedMissing: [...aggregatedMissing.values()],
@@ -238,7 +289,7 @@ export default function ApiComparator() {
     });
     setLoading(false);
     setShowConfig(false);
-  }, [configText]);
+  }, [oldForm, newForm, idsText]);
 
   const renderValue = (val) => {
     if (val === null) return <span className="text-gray-500 italic">null</span>;
@@ -324,81 +375,241 @@ export default function ApiComparator() {
 
       {showConfig && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-3xl glass-panel rounded-2xl p-6 md:p-8 border border-slate-700 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-4xl glass-panel rounded-2xl p-6 md:p-8 border border-slate-700 shadow-2xl animate-fade-in max-h-[95vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-white">Configuration</h2>
-              <button
-                onClick={() => setShowConfig(false)}
-                className="text-slate-400 hover:text-white"
-              >
+              <button onClick={() => setShowConfig(false)} className="text-slate-400 hover:text-white">
                 <i className="pi pi-times text-xl"></i>
               </button>
             </div>
 
-            <div className="mb-4">
-              <p className="text-slate-400 text-sm mb-4">
-                Provide a JSON configuration with your API details. Use <code className="text-emerald-400 bg-slate-800 px-1 rounded">{'{{id}}'}</code> as a placeholder for the ID parameter.
-              </p>
-              <div className="bg-slate-900/80 rounded-lg p-4 mb-4 border border-slate-700">
-                <h3 className="text-sm font-medium text-slate-300 mb-2">Configuration Format</h3>
-                <pre className="text-xs text-slate-400 font-mono leading-relaxed">{`{
-  "oldApi": {
-    "url": "https://api.example.com/v1/users/{{id}}",
-    "method": "GET",
-    "headers": { "Authorization": "Bearer token" },
-    "params": { "include": "profile" }
-  },
-  "newApi": {
-    "url": "https://api.example.com/v2/users/{{id}}",
-    "method": "GET",
-    "headers": {},
-    "params": {}
-  },
-  "ids": [1, 2, 3, 5]
-}`}</pre>
-              </div>
+            {/* Tab switcher */}
+            <div className="flex gap-1 mb-6 p-1 bg-slate-800 rounded-xl w-fit">
+              <button
+                onClick={() => setConfigTab('old')}
+                className={`px-5 py-2 text-sm font-medium rounded-lg transition-all ${
+                  configTab === 'old'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <i className="pi pi pi-angle-double-left mr-1.5"></i>
+                Old API
+              </button>
+              <button
+                onClick={() => setConfigTab('new')}
+                className={`px-5 py-2 text-sm font-medium rounded-lg transition-all ${
+                  configTab === 'new'
+                    ? 'bg-emerald-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                New API
+                <i className="pi pi-angle-double-right ml-1.5"></i>
+              </button>
+              <button
+                onClick={() => setConfigTab('ids')}
+                className={`px-5 py-2 text-sm font-medium rounded-lg transition-all ${
+                  configTab === 'ids'
+                    ? 'bg-purple-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <i className="pi pi-list mr-1.5"></i>
+                IDs
+              </button>
             </div>
 
-            <textarea
-              value={configText}
-              onChange={(e) => setConfigText(e.target.value)}
-              rows={18}
-              className="w-full px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 resize-none font-mono text-sm"
-              spellCheck={false}
-            />
+            {configTab === 'old' && (
+              <ApiForm
+                label="Old API"
+                form={oldForm}
+                setForm={setOldForm}
+                updateForm={updateForm}
+                handleRowChange={handleRowChange}
+                addRow={addRow}
+                removeRow={removeRow}
+                toggleRow={toggleRow}
+                accent="blue"
+              />
+            )}
+
+            {configTab === 'new' && (
+              <ApiForm
+                label="New API"
+                form={newForm}
+                setForm={setNewForm}
+                updateForm={updateForm}
+                handleRowChange={handleRowChange}
+                addRow={addRow}
+                removeRow={removeRow}
+                toggleRow={toggleRow}
+                accent="emerald"
+              />
+            )}
+
+            {configTab === 'ids' && (
+              <div className="p-6 rounded-xl bg-slate-900/50 border border-purple-500/20">
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  IDs to Compare
+                </label>
+                <p className="text-xs text-slate-500 mb-3">
+                  Enter comma, space, or semicolon-separated IDs. Use <code className="text-purple-400 bg-slate-800 px-1 rounded">{'{{id}}'}</code> in your URLs above.
+                </p>
+                <textarea
+                  value={idsText}
+                  onChange={(e) => setIdsText(e.target.value)}
+                  placeholder="1, 2, 3, 5, 10"
+                  rows={4}
+                  className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-purple-500 resize-none font-mono text-sm"
+                />
+              </div>
+            )}
 
             <div className="flex gap-3 mt-6">
               <button
-                onClick={() => {
-                  try {
-                    JSON.parse(configText);
-                    setConfigError('');
-                    setShowConfig(false);
-                  } catch (e) {
-                    setConfigError('Invalid JSON: ' + e.message);
-                  }
-                }}
-                className="flex-1 py-3 rounded-lg font-bold text-white bg-slate-700 hover:bg-slate-600 transition-all"
+                onClick={() => setShowConfig(false)}
+                className="flex-1 py-3 rounded-lg font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:shadow-lg transition-all"
               >
-                Save & Close
-              </button>
-              <button
-                onClick={() => {
-                  setConfigText(DEFAULT_CONFIG);
-                  setConfigError('');
-                }}
-                className="px-6 py-3 rounded-lg font-medium text-slate-300 bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-all"
-              >
-                Reset
+                Done
               </button>
             </div>
-
-            {configError && (
-              <div className="mt-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                <p className="text-red-400 text-sm">{configError}</p>
-              </div>
-            )}
           </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ApiForm({ label, form, setForm, updateForm, handleRowChange, addRow, removeRow, toggleRow, accent }) {
+  const isBlue = accent === 'blue';
+
+  return (
+    <div className="space-y-5 p-6 rounded-xl bg-slate-900/50 border border-slate-700">
+      <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+        <span className={`w-2 h-2 rounded-full ${isBlue ? 'bg-blue-500' : 'bg-emerald-500'}`}></span>
+        {label}
+      </h3>
+
+      <div className="flex gap-3">
+        <div className="flex-1">
+          <label className="block text-xs font-medium text-slate-400 mb-1.5">URL <span className="text-slate-600">(use {'{'}
+            {'{id}'}'} as placeholder)</span></label>
+          <input
+            value={form.url}
+            onChange={(e) => updateForm(setForm, 'url', e.target.value)}
+            placeholder="https://api.example.com/v1/users/{{id}}"
+            className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+          />
+        </div>
+        <div className="w-28 shrink-0">
+          <label className="block text-xs font-medium text-slate-400 mb-1.5">Method</label>
+          <select
+            value={form.method}
+            onChange={(e) => updateForm(setForm, 'method', e.target.value)}
+            className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+          >
+            {METHODS.map(m => (
+              <option key={m} value={m}>{m}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="text-xs font-medium text-slate-400">Headers</label>
+          <button
+            onClick={() => addRow(setForm, 'headers')}
+            className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1"
+          >
+            <i className="pi pi-plus text-[10px]"></i> Add
+          </button>
+        </div>
+        <div className="space-y-1.5">
+          {form.headers.map((row, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={row.enabled}
+                onChange={() => toggleRow(setForm, 'headers', i)}
+                className="shrink-0"
+              />
+              <input
+                value={row.key}
+                onChange={(e) => handleRowChange(setForm, 'headers', i, 'key', e.target.value)}
+                placeholder="Key"
+                className="w-44 px-3 py-1.5 rounded bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-xs font-mono"
+              />
+              <input
+                value={row.value}
+                onChange={(e) => handleRowChange(setForm, 'headers', i, 'value', e.target.value)}
+                placeholder="Value"
+                className="flex-1 px-3 py-1.5 rounded bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-xs font-mono"
+              />
+              <button
+                onClick={() => removeRow(setForm, 'headers', i)}
+                className="text-slate-500 hover:text-red-400 transition-colors shrink-0"
+              >
+                <i className="pi pi-trash text-xs"></i>
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="text-xs font-medium text-slate-400">Query Params</label>
+          <button
+            onClick={() => addRow(setForm, 'params')}
+            className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1"
+          >
+            <i className="pi pi-plus text-[10px]"></i> Add
+          </button>
+        </div>
+        <div className="space-y-1.5">
+          {form.params.map((row, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={row.enabled}
+                onChange={() => toggleRow(setForm, 'params', i)}
+                className="shrink-0"
+              />
+              <input
+                value={row.key}
+                onChange={(e) => handleRowChange(setForm, 'params', i, 'key', e.target.value)}
+                placeholder="Key"
+                className="w-44 px-3 py-1.5 rounded bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-xs font-mono"
+              />
+              <input
+                value={row.value}
+                onChange={(e) => handleRowChange(setForm, 'params', i, 'value', e.target.value)}
+                placeholder="Value"
+                className="flex-1 px-3 py-1.5 rounded bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-xs font-mono"
+              />
+              <button
+                onClick={() => removeRow(setForm, 'params', i)}
+                className="text-slate-500 hover:text-red-400 transition-colors shrink-0"
+              >
+                <i className="pi pi-trash text-xs"></i>
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {(form.method === 'POST' || form.method === 'PUT' || form.method === 'PATCH') && (
+        <div>
+          <label className="block text-xs font-medium text-slate-400 mb-1.5">Request Body</label>
+          <textarea
+            value={form.body}
+            onChange={(e) => updateForm(setForm, 'body', e.target.value)}
+            placeholder='{"title": "foo", "body": "bar", "userId": {{id}} }'
+            rows={5}
+            className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none font-mono text-sm"
+          />
         </div>
       )}
     </div>
@@ -583,7 +794,7 @@ function PerIdCard({ result, renderValue }) {
                   <div key={item.path} className="flex items-start gap-2 text-sm">
                     <span className="font-mono text-red-300 shrink-0">{item.path}</span>
                     <span className="text-slate-500">→</span>
-                    <span className="text-slate-400">{renderValue(item.value)}</span>
+                    {renderValue(item.value)}
                   </div>
                 ))}
               </div>
@@ -598,7 +809,7 @@ function PerIdCard({ result, renderValue }) {
                   <div key={item.path} className="flex items-start gap-2 text-sm">
                     <span className="font-mono text-emerald-300 shrink-0">{item.path}</span>
                     <span className="text-slate-500">→</span>
-                    <span className="text-slate-400">{renderValue(item.value)}</span>
+                    {renderValue(item.value)}
                   </div>
                 ))}
               </div>
