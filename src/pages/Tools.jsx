@@ -30,6 +30,9 @@ export default function Tools() {
         <Button text="DB Migration"
           onClick={() => window.location.href = '/#/tools/db-migration'} />
 
+        <Button text="API Comparator"
+          onClick={() => window.location.href = '/#/tools/api-comparator'} />
+
       </div>
     </div>
   )
