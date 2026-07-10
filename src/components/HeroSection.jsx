@@ -58,7 +58,7 @@ const HeroSection = () => {
             </h1>
 
             <div className="text-2xl md:text-3xl mb-8 text-slate-300 h-[40px]">
-              A <span className="text-indigo-400 font-semibold">{currentText}</span>
+              <span className="text-indigo-400 font-semibold">{currentText}</span>
               <span className="animate-pulse">|</span>
             </div>
 
