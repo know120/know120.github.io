@@ -7,7 +7,7 @@ const HeroSection = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const texts = [
-    'Full Stack .NET Developer with React'
+    'Crafting Full Stack Solutions with AI'
   ];
 
   useEffect(() => {
