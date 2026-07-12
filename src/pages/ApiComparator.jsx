@@ -496,7 +496,8 @@ export default function ApiComparator() {
 
       {showConfig && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-4xl glass-panel rounded-2xl p-6 md:p-8 border border-slate-700 shadow-2xl animate-fade-in max-h-[95vh] overflow-y-auto">
+          <div className="w-full max-w-4xl glass-panel rounded-2xl border border-slate-700 shadow-2xl animate-fade-in max-h-[95vh] flex flex-col overflow-hidden">
+            <div className="overflow-y-auto p-6 md:p-8 min-h-0">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-white">Configuration</h2>
               <button onClick={() => setShowConfig(false)} className="text-slate-400 hover:text-white">
@@ -567,6 +568,24 @@ export default function ApiComparator() {
                     toggleRow={toggleRow}
                   />
                 )}
+
+                {configTab === 'ids' && (
+                  <div className="p-6 rounded-xl bg-slate-900/50 border border-purple-500/20">
+                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                      IDs to Compare
+                    </label>
+                    <p className="text-xs text-slate-500 mb-3">
+                      Enter comma, space, or semicolon-separated IDs. Use <code className="text-purple-400 bg-slate-800 px-1 rounded">{'{{id}}'}</code> in your URLs above.
+                    </p>
+                    <textarea
+                      value={idsText}
+                      onChange={(e) => setIdsText(e.target.value)}
+                      placeholder="1, 2, 3, 5, 10"
+                      rows={4}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-purple-500 resize-none font-mono text-sm"
+                    />
+                  </div>
+                )}
               </>
             ) : (
               <ApiForm
@@ -581,9 +600,10 @@ export default function ApiComparator() {
               />
             )}
 
+            {mode !== 'compare' && (
             <div className="mt-6 p-6 rounded-xl bg-slate-900/50 border border-purple-500/20">
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                IDs {mode === 'compare' ? 'to Compare' : 'to Fetch'}
+                IDs to Fetch
               </label>
               <p className="text-xs text-slate-500 mb-3">
                 Enter comma, space, or semicolon-separated IDs. Use <code className="text-purple-400 bg-slate-800 px-1 rounded">{'{{id}}'}</code> in your URLs above.
@@ -596,6 +616,7 @@ export default function ApiComparator() {
                 className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-purple-500 resize-none font-mono text-sm"
               />
             </div>
+            )}
 
             <div className="flex gap-3 mt-6">
               <button
@@ -604,6 +625,7 @@ export default function ApiComparator() {
               >
                 Done
               </button>
+            </div>
             </div>
           </div>
         </div>
