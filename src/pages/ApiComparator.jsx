@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useMemo } from 'react';
 
 const METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
 
@@ -149,6 +149,31 @@ async function callApi(config, id) {
   return res.json();
 }
 
+function applyFieldMappings(data, mappings) {
+  if (!mappings.length || !data || typeof data !== 'object') return data;
+  if (Array.isArray(data)) return data.map(item => applyFieldMappings(item, mappings));
+
+  const map = {};
+  for (const m of mappings) {
+    if (m.oldPath && m.newPath) map[m.newPath] = m.oldPath;
+  }
+
+  function remap(obj, path = '') {
+    if (!obj || typeof obj !== 'object') return obj;
+    if (Array.isArray(obj)) return obj.map((item, i) => remap(item, `${path}[${i}]`));
+
+    const result = {};
+    for (const [key, val] of Object.entries(obj)) {
+      const currentPath = path ? `${path}.${key}` : key;
+      const mappedKey = map[currentPath] || key;
+      result[mappedKey] = remap(val, currentPath);
+    }
+    return result;
+  }
+
+  return remap(data);
+}
+
 function downloadJson(data, filename) {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -192,6 +217,8 @@ export default function ApiComparator() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showConfig, setShowConfig] = useState(true);
+  const [fieldMappings, setFieldMappings] = useState([]);
+  const [showFieldMappings, setShowFieldMappings] = useState(false);
   const descriptionRef = useRef(null);
 
   const updateForm = useCallback((setter, field, value) => {
@@ -251,17 +278,21 @@ export default function ApiComparator() {
 
       for (const id of ids) {
         try {
-          const [oldData, newData] = await Promise.all([
+          const [oldData, rawNewData] = await Promise.all([
             callApi(oldConfig, id),
             callApi(newConfig, id)
           ]);
+
+          const newData = fieldMappings.length ? applyFieldMappings(rawNewData, fieldMappings) : rawNewData;
 
           const comparison = deepCompare(oldData, newData);
           const oldFields = collectFields(oldData);
           const newFields = collectFields(newData);
 
           allResults.push({
-            id, oldData, newData, oldFields, newFields,
+            id, oldData, newData,
+            rawNewData: fieldMappings.length ? rawNewData : undefined,
+            oldFields, newFields,
             ...comparison
           });
         } catch (err) {
@@ -340,7 +371,7 @@ export default function ApiComparator() {
 
     setLoading(false);
     setShowConfig(false);
-  }, [mode, oldForm, newForm, singleForm, idsText]);
+  }, [mode, oldForm, newForm, singleForm, idsText, fieldMappings]);
 
   const handleDownloadResults = useCallback(() => {
     if (!results) return;
@@ -475,7 +506,12 @@ export default function ApiComparator() {
 
               {results.type === 'compare' ? (
                 <>
-                  <SummaryCard summary={results.summary} renderValue={renderValue} />
+                  <SummaryCard
+                    summary={results.summary}
+                    renderValue={renderValue}
+                    onConfigureMappings={() => setShowFieldMappings(true)}
+                    fieldMappings={fieldMappings}
+                  />
 
                   <div className="space-y-4">
                     <h2 className="text-2xl font-bold text-white">Per-ID Breakdown</h2>
@@ -630,6 +666,138 @@ export default function ApiComparator() {
           </div>
         </div>
       )}
+
+      {showFieldMappings && (
+        <FieldMappingModal
+          mappings={fieldMappings}
+          setMappings={setFieldMappings}
+          onApply={() => { setShowFieldMappings(false); handleFetch(); }}
+          onClose={() => setShowFieldMappings(false)}
+          missingFields={results?.summary?.aggregatedMissing || []}
+          extraFields={results?.summary?.aggregatedExtra || []}
+        />
+      )}
+    </div>
+  );
+}
+
+function FieldMappingModal({ mappings, setMappings, onApply, onClose, missingFields, extraFields }) {
+  const suggestionPaths = useMemo(() => {
+    const paths = [];
+    for (const f of missingFields) paths.push({ oldPath: f.path, newPath: '' });
+    for (const f of extraFields) paths.push({ oldPath: '', newPath: f.path });
+    return paths;
+  }, [missingFields, extraFields]);
+
+  const [rows, setRows] = useState(() => {
+    if (mappings.length) return mappings.map(m => ({ ...m }));
+    const initial = [];
+    const seen = new Set();
+    for (const m of missingFields) {
+      const key = m.path.split('.').pop();
+      initial.push({ oldPath: m.path, newPath: key, _suggested: true });
+      seen.add(m.path);
+    }
+    for (const e of extraFields) {
+      const key = e.path.split('.').pop();
+      if (!seen.has(e.path)) {
+        initial.push({ oldPath: key, newPath: e.path, _suggested: true });
+      }
+    }
+    return initial.length ? initial : [{ oldPath: '', newPath: '' }];
+  });
+
+  const updateRow = (i, field, val) => {
+    setRows(prev => {
+      const next = [...prev];
+      next[i] = { ...next[i], [field]: val, _suggested: false };
+      return next;
+    });
+  };
+
+  const addRow = () => setRows(prev => [...prev, { oldPath: '', newPath: '' }]);
+  const removeRow = (i) => setRows(prev => prev.filter((_, idx) => idx !== i));
+
+  const handleApply = () => {
+    const valid = rows.filter(r => r.oldPath.trim() && r.newPath.trim()).map(r => ({
+      oldPath: r.oldPath.trim(),
+      newPath: r.newPath.trim()
+    }));
+    setMappings(valid);
+    onApply();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <div className="w-full max-w-2xl glass-panel rounded-2xl border border-slate-700 shadow-2xl animate-fade-in max-h-[90vh] flex flex-col overflow-hidden">
+        <div className="flex items-center justify-between p-6 pb-0">
+          <div>
+            <h2 className="text-xl font-bold text-white">Field Mappings</h2>
+            <p className="text-sm text-slate-400 mt-1">
+              Map old API field paths to new API field paths so they are treated as equivalent.
+            </p>
+          </div>
+          <button onClick={onClose} className="text-slate-400 hover:text-white">
+            <i className="pi pi-times text-xl"></i>
+          </button>
+        </div>
+        <div className="overflow-y-auto p-6 min-h-0 space-y-3">
+          {rows.map((row, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <input
+                value={row.oldPath}
+                onChange={(e) => updateRow(i, 'oldPath', e.target.value)}
+                placeholder="old.field.path"
+                className="flex-1 px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm font-mono"
+              />
+              <span className="text-slate-500 shrink-0">
+                <i className="pi pi-arrow-right"></i>
+              </span>
+              <input
+                value={row.newPath}
+                onChange={(e) => updateRow(i, 'newPath', e.target.value)}
+                placeholder="new.field.path"
+                className="flex-1 px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm font-mono"
+              />
+              <button
+                onClick={() => removeRow(i)}
+                className="text-slate-500 hover:text-red-400 transition-colors shrink-0"
+              >
+                <i className="pi pi-trash text-xs"></i>
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={addRow}
+            className="text-sm text-slate-400 hover:text-white transition-colors flex items-center gap-1"
+          >
+            <i className="pi pi-plus text-xs"></i> Add mapping
+          </button>
+
+          {(missingFields.length > 0 || extraFields.length > 0) && rows.length === 0 && (
+            <div className="p-4 rounded-lg bg-slate-800/50 border border-slate-700">
+              <p className="text-sm text-slate-400">
+                <i className="pi pi-info-circle mr-1.5"></i>
+                Try adding the detected field paths above as suggestions.
+              </p>
+            </div>
+          )}
+        </div>
+        <div className="flex gap-3 p-6 pt-0">
+          <button
+            onClick={onClose}
+            className="flex-1 py-3 rounded-lg font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 transition-all"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleApply}
+            className="flex-1 py-3 rounded-lg font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:shadow-lg transition-all"
+          >
+            Apply & Re-run
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -766,12 +934,24 @@ function ApiForm({ label, form, setForm, updateForm, handleRowChange, addRow, re
   );
 }
 
-function SummaryCard({ summary, renderValue }) {
-  const hasChanges = summary.aggregatedMissing.length > 0 || summary.aggregatedExtra.length > 0 || summary.aggregatedTypeChanges.length > 0;
+function SummaryCard({ summary, renderValue, onConfigureMappings, fieldMappings = [] }) {
+  const hasMissingOrExtra = summary.aggregatedMissing.length > 0 || summary.aggregatedExtra.length > 0;
+  const hasChanges = hasMissingOrExtra || summary.aggregatedTypeChanges.length > 0;
 
   return (
     <div className="p-6 rounded-xl bg-slate-900/80 border border-emerald-500/30">
-      <h2 className="text-xl font-bold text-white mb-4">Summary Report</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold text-white">Summary Report</h2>
+        {hasMissingOrExtra && onConfigureMappings && (
+          <button
+            onClick={onConfigureMappings}
+            className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-slate-700 hover:bg-slate-600 transition-all flex items-center gap-2"
+          >
+            <i className="pi pi-link"></i>
+            Configure Field Mappings{fieldMappings.length > 0 ? ` (${fieldMappings.length})` : ''}
+          </button>
+        )}
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div className="p-4 rounded-lg bg-slate-800/50 border border-slate-700 text-center">
@@ -1069,7 +1249,7 @@ function RawDataSection({ perId, resultsType }) {
                 <div>
                   <h4 className="text-xs font-medium text-slate-500 mb-1 uppercase tracking-wider">New API</h4>
                   <pre className="p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs text-cyan-400 overflow-x-auto max-h-64 overflow-y-auto">
-                    {JSON.stringify(r.newData, null, 2)}
+                    {JSON.stringify(r.rawNewData || r.newData, null, 2)}
                   </pre>
                 </div>
               </div>
