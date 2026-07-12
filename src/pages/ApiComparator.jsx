@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 
 const METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
 
@@ -149,6 +149,18 @@ async function callApi(config, id) {
   return res.json();
 }
 
+function downloadJson(data, filename) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 const defaultForm = {
   url: '',
   method: 'GET',
@@ -158,6 +170,7 @@ const defaultForm = {
 };
 
 export default function ApiComparator() {
+  const [mode, setMode] = useState('compare'); // 'compare' | 'single'
   const [oldForm, setOldForm] = useState({
     ...defaultForm,
     url: 'https://jsonplaceholder.typicode.com/posts/{{id}}',
@@ -168,12 +181,18 @@ export default function ApiComparator() {
     url: 'https://jsonplaceholder.typicode.com/posts/{{id}}',
     params: [{ key: '', value: '', enabled: true }],
   });
+  const [singleForm, setSingleForm] = useState({
+    ...defaultForm,
+    url: 'https://jsonplaceholder.typicode.com/posts/{{id}}',
+    params: [{ key: '', value: '', enabled: true }],
+  });
   const [idsText, setIdsText] = useState('1, 2, 3');
   const [configTab, setConfigTab] = useState('old');
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showConfig, setShowConfig] = useState(true);
+  const descriptionRef = useRef(null);
 
   const updateForm = useCallback((setter, field, value) => {
     setter(prev => ({ ...prev, [field]: value }));
@@ -206,7 +225,7 @@ export default function ApiComparator() {
     });
   }, []);
 
-  const handleCompare = useCallback(async () => {
+  const handleFetch = useCallback(async () => {
     setLoading(true);
     setError('');
     setResults(null);
@@ -217,79 +236,131 @@ export default function ApiComparator() {
       setLoading(false);
       return;
     }
-    if (!oldForm.url || !newForm.url) {
-      setError('Both old and new API URLs are required');
-      setLoading(false);
-      return;
+
+    if (mode === 'compare') {
+      if (!oldForm.url || !newForm.url) {
+        setError('Both old and new API URLs are required');
+        setLoading(false);
+        return;
+      }
+
+      const oldConfig = buildApiConfig(oldForm);
+      const newConfig = buildApiConfig(newForm);
+
+      const allResults = [];
+
+      for (const id of ids) {
+        try {
+          const [oldData, newData] = await Promise.all([
+            callApi(oldConfig, id),
+            callApi(newConfig, id)
+          ]);
+
+          const comparison = deepCompare(oldData, newData);
+          const oldFields = collectFields(oldData);
+          const newFields = collectFields(newData);
+
+          allResults.push({
+            id, oldData, newData, oldFields, newFields,
+            ...comparison
+          });
+        } catch (err) {
+          allResults.push({
+            id, error: err.message,
+            missing: [], extra: [], typeChanges: [],
+            oldFields: [], newFields: []
+          });
+        }
+      }
+
+      const aggregatedMissing = new Map();
+      const aggregatedExtra = new Map();
+      const aggregatedTypeChanges = new Map();
+
+      for (const r of allResults) {
+        if (r.error) continue;
+        for (const item of r.missing) {
+          const key = item.path;
+          if (!aggregatedMissing.has(key)) aggregatedMissing.set(key, { path: key, value: item.value, ids: [] });
+          aggregatedMissing.get(key).ids.push(r.id);
+        }
+        for (const item of r.extra) {
+          const key = item.path;
+          if (!aggregatedExtra.has(key)) aggregatedExtra.set(key, { path: key, value: item.value, ids: [] });
+          aggregatedExtra.get(key).ids.push(r.id);
+        }
+        for (const item of r.typeChanges) {
+          const key = item.path;
+          if (!aggregatedTypeChanges.has(key)) aggregatedTypeChanges.set(key, { ...item, ids: [] });
+          aggregatedTypeChanges.get(key).ids.push(r.id);
+        }
+      }
+
+      setResults({
+        type: 'compare',
+        perId: allResults,
+        summary: {
+          totalIds: ids.length,
+          successCount: allResults.filter(r => !r.error).length,
+          errorCount: allResults.filter(r => r.error).length,
+          aggregatedMissing: [...aggregatedMissing.values()],
+          aggregatedExtra: [...aggregatedExtra.values()],
+          aggregatedTypeChanges: [...aggregatedTypeChanges.values()],
+        }
+      });
+    } else {
+      if (!singleForm.url) {
+        setError('API URL is required');
+        setLoading(false);
+        return;
+      }
+
+      const config = buildApiConfig(singleForm);
+      const allResults = [];
+
+      for (const id of ids) {
+        try {
+          const data = await callApi(config, id);
+          allResults.push({ id, data, fields: collectFields(data) });
+        } catch (err) {
+          allResults.push({ id, error: err.message });
+        }
+      }
+
+      setResults({
+        type: 'single',
+        perId: allResults,
+        summary: {
+          totalIds: ids.length,
+          successCount: allResults.filter(r => !r.error).length,
+          errorCount: allResults.filter(r => r.error).length,
+        }
+      });
     }
 
-    const oldConfig = buildApiConfig(oldForm);
-    const newConfig = buildApiConfig(newForm);
-
-    const allResults = [];
-
-    for (const id of ids) {
-      try {
-        const [oldData, newData] = await Promise.all([
-          callApi(oldConfig, id),
-          callApi(newConfig, id)
-        ]);
-
-        const comparison = deepCompare(oldData, newData);
-        const oldFields = collectFields(oldData);
-        const newFields = collectFields(newData);
-
-        allResults.push({
-          id,
-          oldData, newData, oldFields, newFields,
-          ...comparison
-        });
-      } catch (err) {
-        allResults.push({
-          id, error: err.message,
-          missing: [], extra: [], typeChanges: [],
-          oldFields: [], newFields: []
-        });
-      }
-    }
-
-    const aggregatedMissing = new Map();
-    const aggregatedExtra = new Map();
-    const aggregatedTypeChanges = new Map();
-
-    for (const r of allResults) {
-      if (r.error) continue;
-      for (const item of r.missing) {
-        const key = item.path;
-        if (!aggregatedMissing.has(key)) aggregatedMissing.set(key, { path: key, value: item.value, ids: [] });
-        aggregatedMissing.get(key).ids.push(r.id);
-      }
-      for (const item of r.extra) {
-        const key = item.path;
-        if (!aggregatedExtra.has(key)) aggregatedExtra.set(key, { path: key, value: item.value, ids: [] });
-        aggregatedExtra.get(key).ids.push(r.id);
-      }
-      for (const item of r.typeChanges) {
-        const key = item.path;
-        if (!aggregatedTypeChanges.has(key)) aggregatedTypeChanges.set(key, { ...item, ids: [] });
-        aggregatedTypeChanges.get(key).ids.push(r.id);
-      }
-    }
-
-    setResults({
-      perId: allResults,
-      summary: {
-        totalIds: ids.length,
-        successCount: allResults.filter(r => !r.error).length,
-        errorCount: allResults.filter(r => r.error).length,
-        aggregatedMissing: [...aggregatedMissing.values()],
-        aggregatedExtra: [...aggregatedExtra.values()],
-        aggregatedTypeChanges: [...aggregatedTypeChanges.values()],
-      }
-    });
     setLoading(false);
     setShowConfig(false);
-  }, [oldForm, newForm, idsText]);
+  }, [mode, oldForm, newForm, singleForm, idsText]);
+
+  const handleDownloadResults = useCallback(() => {
+    if (!results) return;
+    downloadJson(results, `api-results-${new Date().toISOString().slice(0, 10)}.json`);
+  }, [results]);
+
+  const handleDownloadRaw = useCallback(() => {
+    if (!results) return;
+    const rawData = {};
+    for (const r of results.perId) {
+      if (r.error) {
+        rawData[r.id] = { error: r.error };
+      } else if (results.type === 'compare') {
+        rawData[r.id] = { old: r.oldData, new: r.newData };
+      } else {
+        rawData[r.id] = r.data;
+      }
+    }
+    downloadJson(rawData, `api-raw-${new Date().toISOString().slice(0, 10)}.json`);
+  }, [results]);
 
   const renderValue = (val) => {
     if (val === null) return <span className="text-gray-500 italic">null</span>;
@@ -304,14 +375,16 @@ export default function ApiComparator() {
     <div className="min-h-screen p-4 md:p-8">
       <div className="w-full max-w-6xl mx-auto">
         <div className="glass-panel rounded-2xl p-8 md:p-12">
-          <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
+          <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-6">
             <div className="text-center md:text-left">
               <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 mb-4">
                 <i className="pi pi-sync text-4xl text-white"></i>
               </div>
               <h1 className="text-4xl font-bold text-white mb-2">API Comparator</h1>
-              <p className="text-slate-400 text-lg">
-                Compare old vs new API responses to find differences.
+              <p className="text-slate-400 text-lg" ref={descriptionRef}>
+                {mode === 'compare'
+                  ? 'Compare old vs new API responses to find differences.'
+                  : 'Fetch data from a single API across multiple IDs.'}
               </p>
             </div>
             <button
@@ -321,6 +394,30 @@ export default function ApiComparator() {
               <i className="pi pi-cog"></i>
               Configuration
             </button>
+          </div>
+
+          {/* Mode toggle */}
+          <div className="flex justify-center mb-6">
+            <div className="p-1 bg-slate-800 rounded-xl flex gap-1">
+              <button
+                onClick={() => { setMode('compare'); setResults(null); setError(''); }}
+                className={`px-6 py-2 text-sm font-medium rounded-lg transition-all ${mode === 'compare'
+                  ? 'bg-emerald-600 text-white shadow-sm'
+                  : 'text-slate-400 hover:text-white'}`}
+              >
+                <i className="pi pi-arrows-h mr-1.5"></i>
+                Compare (Old vs New)
+              </button>
+              <button
+                onClick={() => { setMode('single'); setResults(null); setError(''); }}
+                className={`px-6 py-2 text-sm font-medium rounded-lg transition-all ${mode === 'single'
+                  ? 'bg-emerald-600 text-white shadow-sm'
+                  : 'text-slate-400 hover:text-white'}`}
+              >
+                <i className="pi pi-download mr-1.5"></i>
+                Single API
+              </button>
+            </div>
           </div>
 
           {error && (
@@ -334,7 +431,7 @@ export default function ApiComparator() {
 
           <div className="flex justify-center mb-8">
             <button
-              onClick={handleCompare}
+              onClick={handleFetch}
               disabled={loading}
               className={`px-10 py-4 rounded-lg font-bold text-white transition-all ${
                 loading
@@ -345,12 +442,12 @@ export default function ApiComparator() {
               {loading ? (
                 <div className="flex items-center gap-2">
                   <i className="pi pi-spin pi-spinner"></i>
-                  <span>Comparing...</span>
+                  <span>Fetching...</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <i className="pi pi-play"></i>
-                  <span>Run Comparison</span>
+                  <span>{mode === 'compare' ? 'Run Comparison' : 'Fetch Data'}</span>
                 </div>
               )}
             </button>
@@ -358,16 +455,40 @@ export default function ApiComparator() {
 
           {results && !showConfig && (
             <div className="space-y-8">
-              <SummaryCard summary={results.summary} renderValue={renderValue} />
-
-              <div className="space-y-4">
-                <h2 className="text-2xl font-bold text-white">Per-ID Breakdown</h2>
-                {results.perId.map((r) => (
-                  <PerIdCard key={r.id} result={r} renderValue={renderValue} />
-                ))}
+              {/* Download buttons */}
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={handleDownloadRaw}
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-slate-700 hover:bg-slate-600 transition-all flex items-center gap-2"
+                >
+                  <i className="pi pi-file-o"></i>
+                  Download Raw JSON
+                </button>
+                <button
+                  onClick={handleDownloadResults}
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-emerald-700 hover:bg-emerald-600 transition-all flex items-center gap-2"
+                >
+                  <i className="pi pi-download"></i>
+                  Download Full Report
+                </button>
               </div>
 
-              <RawDataSection perId={results.perId} />
+              {results.type === 'compare' ? (
+                <>
+                  <SummaryCard summary={results.summary} renderValue={renderValue} />
+
+                  <div className="space-y-4">
+                    <h2 className="text-2xl font-bold text-white">Per-ID Breakdown</h2>
+                    {results.perId.map((r) => (
+                      <PerIdCard key={r.id} result={r} renderValue={renderValue} />
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <SingleApiResults perId={results.perId} renderValue={renderValue} />
+              )}
+
+              <RawDataSection perId={results.perId} resultsType={results.type} />
             </div>
           )}
         </div>
@@ -383,88 +504,98 @@ export default function ApiComparator() {
               </button>
             </div>
 
-            {/* Tab switcher */}
-            <div className="flex gap-1 mb-6 p-1 bg-slate-800 rounded-xl w-fit">
-              <button
-                onClick={() => setConfigTab('old')}
-                className={`px-5 py-2 text-sm font-medium rounded-lg transition-all ${
-                  configTab === 'old'
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <i className="pi pi pi-angle-double-left mr-1.5"></i>
-                Old API
-              </button>
-              <button
-                onClick={() => setConfigTab('new')}
-                className={`px-5 py-2 text-sm font-medium rounded-lg transition-all ${
-                  configTab === 'new'
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                New API
-                <i className="pi pi-angle-double-right ml-1.5"></i>
-              </button>
-              <button
-                onClick={() => setConfigTab('ids')}
-                className={`px-5 py-2 text-sm font-medium rounded-lg transition-all ${
-                  configTab === 'ids'
-                    ? 'bg-purple-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <i className="pi pi-list mr-1.5"></i>
-                IDs
-              </button>
+            {mode === 'compare' ? (
+              <>
+                <div className="flex gap-1 mb-6 p-1 bg-slate-800 rounded-xl w-fit">
+                  <button
+                    onClick={() => setConfigTab('old')}
+                    className={`px-5 py-2 text-sm font-medium rounded-lg transition-all ${
+                      configTab === 'old'
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <i className="pi pi pi-angle-double-left mr-1.5"></i>
+                    Old API
+                  </button>
+                  <button
+                    onClick={() => setConfigTab('new')}
+                    className={`px-5 py-2 text-sm font-medium rounded-lg transition-all ${
+                      configTab === 'new'
+                        ? 'bg-emerald-600 text-white shadow-sm'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    New API
+                    <i className="pi pi-angle-double-right ml-1.5"></i>
+                  </button>
+                  <button
+                    onClick={() => setConfigTab('ids')}
+                    className={`px-5 py-2 text-sm font-medium rounded-lg transition-all ${
+                      configTab === 'ids'
+                        ? 'bg-purple-600 text-white shadow-sm'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <i className="pi pi-list mr-1.5"></i>
+                    IDs
+                  </button>
+                </div>
+
+                {configTab === 'old' && (
+                  <ApiForm
+                    label="Old API"
+                    form={oldForm}
+                    setForm={setOldForm}
+                    updateForm={updateForm}
+                    handleRowChange={handleRowChange}
+                    addRow={addRow}
+                    removeRow={removeRow}
+                    toggleRow={toggleRow}
+                  />
+                )}
+
+                {configTab === 'new' && (
+                  <ApiForm
+                    label="New API"
+                    form={newForm}
+                    setForm={setNewForm}
+                    updateForm={updateForm}
+                    handleRowChange={handleRowChange}
+                    addRow={addRow}
+                    removeRow={removeRow}
+                    toggleRow={toggleRow}
+                  />
+                )}
+              </>
+            ) : (
+              <ApiForm
+                label="API"
+                form={singleForm}
+                setForm={setSingleForm}
+                updateForm={updateForm}
+                handleRowChange={handleRowChange}
+                addRow={addRow}
+                removeRow={removeRow}
+                toggleRow={toggleRow}
+              />
+            )}
+
+            <div className="mt-6 p-6 rounded-xl bg-slate-900/50 border border-purple-500/20">
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                IDs {mode === 'compare' ? 'to Compare' : 'to Fetch'}
+              </label>
+              <p className="text-xs text-slate-500 mb-3">
+                Enter comma, space, or semicolon-separated IDs. Use <code className="text-purple-400 bg-slate-800 px-1 rounded">{'{{id}}'}</code> in your URLs above.
+              </p>
+              <textarea
+                value={idsText}
+                onChange={(e) => setIdsText(e.target.value)}
+                placeholder="1, 2, 3, 5, 10"
+                rows={4}
+                className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-purple-500 resize-none font-mono text-sm"
+              />
             </div>
-
-            {configTab === 'old' && (
-              <ApiForm
-                label="Old API"
-                form={oldForm}
-                setForm={setOldForm}
-                updateForm={updateForm}
-                handleRowChange={handleRowChange}
-                addRow={addRow}
-                removeRow={removeRow}
-                toggleRow={toggleRow}
-                accent="blue"
-              />
-            )}
-
-            {configTab === 'new' && (
-              <ApiForm
-                label="New API"
-                form={newForm}
-                setForm={setNewForm}
-                updateForm={updateForm}
-                handleRowChange={handleRowChange}
-                addRow={addRow}
-                removeRow={removeRow}
-                toggleRow={toggleRow}
-                accent="emerald"
-              />
-            )}
-
-            {configTab === 'ids' && (
-              <div className="p-6 rounded-xl bg-slate-900/50 border border-purple-500/20">
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  IDs to Compare
-                </label>
-                <p className="text-xs text-slate-500 mb-3">
-                  Enter comma, space, or semicolon-separated IDs. Use <code className="text-purple-400 bg-slate-800 px-1 rounded">{'{{id}}'}</code> in your URLs above.
-                </p>
-                <textarea
-                  value={idsText}
-                  onChange={(e) => setIdsText(e.target.value)}
-                  placeholder="1, 2, 3, 5, 10"
-                  rows={4}
-                  className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-purple-500 resize-none font-mono text-sm"
-                />
-              </div>
-            )}
 
             <div className="flex gap-3 mt-6">
               <button
@@ -481,13 +612,11 @@ export default function ApiComparator() {
   );
 }
 
-function ApiForm({ label, form, setForm, updateForm, handleRowChange, addRow, removeRow, toggleRow, accent }) {
-  const isBlue = accent === 'blue';
-
+function ApiForm({ label, form, setForm, updateForm, handleRowChange, addRow, removeRow, toggleRow }) {
   return (
     <div className="space-y-5 p-6 rounded-xl bg-slate-900/50 border border-slate-700">
       <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-        <span className={`w-2 h-2 rounded-full ${isBlue ? 'bg-blue-500' : 'bg-emerald-500'}`}></span>
+        <span className="w-2 h-2 rounded-full bg-blue-500"></span>
         {label}
       </h3>
 
@@ -746,6 +875,56 @@ function SummaryCard({ summary, renderValue }) {
   );
 }
 
+function SingleApiResults({ perId, renderValue }) {
+  const [expandedId, setExpandedId] = useState(null);
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-white">API Responses</h2>
+      </div>
+      {perId.map((r) => (
+        <div
+          key={r.id}
+          className={`p-4 rounded-xl border ${
+            r.error
+              ? 'bg-red-900/20 border-red-500/30'
+              : 'bg-slate-900/60 border-slate-700'
+          }`}
+        >
+          <button
+            onClick={() => setExpandedId(expandedId === r.id ? null : r.id)}
+            className="flex items-center justify-between w-full text-left"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-lg font-semibold text-white">ID: {r.id}</span>
+              {r.error ? (
+                <span className="text-xs px-2 py-0.5 rounded bg-red-500/20 text-red-400">Error</span>
+              ) : (
+                <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">
+                  {r.fields?.length || 0} fields
+                </span>
+              )}
+            </div>
+            <i className={`pi pi-chevron-${expandedId === r.id ? 'up' : 'down'} text-slate-400`}></i>
+          </button>
+          {expandedId === r.id && (
+            <div className="mt-4">
+              {r.error ? (
+                <div className="p-3 rounded-lg bg-red-500/10 text-red-400 text-sm">{r.error}</div>
+              ) : (
+                <pre className="p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs text-cyan-400 overflow-x-auto max-h-96 overflow-y-auto">
+                  {JSON.stringify(r.data, null, 2)}
+                </pre>
+              )}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function PerIdCard({ result, renderValue }) {
   const [expanded, setExpanded] = useState(false);
   const hasDiff = result.missing.length > 0 || result.extra.length > 0 || result.typeChanges.length > 0;
@@ -841,7 +1020,7 @@ function PerIdCard({ result, renderValue }) {
   );
 }
 
-function RawDataSection({ perId }) {
+function RawDataSection({ perId, resultsType }) {
   const [expandedId, setExpandedId] = useState(null);
 
   return (
@@ -857,7 +1036,7 @@ function RawDataSection({ perId }) {
               <i className={`pi pi-chevron-${expandedId === r.id ? 'down' : 'right'} text-xs`}></i>
               <span className="font-mono">ID: {r.id}</span>
             </button>
-            {expandedId === r.id && !r.error && (
+            {expandedId === r.id && !r.error && resultsType === 'compare' && (
               <div className="mt-2 ml-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <h4 className="text-xs font-medium text-slate-500 mb-1 uppercase tracking-wider">Old API</h4>
@@ -871,6 +1050,13 @@ function RawDataSection({ perId }) {
                     {JSON.stringify(r.newData, null, 2)}
                   </pre>
                 </div>
+              </div>
+            )}
+            {expandedId === r.id && !r.error && resultsType !== 'compare' && (
+              <div className="mt-2 ml-4">
+                <pre className="p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs text-cyan-400 overflow-x-auto max-h-64 overflow-y-auto">
+                  {JSON.stringify(r.data, null, 2)}
+                </pre>
               </div>
             )}
             {expandedId === r.id && r.error && (
