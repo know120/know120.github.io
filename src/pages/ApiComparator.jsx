@@ -124,16 +124,21 @@ function buildApiConfig(form) {
 }
 
 async function callApi(config, id) {
-  const url = fillTemplate(config.url, id);
+  const rawUrl = fillTemplate(config.url, id);
   const method = (config.method || 'GET').toUpperCase();
-  const headers = { ...(config.headers || {}) };
-  const params = config.params || {};
 
-  const urlObj = new URL(url);
-  for (const [k, v] of Object.entries(params)) {
-    urlObj.searchParams.set(k, fillTemplate(String(v), id));
+  let fullUrl;
+  try {
+    const urlObj = new URL(rawUrl);
+    for (const [k, v] of Object.entries(config.params || {})) {
+      urlObj.searchParams.set(k, fillTemplate(String(v), id));
+    }
+    fullUrl = urlObj.toString();
+  } catch {
+    throw new Error(`Invalid URL: "${rawUrl}". Make sure the URL starts with http:// or https://`);
   }
 
+  const headers = { ...(config.headers || {}) };
   const fetchOptions = { method, headers };
   if (method === 'POST' || method === 'PUT' || method === 'PATCH') {
     if (config.body) {
@@ -144,9 +149,33 @@ async function callApi(config, id) {
     }
   }
 
-  const res = await fetch(urlObj.toString(), fetchOptions);
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-  return res.json();
+  const controller = new AbortController();
+  fetchOptions.signal = controller.signal;
+  const timeout = setTimeout(() => controller.abort(), 30000);
+
+  try {
+    const res = await fetch(fullUrl, fetchOptions);
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    return res.json();
+  } catch (err) {
+    clearTimeout(timeout);
+    if (err.name === 'AbortError') {
+      throw new Error(`Request timed out after 30s: ${method} ${fullUrl}`);
+    }
+    if (err.message === 'Failed to fetch' || err.message.includes('NetworkError')) {
+      throw new Error(
+        `Network error: ${method} ${fullUrl}\n\n` +
+        `Possible causes:\n` +
+        `• CORS — the API server does not allow cross-origin requests from this site\n` +
+        `• The server is unreachable or DNS resolution failed\n` +
+        `• The URL is incorrect or missing a protocol (http:// or https://)\n\n` +
+        `Tip: If this works in Postman/Insomnia but not here, it is likely a CORS issue. ` +
+        `The API server needs to include CORS headers (Access-Control-Allow-Origin: *) in its response.`
+      );
+    }
+    throw err;
+  }
 }
 
 function applyFieldMappings(data, mappings) {
@@ -453,9 +482,9 @@ export default function ApiComparator() {
 
           {error && (
             <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20">
-              <div className="flex items-center gap-2 text-red-400">
-                <i className="pi pi-exclamation-circle"></i>
-                <span>{error}</span>
+              <div className="flex items-start gap-2 text-red-400">
+                <i className="pi pi-exclamation-circle mt-0.5"></i>
+                <span className="whitespace-pre-wrap">{error}</span>
               </div>
             </div>
           )}
@@ -1113,7 +1142,7 @@ function SingleApiResults({ perId, renderValue }) {
           {expandedId === r.id && (
             <div className="mt-4">
               {r.error ? (
-                <div className="p-3 rounded-lg bg-red-500/10 text-red-400 text-sm">{r.error}</div>
+                <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm whitespace-pre-wrap">{r.error}</div>
               ) : (
                 <pre className="p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs text-cyan-400 overflow-x-auto max-h-96 overflow-y-auto">
                   {JSON.stringify(r.data, null, 2)}
@@ -1161,7 +1190,7 @@ function PerIdCard({ result, renderValue }) {
       {expanded && (
         <div className="mt-4 space-y-3">
           {result.error && (
-            <div className="p-3 rounded-lg bg-red-500/10 text-red-400 text-sm">
+            <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm whitespace-pre-wrap">
               {result.error}
             </div>
           )}
@@ -1262,7 +1291,7 @@ function RawDataSection({ perId, resultsType }) {
               </div>
             )}
             {expandedId === r.id && r.error && (
-              <div className="mt-2 ml-4 p-3 rounded-lg bg-red-500/10 text-red-400 text-sm">
+              <div className="mt-2 ml-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm whitespace-pre-wrap">
                 {r.error}
               </div>
             )}
