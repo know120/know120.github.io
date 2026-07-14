@@ -215,10 +215,17 @@ function downloadJson(data, filename) {
   URL.revokeObjectURL(url);
 }
 
+function defaultHeaders() {
+  return [
+    { key: 'Content-Type', value: 'application/json', enabled: true },
+    { key: 'Accept', value: 'application/json', enabled: true },
+  ];
+}
+
 const defaultForm = {
   url: '',
   method: 'GET',
-  headers: [emptyRow()],
+  headers: defaultHeaders(),
   params: [emptyRow()],
   body: '',
 };
