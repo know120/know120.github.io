@@ -4,8 +4,11 @@ import {
   getAllBills,
   getBill,
   addItems,
+  removeItem,
   addFriends,
   removeFriend,
+  updateFriendAmount,
+  editBillDetails,
   buildPaymentLink,
   deleteBill,
   updateBill,
@@ -33,6 +36,9 @@ export default function SplitBill() {
   const [itemForm, setItemForm] = useState({ name: '', price: '', quantity: 1 });
   const [friendForm, setFriendForm] = useState({ name: '', email: '' });
   const [copiedLinkId, setCopiedLinkId] = useState(null);
+  const [editingBill, setEditingBill] = useState(false);
+  const [editForm, setEditForm] = useState({ restaurantName: '', tax: '', tip: '' });
+  const [customAmounts, setCustomAmounts] = useState({});
 
   useEffect(() => {
     setBills(getAllBills());
@@ -65,6 +71,11 @@ export default function SplitBill() {
     refresh();
   };
 
+  const handleRemoveItem = (itemId) => {
+    removeItem(activeBillId, itemId);
+    refresh();
+  };
+
   const handleAddFriend = (e) => {
     e.preventDefault();
     if (!friendForm.name.trim()) return;
@@ -73,13 +84,51 @@ export default function SplitBill() {
     refresh();
   };
 
-  const handleRecalculate = () => {
+  const handleSplitMethodChange = (method) => {
+    updateBill(activeBillId, { splitMethod: method });
+    if (method === 'equal') {
+      const bill = getBill(activeBillId);
+      const recalculated = calculateSplitAmounts({ ...bill, friends: bill.friends }, 'equal');
+      updateBill(activeBillId, { friends: recalculated });
+      setCustomAmounts({});
+    } else {
+      const bill = getBill(activeBillId);
+      const amounts = {};
+      bill.friends.forEach((f) => { amounts[f.id] = f.amountOwed.toString(); });
+      setCustomAmounts(amounts);
+    }
+    refresh();
+  };
+
+  const handleCustomAmountChange = (friendId, value) => {
+    setCustomAmounts((prev) => ({ ...prev, [friendId]: value }));
+  };
+
+  const handleCustomAmountBlur = (friendId) => {
+    const val = parseFloat(customAmounts[friendId]);
+    if (!isNaN(val) && val >= 0) {
+      updateFriendAmount(activeBillId, friendId, val);
+      refresh();
+    }
+  };
+
+  const handleStartEditBill = () => {
     if (!activeBill) return;
-    const recalculated = calculateSplitAmounts(
-      { ...activeBill, friends: activeBill.friends },
-      activeBill.splitMethod
-    );
-    updateBill(activeBillId, { friends: recalculated });
+    setEditForm({
+      restaurantName: activeBill.restaurantName,
+      tax: activeBill.tax.toString(),
+      tip: activeBill.tip.toString(),
+    });
+    setEditingBill(true);
+  };
+
+  const handleSaveBillEdit = () => {
+    editBillDetails(activeBillId, {
+      restaurantName: editForm.restaurantName,
+      tax: parseFloat(editForm.tax) || 0,
+      tip: parseFloat(editForm.tip) || 0,
+    });
+    setEditingBill(false);
     refresh();
   };
 
@@ -178,16 +227,28 @@ export default function SplitBill() {
 
   if (view === 'detail' && activeBill) {
     const allPaid = activeBill.friends.length > 0 && activeBill.friends.every((f) => f.status === 'paid');
+    const isUnequal = activeBill.splitMethod === 'custom';
+    const splitTotal = activeBill.friends.reduce((sum, f) => sum + f.amountOwed, 0);
+    const splitDiffers = Math.abs(splitTotal - activeBill.total) > 0.01;
 
     return (
       <div className="min-h-screen bg-gray-900 text-white p-6">
         <div className="max-w-4xl mx-auto">
-          <button onClick={() => { setView('list'); setActiveBillId(null); }} className="text-gray-400 hover:text-white mb-4 text-sm">
+          <button onClick={() => { setView('list'); setActiveBillId(null); setEditingBill(false); }} className="text-gray-400 hover:text-white mb-4 text-sm">
             &larr; Back to bills
           </button>
 
           <div className="flex items-center gap-3 mb-6">
-            <h1 className="text-3xl font-bold">{activeBill.restaurantName}</h1>
+            {editingBill ? (
+              <input
+                type="text"
+                value={editForm.restaurantName}
+                onChange={(e) => setEditForm({ ...editForm, restaurantName: e.target.value })}
+                className="text-3xl font-bold bg-gray-700 rounded-lg px-3 py-1 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            ) : (
+              <h1 className="text-3xl font-bold">{activeBill.restaurantName}</h1>
+            )}
             <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[activeBill.status] || ''}`}>
               {activeBill.status}
             </span>
@@ -201,7 +262,18 @@ export default function SplitBill() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Items Section */}
             <div className="bg-gray-800 rounded-xl p-6">
-              <h2 className="text-xl font-semibold mb-4">Order Items</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">Order Items</h2>
+                {editingBill ? (
+                  <div className="flex gap-2">
+                    <button onClick={handleSaveBillEdit} className="text-green-400 hover:text-green-300 text-sm font-medium">Save</button>
+                    <button onClick={() => setEditingBill(false)} className="text-gray-400 hover:text-white text-sm">Cancel</button>
+                  </div>
+                ) : (
+                  <button onClick={handleStartEditBill} className="text-indigo-400 hover:text-indigo-300 text-sm font-medium">Edit Bill</button>
+                )}
+              </div>
+
               <form onSubmit={handleAddItem} className="flex gap-2 mb-4">
                 <input
                   type="text"
@@ -242,7 +314,10 @@ export default function SplitBill() {
                       <span className="text-sm">
                         {item.quantity > 1 ? `${item.quantity}x ` : ''}{item.name}
                       </span>
-                      <span className="text-sm text-gray-300">${(item.price * item.quantity).toFixed(2)}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm text-gray-300">${(item.price * item.quantity).toFixed(2)}</span>
+                        <button onClick={() => handleRemoveItem(item.id)} className="text-red-400 hover:text-red-300 text-xs">X</button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -253,17 +328,46 @@ export default function SplitBill() {
                   <span>Subtotal</span>
                   <span>${activeBill.subtotal.toFixed(2)}</span>
                 </div>
-                {activeBill.tax > 0 && (
-                  <div className="flex justify-between text-gray-400">
-                    <span>Tax</span>
-                    <span>${activeBill.tax.toFixed(2)}</span>
-                  </div>
-                )}
-                {activeBill.tip > 0 && (
-                  <div className="flex justify-between text-gray-400">
-                    <span>Tip</span>
-                    <span>${activeBill.tip.toFixed(2)}</span>
-                  </div>
+                {editingBill ? (
+                  <>
+                    <div className="flex justify-between items-center text-gray-400">
+                      <span>Tax</span>
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={editForm.tax}
+                        onChange={(e) => setEditForm({ ...editForm, tax: e.target.value })}
+                        className="w-24 bg-gray-700 rounded px-2 py-1 text-white text-sm text-right focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                      />
+                    </div>
+                    <div className="flex justify-between items-center text-gray-400">
+                      <span>Tip</span>
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={editForm.tip}
+                        onChange={(e) => setEditForm({ ...editForm, tip: e.target.value })}
+                        className="w-24 bg-gray-700 rounded px-2 py-1 text-white text-sm text-right focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {activeBill.tax > 0 && (
+                      <div className="flex justify-between text-gray-400">
+                        <span>Tax</span>
+                        <span>${activeBill.tax.toFixed(2)}</span>
+                      </div>
+                    )}
+                    {activeBill.tip > 0 && (
+                      <div className="flex justify-between text-gray-400">
+                        <span>Tip</span>
+                        <span>${activeBill.tip.toFixed(2)}</span>
+                      </div>
+                    )}
+                  </>
                 )}
                 <div className="flex justify-between text-white font-bold text-lg pt-2">
                   <span>Total</span>
@@ -274,7 +378,24 @@ export default function SplitBill() {
 
             {/* Friends Section */}
             <div className="bg-gray-800 rounded-xl p-6">
-              <h2 className="text-xl font-semibold mb-4">Split With</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">Split With</h2>
+                <div className="flex bg-gray-700 rounded-lg p-0.5">
+                  <button
+                    onClick={() => handleSplitMethodChange('equal')}
+                    className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${!isUnequal ? 'bg-indigo-600 text-white' : 'text-gray-400 hover:text-white'}`}
+                  >
+                    Equal
+                  </button>
+                  <button
+                    onClick={() => handleSplitMethodChange('custom')}
+                    className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${isUnequal ? 'bg-indigo-600 text-white' : 'text-gray-400 hover:text-white'}`}
+                  >
+                    Unequal
+                  </button>
+                </div>
+              </div>
+
               <form onSubmit={handleAddFriend} className="flex gap-2 mb-4">
                 <input
                   type="text"
@@ -331,21 +452,50 @@ export default function SplitBill() {
                           </button>
                         </div>
                       </div>
-                      <div className="text-lg font-bold text-indigo-300">
-                        ${friend.amountOwed.toFixed(2)}
-                      </div>
+                      {isUnequal ? (
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-gray-400">$</span>
+                          <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value={customAmounts[friend.id] ?? friend.amountOwed}
+                            onChange={(e) => handleCustomAmountChange(friend.id, e.target.value)}
+                            onBlur={() => handleCustomAmountBlur(friend.id)}
+                            className="w-24 bg-gray-600 rounded px-2 py-1 text-lg font-bold text-indigo-300 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                          />
+                        </div>
+                      ) : (
+                        <div className="text-lg font-bold text-indigo-300">
+                          ${friend.amountOwed.toFixed(2)}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
               )}
 
+              {isUnequal && activeBill.friends.length > 0 && (
+                <div className={`mt-3 text-sm ${splitDiffers ? 'text-red-400' : 'text-green-400'}`}>
+                  Split total: ${splitTotal.toFixed(2)} / ${activeBill.total.toFixed(2)}
+                  {splitDiffers && ' (does not match)'}
+                </div>
+              )}
+
               <div className="mt-4 space-y-2">
-                <button
-                  onClick={handleRecalculate}
-                  className="w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg text-sm transition-colors"
-                >
-                  Recalculate Split
-                </button>
+                {!isUnequal && (
+                  <button
+                    onClick={() => {
+                      const bill = getBill(activeBillId);
+                      const recalculated = calculateSplitAmounts({ ...bill, friends: bill.friends }, 'equal');
+                      updateBill(activeBillId, { friends: recalculated });
+                      refresh();
+                    }}
+                    className="w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg text-sm transition-colors"
+                  >
+                    Recalculate Split
+                  </button>
+                )}
                 <button
                   onClick={() => { handleDelete(activeBillId); }}
                   className="w-full bg-red-600/20 hover:bg-red-600/40 text-red-300 py-2 rounded-lg text-sm transition-colors"

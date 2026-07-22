@@ -3,6 +3,7 @@ import {
   createOrderItem,
   createFriend,
   calculateSplitAmounts,
+  recalcTotal,
   getBillStatus,
 } from '../utils/splitBillModel';
 
@@ -94,9 +95,41 @@ export const addItems = (billId, items) => {
 
   const newItems = items.map((i) => createOrderItem(i));
   const updatedItems = [...bill.items, ...newItems];
-  const subtotal = updatedItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const { subtotal, total } = recalcTotal(updatedItems, bill.tax, bill.tip);
 
-  return updateBill(billId, { items: updatedItems, subtotal, total: subtotal + bill.tax + bill.tip });
+  return updateBill(billId, { items: updatedItems, subtotal, total });
+};
+
+export const removeItem = (billId, itemId) => {
+  const bill = getBill(billId);
+  if (!bill) return null;
+
+  const updatedItems = bill.items.filter((i) => i.id !== itemId);
+  const { subtotal, total } = recalcTotal(updatedItems, bill.tax, bill.tip);
+
+  return updateBill(billId, { items: updatedItems, subtotal, total });
+};
+
+export const updateFriendAmount = (billId, friendId, amount) => {
+  const bill = getBill(billId);
+  if (!bill) return null;
+
+  const updatedFriends = bill.friends.map((f) =>
+    f.id === friendId ? { ...f, amountOwed: Math.round(amount * 100) / 100 } : f
+  );
+
+  return updateBill(billId, { friends: updatedFriends });
+};
+
+export const editBillDetails = (billId, updates) => {
+  const bill = getBill(billId);
+  if (!bill) return null;
+
+  const newTax = updates.tax !== undefined ? updates.tax : bill.tax;
+  const newTip = updates.tip !== undefined ? updates.tip : bill.tip;
+  const { subtotal, total } = recalcTotal(bill.items, newTax, newTip);
+
+  return updateBill(billId, { ...updates, subtotal, total });
 };
 
 export const addFriends = (billId, friends) => {
