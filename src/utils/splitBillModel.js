@@ -100,7 +100,12 @@ export const calculateSplitAmounts = (bill, method = 'equal') => {
     return friends.map((f) => ({ ...f, amountOwed: Math.round(share * 100) / 100 }));
   }
 
-  return friends;
+  return friends.map((f) => ({ ...f, amountOwed: Math.round((f.amountOwed || 0) * 100) / 100 }));
+};
+
+export const recalcTotal = (items, tax = 0, tip = 0) => {
+  const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  return { subtotal, total: subtotal + tax + tip };
 };
 
 export const validateSplitBill = (bill) => {
