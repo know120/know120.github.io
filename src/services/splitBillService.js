@@ -95,7 +95,7 @@ export const addItems = (billId, items) => {
 
   const newItems = items.map((i) => createOrderItem(i));
   const updatedItems = [...bill.items, ...newItems];
-  const { subtotal, total } = recalcTotal(updatedItems, bill.tax, bill.tip);
+  const { subtotal, total } = recalcTotal(updatedItems);
 
   return updateBill(billId, { items: updatedItems, subtotal, total });
 };
@@ -105,7 +105,7 @@ export const removeItem = (billId, itemId) => {
   if (!bill) return null;
 
   const updatedItems = bill.items.filter((i) => i.id !== itemId);
-  const { subtotal, total } = recalcTotal(updatedItems, bill.tax, bill.tip);
+  const { subtotal, total } = recalcTotal(updatedItems);
 
   return updateBill(billId, { items: updatedItems, subtotal, total });
 };
@@ -125,9 +125,7 @@ export const editBillDetails = (billId, updates) => {
   const bill = getBill(billId);
   if (!bill) return null;
 
-  const newTax = updates.tax !== undefined ? updates.tax : bill.tax;
-  const newTip = updates.tip !== undefined ? updates.tip : bill.tip;
-  const { subtotal, total } = recalcTotal(bill.items, newTax, newTip);
+  const { subtotal, total } = recalcTotal(bill.items);
 
   return updateBill(billId, { ...updates, subtotal, total });
 };
