@@ -30,14 +30,12 @@ export default function SplitBill() {
     hostName: '',
     hostEmail: '',
     restaurantName: '',
-    tax: '',
-    tip: '',
   });
   const [itemForm, setItemForm] = useState({ name: '', price: '', quantity: 1 });
   const [friendForm, setFriendForm] = useState({ name: '', email: '' });
   const [copiedLinkId, setCopiedLinkId] = useState(null);
   const [editingBill, setEditingBill] = useState(false);
-  const [editForm, setEditForm] = useState({ restaurantName: '', tax: '', tip: '' });
+  const [editForm, setEditForm] = useState({ restaurantName: '' });
   const [customAmounts, setCustomAmounts] = useState({});
 
   useEffect(() => {
@@ -52,11 +50,7 @@ export default function SplitBill() {
 
   const handleCreateBill = (e) => {
     e.preventDefault();
-    const bill = createBill({
-      ...form,
-      tax: parseFloat(form.tax) || 0,
-      tip: parseFloat(form.tip) || 0,
-    });
+    const bill = createBill({ ...form });
     setActiveBillId(bill.id);
     setView('detail');
     refresh();
@@ -114,20 +108,12 @@ export default function SplitBill() {
 
   const handleStartEditBill = () => {
     if (!activeBill) return;
-    setEditForm({
-      restaurantName: activeBill.restaurantName,
-      tax: activeBill.tax.toString(),
-      tip: activeBill.tip.toString(),
-    });
+    setEditForm({ restaurantName: activeBill.restaurantName });
     setEditingBill(true);
   };
 
   const handleSaveBillEdit = () => {
-    editBillDetails(activeBillId, {
-      restaurantName: editForm.restaurantName,
-      tax: parseFloat(editForm.tax) || 0,
-      tip: parseFloat(editForm.tip) || 0,
-    });
+    editBillDetails(activeBillId, { restaurantName: editForm.restaurantName });
     setEditingBill(false);
     refresh();
   };
@@ -188,30 +174,6 @@ export default function SplitBill() {
                 className="w-full bg-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 required
               />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm text-gray-400 mb-1">Tax ($)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={form.tax}
-                  onChange={(e) => setForm({ ...form, tax: e.target.value })}
-                  className="w-full bg-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm text-gray-400 mb-1">Tip ($)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={form.tip}
-                  onChange={(e) => setForm({ ...form, tip: e.target.value })}
-                  className="w-full bg-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
             </div>
             <button
               type="submit"
@@ -328,47 +290,6 @@ export default function SplitBill() {
                   <span>Subtotal</span>
                   <span>${activeBill.subtotal.toFixed(2)}</span>
                 </div>
-                {editingBill ? (
-                  <>
-                    <div className="flex justify-between items-center text-gray-400">
-                      <span>Tax</span>
-                      <input
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        value={editForm.tax}
-                        onChange={(e) => setEditForm({ ...editForm, tax: e.target.value })}
-                        className="w-24 bg-gray-700 rounded px-2 py-1 text-white text-sm text-right focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                      />
-                    </div>
-                    <div className="flex justify-between items-center text-gray-400">
-                      <span>Tip</span>
-                      <input
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        value={editForm.tip}
-                        onChange={(e) => setEditForm({ ...editForm, tip: e.target.value })}
-                        className="w-24 bg-gray-700 rounded px-2 py-1 text-white text-sm text-right focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    {activeBill.tax > 0 && (
-                      <div className="flex justify-between text-gray-400">
-                        <span>Tax</span>
-                        <span>${activeBill.tax.toFixed(2)}</span>
-                      </div>
-                    )}
-                    {activeBill.tip > 0 && (
-                      <div className="flex justify-between text-gray-400">
-                        <span>Tip</span>
-                        <span>${activeBill.tip.toFixed(2)}</span>
-                      </div>
-                    )}
-                  </>
-                )}
                 <div className="flex justify-between text-white font-bold text-lg pt-2">
                   <span>Total</span>
                   <span>${activeBill.total.toFixed(2)}</span>

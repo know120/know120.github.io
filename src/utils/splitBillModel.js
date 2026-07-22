@@ -31,8 +31,6 @@
  * @property {string} restaurantName
  * @property {OrderItem[]} items
  * @property {number} subtotal
- * @property {number} tax
- * @property {number} tip
  * @property {number} total
  * @property {string} splitMethod - 'equal' | 'custom' | 'by-item'
  * @property {Friend[]} friends
@@ -79,8 +77,6 @@ export const createSplitBill = (data = {}) => {
     restaurantName: data.restaurantName || '',
     items: data.items || [],
     subtotal: data.subtotal || 0,
-    tax: data.tax || 0,
-    tip: data.tip || 0,
     total: data.total || 0,
     splitMethod: data.splitMethod || 'equal',
     friends: data.friends || [],
@@ -103,9 +99,9 @@ export const calculateSplitAmounts = (bill, method = 'equal') => {
   return friends.map((f) => ({ ...f, amountOwed: Math.round((f.amountOwed || 0) * 100) / 100 }));
 };
 
-export const recalcTotal = (items, tax = 0, tip = 0) => {
+export const recalcTotal = (items) => {
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
-  return { subtotal, total: subtotal + tax + tip };
+  return { subtotal, total: subtotal };
 };
 
 export const validateSplitBill = (bill) => {
