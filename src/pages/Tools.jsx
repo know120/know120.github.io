@@ -33,6 +33,9 @@ export default function Tools() {
         <Button text="API Comparator"
           onClick={() => window.location.href = '/#/tools/api-comparator'} />
 
+        <Button text="Split Bill"
+          onClick={() => window.location.href = '/#/tools/split-bill'} />
+
       </div>
     </div>
   )
