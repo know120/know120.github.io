@@ -1,6 +1,7 @@
 import { Suspense, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { LayoutProvider } from './contexts/LayoutContext';
 import { HelmetProvider } from 'react-helmet-async';
 import Router from './router';
 
@@ -14,16 +15,18 @@ function App() {
   return (
     <HelmetProvider>
       <ThemeProvider>
-        <div className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen min-w-screen">
-          <Suspense fallback={
-            <div className="flex flex-col items-center justify-center h-screen">
-              <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
-              <p className="mt-4 text-lg">Loading...</p>
-            </div>
-          }>
-            <Router />
-          </Suspense>
-        </div>
+        <LayoutProvider>
+          <div className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen min-w-screen">
+            <Suspense fallback={
+              <div className="flex flex-col items-center justify-center h-screen">
+                <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+                <p className="mt-4 text-lg">Loading...</p>
+              </div>
+            }>
+              <Router />
+            </Suspense>
+          </div>
+        </LayoutProvider>
       </ThemeProvider>
     </HelmetProvider>
   );

@@ -1,5 +1,6 @@
 import GlowingLine from "./common/GlowingLine";
 import ProjectCard from "./ProjectCard";
+import { useLayout } from '../contexts/LayoutContext';
 
 const projects = [
     {
@@ -24,34 +25,132 @@ const projects = [
       duration: '6 months',
       teamSize: '4 developers'
     },
-    // {
-    //   title: 'Budget Evaluation System',
-    //   description: 'Full-stack web application for budget management built with Angular, .NET Framework, and SQL Server.',
-    //   technologies: ['Angular 7', 'TypeScript', '.NET Framework', 'SQL Server', 'Bootstrap'],
-    //   image: 'https://via.placeholder.com/400x200/a855f7/ffffff?text=Budget+System',
-    //   features: ['Budget tracking', 'Financial reports', 'User management', 'Dashboard analytics'],
-    //   duration: '8 months',
-    //   teamSize: '2 developers'
-    // },
-    // {
-    //   title: 'Speed Detection System',
-    //   description: 'Over-speed detection system using C++ and OpenCV with TCP connection for real-time vehicle monitoring.',
-    //   technologies: ['C++', 'OpenCV', 'TCP/IP', 'Computer Vision'],
-    //   image: 'https://via.placeholder.com/400x200/06b6d4/ffffff?text=Speed+Detection',
-    //   liveDemo: null,
-    //   github: 'https://github.com/know120/speed-detection-system',
-    //   features: [
-    //     'Real-time speed calculation',
-    //     'Automatic image capture',
-    //     'TCP server communication',
-    //     'Alert system integration'
-    //   ],
-    //   duration: '6 months',
-    //   teamSize: '3 developers'
-    // }
   ];
 
 const Projects = () => {
+    const { layout } = useLayout();
+
+    if (layout === 'neon') {
+        return (
+            <section id="projects" className="py-10 bg-[#0d0221]/50">
+                <div className="section-container">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                            <span className="text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-cyan-400">Featured Projects</span>
+                        </h2>
+                        <p className="text-slate-400 max-w-2xl mx-auto">
+                            A selection of projects that demonstrate my skills and passion for building impactful solutions.
+                        </p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {projects.map((project, index) => (
+                            <div key={index} className="border border-pink-500/30 bg-[#0d0221] p-6 shadow-[0_0_20px_rgba(255,0,255,0.1)] hover:shadow-[0_0_30px_rgba(255,0,255,0.2)] transition-shadow">
+                                <div className="flex items-center justify-between mb-3">
+                                    <h3 className="text-xl font-bold text-white">{project.title}</h3>
+                                    <span className="text-xs text-cyan-400">{project.duration}</span>
+                                </div>
+                                <p className="text-slate-400 text-sm mb-4">{project.description}</p>
+                                <div className="flex flex-wrap gap-2 mb-4">
+                                    {project.technologies.map((tech, i) => (
+                                        <span key={i} className="text-xs px-2 py-1 border border-cyan-400/30 text-cyan-300">{tech}</span>
+                                    ))}
+                                </div>
+                                <div className="flex flex-wrap gap-2 mb-4">
+                                    {project.features.map((f, i) => (
+                                        <div key={i} className="flex items-center text-xs text-pink-300/70">
+                                            <span className="mr-1">✦</span> {f}
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="flex gap-3 pt-2 border-t border-pink-500/20">
+                                    {project.liveDemo && (
+                                        <a href={project.liveDemo} target="_blank" rel="noopener noreferrer"
+                                            className="px-4 py-1.5 text-xs border border-pink-500/50 text-pink-300 hover:bg-pink-500/10 transition-colors">
+                                            Live Demo
+                                        </a>
+                                    )}
+                                    {project.github && (
+                                        <a href={project.github} target="_blank" rel="noopener noreferrer"
+                                            className="px-4 py-1.5 text-xs border border-cyan-400/50 text-cyan-300 hover:bg-cyan-400/10 transition-colors">
+                                            Code
+                                        </a>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    if (layout === 'terminal') {
+        return (
+            <section id="projects" className="py-10 bg-slate-950/50">
+                <div className="section-container">
+                    <div className="max-w-4xl mx-auto font-mono">
+                        <p className="text-green-500 mb-6">
+                            <span className="text-green-400">~/projects</span>$ <span className="text-green-300">find . -type f -name "*.featured"</span>
+                        </p>
+                        <div className="space-y-4">
+                            {projects.map((project, index) => (
+                                <div key={index} className="border border-green-500/20 rounded-xl p-5 hover:bg-green-500/5 transition-colors">
+                                    <div className="flex items-start justify-between mb-3">
+                                        <h3 className="text-green-300 font-bold text-lg">[{project.title}]</h3>
+                                        <span className="text-xs text-green-500/50">{project.duration}</span>
+                                    </div>
+                                    <p className="text-green-300/60 text-sm mb-3">{project.description}</p>
+                                    <div className="flex flex-wrap gap-2 mb-3">
+                                        {project.technologies.map((tech, i) => (
+                                            <span key={i} className="text-xs text-green-400/70 bg-green-500/10 px-2 py-1 rounded">{tech}</span>
+                                        ))}
+                                    </div>
+                                    <div className="flex gap-3">
+                                        {project.liveDemo && <a href={project.liveDemo} target="_blank" rel="noopener noreferrer" className="text-xs text-green-400 hover:text-green-300 transition-colors"><i className="pi pi-external-link mr-1"></i> demo</a>}
+                                        {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-xs text-green-400 hover:text-green-300 transition-colors"><i className="pi pi-github mr-1"></i> source</a>}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    if (layout === '90s') {
+        return (
+            <section id="projects" className="py-10 bg-[#1a0a2e]/50">
+                <div className="section-container">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl md:text-4xl font-bold text-yellow-300 font-mono" style={{textShadow: '3px 3px 0 #ff00ff'}}>
+                            ╔══ Projects ══╗
+                        </h2>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {projects.map((project, index) => (
+                            <div key={index} className="border-4 border-orange-400 bg-[#1a0a2e] p-5 shadow-[8px_8px_0_rgba(255,102,0,0.3)]">
+                                <div className="flex items-center justify-between mb-3 border-b-2 border-dashed border-cyan-400 pb-2">
+                                    <h3 className="text-lime-300 font-bold text-lg">{project.title}</h3>
+                                    <span className="text-xs text-pink-400 font-mono">{project.duration}</span>
+                                </div>
+                                <p className="text-yellow-200/70 text-sm mb-3">{project.description}</p>
+                                <div className="flex flex-wrap gap-1.5 mb-3">
+                                    {project.technologies.map((tech, i) => (
+                                        <span key={i} className="text-xs text-cyan-300 bg-cyan-900/30 px-2 py-0.5 font-mono">{tech}</span>
+                                    ))}
+                                </div>
+                                <div className="flex gap-3 pt-2 border-t-2 border-dashed border-purple-500/40">
+                                    {project.liveDemo && <a href={project.liveDemo} target="_blank" rel="noopener noreferrer" className="text-xs text-orange-400 hover:text-orange-300 font-mono">[ Demo ]</a>}
+                                    {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-xs text-cyan-400 hover:text-cyan-300 font-mono">[ Source ]</a>}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section id="projects" className="py-10 bg-slate-900/50">
@@ -66,7 +165,7 @@ const Projects = () => {
                     </p>
                 </div>
 
-                <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 transition-all duration-1000 opacity-100 translate-y-0`}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {projects.map((project, index) => (
                         <div key={`project-${index}`} className="h-full">
                             <ProjectCard project={project} />
@@ -75,12 +174,8 @@ const Projects = () => {
                 </div>
 
                 <div className="mt-12 text-center">
-                    <a
-                        href="https://github.com/know120"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-600 hover:border-indigo-500 hover:text-indigo-400 transition-colors"
-                    >
+                    <a href="https://github.com/know120" target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-600 hover:border-indigo-500 hover:text-indigo-400 transition-colors">
                         <i className="pi pi-github"></i>
                         <span>View More on GitHub</span>
                     </a>
