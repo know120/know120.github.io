@@ -15,40 +15,6 @@ const Contact = () => {
         { href: 'https://github.com/know120', icon: 'pi-github', label: 'GitHub' }
     ];
 
-    if (layout === 'neon') {
-        return (
-            <section id="contact" className="py-20">
-                <div className="section-container">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                            <span className="text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-cyan-400">Get In Touch</span>
-                        </h2>
-                        <p className="text-slate-400 max-w-2xl mx-auto">
-                            Have a project in mind or just want to say hi?
-                        </p>
-                    </div>
-                    <div className="max-w-2xl mx-auto">
-                        <div className="border border-pink-500/30 bg-[#0d0221] p-8 shadow-[0_0_20px_rgba(255,0,255,0.1)]">
-                            <ContactForm />
-                        </div>
-                    </div>
-                    <div className="mt-12 pt-8 border-t border-pink-500/20">
-                        <div className="flex justify-center gap-6 mb-6">
-                            {socialLinks.map((link, index) => (
-                                <a key={index} href={link.href} target="_blank" rel="noopener noreferrer"
-                                    className="w-10 h-10 flex items-center justify-center border border-pink-500/30 text-pink-400 hover:bg-pink-500/10 hover:shadow-[0_0_15px_rgba(255,0,255,0.3)] transition-all"
-                                    aria-label={link.label}>
-                                    <i className={`pi ${link.icon}`}></i>
-                                </a>
-                            ))}
-                        </div>
-                        <p className="text-slate-500 text-sm text-center">© {currentYear} Sujay Halder</p>
-                    </div>
-                </div>
-            </section>
-        );
-    }
-
     if (layout === 'terminal') {
         return (
             <section id="contact" className="py-20">

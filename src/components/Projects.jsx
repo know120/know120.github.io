@@ -30,60 +30,6 @@ const projects = [
 const Projects = () => {
     const { layout } = useLayout();
 
-    if (layout === 'neon') {
-        return (
-            <section id="projects" className="py-10 bg-[#0d0221]/50">
-                <div className="section-container">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                            <span className="text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-cyan-400">Featured Projects</span>
-                        </h2>
-                        <p className="text-slate-400 max-w-2xl mx-auto">
-                            A selection of projects that demonstrate my skills and passion for building impactful solutions.
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {projects.map((project, index) => (
-                            <div key={index} className="border border-pink-500/30 bg-[#0d0221] p-6 shadow-[0_0_20px_rgba(255,0,255,0.1)] hover:shadow-[0_0_30px_rgba(255,0,255,0.2)] transition-shadow">
-                                <div className="flex items-center justify-between mb-3">
-                                    <h3 className="text-xl font-bold text-white">{project.title}</h3>
-                                    <span className="text-xs text-cyan-400">{project.duration}</span>
-                                </div>
-                                <p className="text-slate-400 text-sm mb-4">{project.description}</p>
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    {project.technologies.map((tech, i) => (
-                                        <span key={i} className="text-xs px-2 py-1 border border-cyan-400/30 text-cyan-300">{tech}</span>
-                                    ))}
-                                </div>
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    {project.features.map((f, i) => (
-                                        <div key={i} className="flex items-center text-xs text-pink-300/70">
-                                            <span className="mr-1">✦</span> {f}
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="flex gap-3 pt-2 border-t border-pink-500/20">
-                                    {project.liveDemo && (
-                                        <a href={project.liveDemo} target="_blank" rel="noopener noreferrer"
-                                            className="px-4 py-1.5 text-xs border border-pink-500/50 text-pink-300 hover:bg-pink-500/10 transition-colors">
-                                            Live Demo
-                                        </a>
-                                    )}
-                                    {project.github && (
-                                        <a href={project.github} target="_blank" rel="noopener noreferrer"
-                                            className="px-4 py-1.5 text-xs border border-cyan-400/50 text-cyan-300 hover:bg-cyan-400/10 transition-colors">
-                                            Code
-                                        </a>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-        );
-    }
-
     if (layout === 'terminal') {
         return (
             <section id="projects" className="py-10 bg-slate-950/50">

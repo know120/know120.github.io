@@ -11,7 +11,6 @@ import { useLayout } from '../contexts/LayoutContext';
 const pageConfig = {
   classic: { pageClass: 'min-h-screen bg-slate-900 text-slate-50', bodyBg: '#0f172a' },
   terminal: { pageClass: 'min-h-screen bg-slate-950 text-green-400 font-mono', bodyBg: '#020617' },
-  neon: { pageClass: 'min-h-screen bg-slate-900 text-slate-50', bodyBg: '#0f172a' },
   '90s': { pageClass: 'min-h-screen bg-[#1a0a2e] text-yellow-300 font-mono', bodyBg: '#1a0a2e' },
 };
 

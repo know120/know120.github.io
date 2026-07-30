@@ -16,13 +16,6 @@ const navConfig = {
     logo: 'text-2xl font-bold text-green-400 hover:opacity-80 transition-opacity',
     hamburger: 'text-green-400 hover:text-green-300 hover:bg-green-500/10',
   },
-  neon: {
-    scrolled: 'bg-slate-900/90 backdrop-blur-md border border-white/10 shadow-lg shadow-indigo-500/10',
-    link: 'text-slate-300 hover:text-white hover:bg-white/5',
-    mobileBg: 'bg-slate-900/95 backdrop-blur-xl border border-white/10',
-    logo: 'text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-pink-400 to-cyan-400 hover:opacity-80 transition-opacity',
-    hamburger: 'text-slate-400 hover:text-white hover:bg-white/10',
-  },
   '90s': {
     scrolled: 'bg-[#1a0a2e]/90 backdrop-blur-md border-2 border-yellow-400/60 shadow-[8px_8px_0_rgba(255,0,255,0.3)]',
     link: 'text-yellow-200/80 hover:text-yellow-100 hover:bg-yellow-500/10',

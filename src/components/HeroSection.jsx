@@ -34,20 +34,16 @@ const HeroSection = () => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const isDark = layout === 'neon' || layout === '90s';
-
   const textContent = (
     <div className={`flex-1 text-center lg:text-left z-10 ${
       layout === '90s' ? 'font-mono' : ''
     }`}>
       <div className={`inline-block px-4 py-2 mb-6 rounded-full border backdrop-blur-sm ${
-        layout === 'neon' ? 'bg-pink-900/30 border-pink-500/30' :
         layout === '90s' ? 'bg-yellow-900/30 border-yellow-500/30' :
         layout === 'terminal' ? 'bg-green-900/30 border-green-500/30' :
         'bg-indigo-500/10 border-indigo-500/20'
       }`}>
         <span className={`font-medium ${
-          layout === 'neon' ? 'text-pink-400' :
           layout === '90s' ? 'text-yellow-400' :
           layout === 'terminal' ? 'text-green-400' :
           'text-indigo-400'
@@ -57,7 +53,6 @@ const HeroSection = () => {
       <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
         Hi, I'm <br />
         <span className={
-          layout === 'neon' ? 'text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-cyan-400' :
           layout === '90s' ? 'text-yellow-300 [text-shadow:2px_2px_0_#ff00ff]' :
           layout === 'terminal' ? 'text-green-400' :
           'heading-gradient'
@@ -65,13 +60,11 @@ const HeroSection = () => {
       </h1>
 
       <div className={`text-2xl md:text-3xl mb-8 h-[40px] ${
-        layout === 'neon' ? 'text-cyan-300' :
         layout === '90s' ? 'text-yellow-200' :
         layout === 'terminal' ? 'text-green-300' :
         'text-slate-300'
       }`}>
         <span className={`font-semibold ${
-          layout === 'neon' ? 'text-pink-400' :
           layout === '90s' ? 'text-orange-400' :
           layout === 'terminal' ? 'text-green-400' :
           'text-indigo-400'
@@ -80,7 +73,6 @@ const HeroSection = () => {
       </div>
 
       <p className={`text-lg mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed ${
-        layout === 'neon' ? 'text-slate-300' :
         layout === '90s' ? 'text-yellow-200/80 font-mono' :
         layout === 'terminal' ? 'text-green-300/70 font-mono' :
         'text-slate-400'
@@ -98,7 +90,6 @@ const HeroSection = () => {
       <div className="mt-12 flex items-center justify-center lg:justify-start gap-6">
         <a href="https://github.com/know120" target="_blank" rel="noopener noreferrer"
           className={`transition-colors transform hover:scale-110 ${
-            layout === 'neon' ? 'text-pink-400 hover:text-pink-300' :
             layout === '90s' ? 'text-yellow-400 hover:text-yellow-300' :
             layout === 'terminal' ? 'text-green-400 hover:text-green-300' :
             'text-slate-400 hover:text-white'
@@ -107,7 +98,6 @@ const HeroSection = () => {
         </a>
         <a href="https://www.linkedin.com/in/sujayhalder" target="_blank" rel="noopener noreferrer"
           className={`transition-colors transform hover:scale-110 ${
-            layout === 'neon' ? 'text-pink-400 hover:text-pink-300' :
             layout === '90s' ? 'text-yellow-400 hover:text-yellow-300' :
             layout === 'terminal' ? 'text-green-400 hover:text-green-300' :
             'text-slate-400 hover:text-white'
@@ -116,7 +106,6 @@ const HeroSection = () => {
         </a>
         <a href="https://twitter.com/TheSujayHalder" target="_blank" rel="noopener noreferrer"
           className={`transition-colors transform hover:scale-110 ${
-            layout === 'neon' ? 'text-pink-400 hover:text-pink-300' :
             layout === '90s' ? 'text-yellow-400 hover:text-yellow-300' :
             layout === 'terminal' ? 'text-green-400 hover:text-green-300' :
             'text-slate-400 hover:text-white'
@@ -131,17 +120,14 @@ const HeroSection = () => {
     <div className="flex-1 flex justify-center items-center relative">
       <div className="relative w-72 h-72 md:w-96 md:h-96">
         <div className={`absolute inset-0 rounded-full border-2 animate-[spin_10s_linear_infinite] ${
-          layout === 'neon' ? 'border-pink-500/30' :
           layout === '90s' ? 'border-yellow-500/50' :
           'border-indigo-500/30'
         }`}></div>
         <div className={`absolute inset-4 rounded-full border-2 animate-[spin_15s_linear_infinite_reverse] ${
-          layout === 'neon' ? 'border-cyan-400/30' :
           layout === '90s' ? 'border-orange-500/50' :
           'border-purple-500/30'
         }`}></div>
         <div className={`absolute inset-8 rounded-full overflow-hidden border-4 shadow-2xl ${
-          layout === 'neon' ? 'border-pink-800 shadow-pink-500/20' :
           layout === '90s' ? 'border-yellow-600 shadow-yellow-500/20' :
           'border-slate-800 shadow-indigo-500/20'
         }`}>
@@ -155,36 +141,6 @@ const HeroSection = () => {
       </div>
     </div>
   );
-
-  if (layout === 'neon') {
-    return (
-      <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-10">
-        <div className="absolute inset-0 bg-[#0d0221] -z-10"></div>
-        <div className="absolute inset-0 -z-10 opacity-10"
-          style={{
-            backgroundImage: 'linear-gradient(0deg, transparent 50%, #ff00ff20 50%)',
-            backgroundSize: '100% 40px'
-          }}
-        ></div>
-        <div className="absolute top-[10%] left-[5%] w-72 h-72 rounded-full bg-pink-600/10 blur-[100px] animate-pulse -z-10"></div>
-        <div className="absolute bottom-[10%] right-[5%] w-72 h-72 rounded-full bg-cyan-600/10 blur-[100px] animate-pulse -z-10" style={{ animationDelay: '1s' }}></div>
-        <div className="section-container w-full">
-          <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
-            {textContent}
-            <div className="flex-1 flex justify-center items-center relative">
-              <div className="relative w-72 h-72 md:w-96 md:h-96">
-                <div className="absolute inset-0 rounded-full border-2 border-pink-500/50 shadow-[0_0_30px_rgba(255,0,255,0.3)] animate-[spin_10s_linear_infinite]"></div>
-                <div className="absolute inset-4 rounded-full border-2 border-cyan-400/40 shadow-[0_0_20px_rgba(0,255,247,0.2)] animate-[spin_15s_linear_infinite_reverse]"></div>
-                <div className="absolute inset-8 rounded-full overflow-hidden border-4 border-pink-800 shadow-[0_0_40px_rgba(255,0,255,0.3)]">
-                  <img className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" src="assets/img/me.jpg" alt="Sujay Halder" loading="lazy" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   if (layout === 'terminal') {
     return (

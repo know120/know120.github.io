@@ -19,36 +19,6 @@ const Experience = () => {
         footer: 'August 2021 - July 2022'
     };
 
-    if (layout === 'neon') {
-        return (
-            <section id="about" className="py-10 relative">
-                <div className="section-container">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                            <span className="text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-cyan-400">Work Experience</span>
-                        </h2>
-                        <p className="text-slate-400 max-w-2xl mx-auto">
-                            My professional journey and the companies I've had the privilege to work with.
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {[expASL, expDSS].map((exp, i) => (
-                            <div key={i} className="border border-pink-500/30 bg-[#0d0221] p-6 shadow-[0_0_20px_rgba(255,0,255,0.1)] hover:shadow-[0_0_30px_rgba(255,0,255,0.2)] transition-shadow">
-                                <div className="flex items-center gap-2 mb-3">
-                                    <div className="w-2 h-2 rounded-full bg-pink-400 shadow-[0_0_6px_rgba(255,0,255,0.8)]"></div>
-                                    <span className="text-xs font-semibold text-cyan-400">{exp.footer}</span>
-                                </div>
-                                <h3 className="text-lg font-bold text-white mb-1">{exp.header}</h3>
-                                <p className="text-pink-400 text-sm font-semibold mb-3">{exp.title}</p>
-                                <p className="text-slate-400 text-sm leading-relaxed">{exp.body}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-        );
-    }
-
     if (layout === 'terminal') {
         return (
             <section id="about" className="py-10 relative">

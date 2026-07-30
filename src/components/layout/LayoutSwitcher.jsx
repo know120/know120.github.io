@@ -4,7 +4,6 @@ import { useLayout } from '../../contexts/LayoutContext';
 const layouts = [
   { id: 'classic', label: 'Classic', icon: 'pi pi-th-large' },
   { id: 'terminal', label: 'Terminal', icon: 'pi pi-code' },
-  { id: 'neon', label: 'Neon', icon: 'pi pi-bolt' },
   { id: '90s', label: '90s', icon: 'pi pi-star' },
 ];
 

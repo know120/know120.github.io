@@ -14,43 +14,6 @@ const Blog = () => {
         setLatestPosts(posts.slice(0, 3));
     }, []);
 
-    if (layout === 'neon') {
-        return (
-            <section id="blog" className="py-20 relative overflow-hidden bg-[#0d0221]/30">
-                <div className="section-container">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">
-                            <span className="text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-cyan-400">Latest Insights</span>
-                        </h2>
-                        <p className="text-slate-400 max-w-2xl mx-auto">
-                            Exploring the frontiers of web technology.
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {latestPosts.map((post) => (
-                            <Link key={post.slug} to={`/blog/${post.slug}`} className="group">
-                                <div className="border border-pink-500/30 bg-[#0d0221] p-5 h-full shadow-[0_0_15px_rgba(255,0,255,0.1)] hover:shadow-[0_0_25px_rgba(255,0,255,0.2)] transition-shadow">
-                                    <div className="flex items-center gap-2 text-xs text-cyan-400 mb-3">
-                                        <span>{post.date ? new Date(post.date).toLocaleDateString() : 'Recent'}</span>
-                                        <span>•</span>
-                                        <span>{post.readTime || '5 min'} read</span>
-                                    </div>
-                                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-pink-300 transition-colors">{post.title}</h3>
-                                    <p className="text-slate-400 text-sm line-clamp-3">{post.excerpt}</p>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                    <div className="mt-12 text-center">
-                        <Link to="/blog" className="inline-flex items-center gap-2 text-sm text-pink-400 hover:text-pink-300 transition-colors border border-pink-500/30 px-5 py-2 hover:bg-pink-500/10">
-                            View All Articles <i className="pi pi-arrow-right"></i>
-                        </Link>
-                    </div>
-                </div>
-            </section>
-        );
-    }
-
     if (layout === 'terminal') {
         return (
             <section id="blog" className="py-20 relative overflow-hidden bg-slate-950/30">
