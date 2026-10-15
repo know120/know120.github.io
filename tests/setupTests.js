@@ -1,4 +1,6 @@
-// Jest setup file for testing utilities
+// Vitest setup file for testing utilities
+
+import { vi, expect } from 'vitest';
 
 // Mock localStorage for all tests
 const localStorageMock = (() => {
@@ -30,7 +32,7 @@ Object.defineProperty(window, 'localStorage', {
 });
 
 // Mock Blob for storage calculations
-global.Blob = jest.fn().mockImplementation((data) => ({
+global.Blob = vi.fn().mockImplementation((data) => ({
   size: JSON.stringify(data).length
 }));
 
