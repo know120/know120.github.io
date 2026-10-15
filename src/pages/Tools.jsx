@@ -36,6 +36,9 @@ export default function Tools() {
         <Button text="Split Bill"
           onClick={() => window.location.href = '/#/tools/split-bill'} />
 
+        <Button text="Radio Osho"
+          onClick={() => window.location.href = '/#/tools/radio-osho'} />
+
       </div>
     </div>
   )

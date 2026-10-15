@@ -16,6 +16,7 @@ import DBMigration from './pages/DBMigration';
 import ApiComparator from './pages/ApiComparator';
 import SplitBill from './pages/SplitBill';
 import SplitBillCheckout from './pages/SplitBillCheckout';
+import RadioOsho from './pages/RadioOsho';
 
 const SuperApp = React.lazy(() => import('./pages/SuperApp'));
 const Design = React.lazy(() => import('./pages/Design'));
@@ -40,6 +41,7 @@ export default function Router() {
             <Route path="/tools/api-comparator" element={<ApiComparator />} />
             <Route path="/tools/split-bill" element={<SplitBill />} />
             <Route path="/split-bill/checkout/:billId/:paymentLinkId" element={<SplitBillCheckout />} />
+            <Route path="/tools/radio-osho" element={<RadioOsho />} />
             <Route path="/tools/ai-interview/admin" element={<AdminInterview />} />
             <Route path="/tools/ai-interview/candidate/:interviewId" element={<CandidateInterview />} />
             <Route path="/dr-rakesh-halder" element={<DoctorLanding />} />
