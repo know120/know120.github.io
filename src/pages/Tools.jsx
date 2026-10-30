@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ToolCard from '../components/tools/ToolCard';
-import { tools, toolCategories } from '../data/tools';
+import { featuredTool as featured, tools, toolCategories } from '../config/tools';
 
 const sortOptions = [
   { value: 'featured', label: 'Featured' },
@@ -15,7 +15,8 @@ export default function Tools() {
   const [sort, setSort] = useState('featured');
   const searchRef = useRef(null);
 
-  const featured = tools.find((tool) => tool.featured);
+  const featuredAccent = featured?.accent ?? 'from-indigo-500 to-violet-600';
+  const featuredIcon = featured?.icon ?? 'pi pi-box';
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -44,7 +45,7 @@ export default function Tools() {
 
     const result = tools.filter((tool) => {
       const matchesCategory = category === 'All' || tool.category === category;
-      const searchable = [tool.name, tool.description, tool.category, ...tool.tags]
+      const searchable = [tool.name, tool.description, tool.category, ...(tool.tags ?? [])]
         .join(' ')
         .toLowerCase();
 
@@ -56,7 +57,9 @@ export default function Tools() {
     }
 
     if (sort === 'newest') {
-      return [...result].sort((a, b) => new Date(b.added) - new Date(a.added));
+      return [...result].sort(
+        (a, b) => new Date(b.added ?? 0) - new Date(a.added ?? 0)
+      );
     }
 
     return result;
@@ -255,20 +258,22 @@ export default function Tools() {
                 </h2>
 
                 <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-300 sm:text-base">
-                  {featured.longDescription}
+                  {featured.longDescription ?? featured.description}
                 </p>
 
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {featured.highlights.map((highlight) => (
-                    <span
-                      key={highlight}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-slate-300"
-                    >
-                      <i className="pi pi-check text-[10px] text-emerald-400" aria-hidden="true" />
-                      {highlight}
-                    </span>
-                  ))}
-                </div>
+                {featured.highlights?.length > 0 && (
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {featured.highlights.map((highlight) => (
+                      <span
+                        key={highlight}
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-slate-300"
+                      >
+                        <i className="pi pi-check text-[10px] text-emerald-400" aria-hidden="true" />
+                        {highlight}
+                      </span>
+                    ))}
+                  </div>
+                )}
 
                 <span className="mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 transition-colors group-hover:bg-indigo-100">
                   Open tool
@@ -293,9 +298,9 @@ export default function Tools() {
                   aria-hidden="true"
                 />
                 <div
-                  className={`relative flex h-24 w-24 items-center justify-center rounded-2xl bg-linear-to-br ${featured.accent} text-white shadow-2xl shadow-indigo-950/50 transition-transform duration-300 group-hover:scale-105`}
+                  className={`relative flex h-24 w-24 items-center justify-center rounded-2xl bg-linear-to-br ${featuredAccent} text-white shadow-2xl shadow-indigo-950/50 transition-transform duration-300 group-hover:scale-105`}
                 >
-                  <i className={`${featured.icon} text-4xl`} aria-hidden="true" />
+                  <i className={`${featuredIcon} text-4xl`} aria-hidden="true" />
                 </div>
               </div>
             </a>

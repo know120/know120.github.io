@@ -1,15 +1,13 @@
-export const toolCategories = [
-  'All',
-  'AI',
-  'Developer',
-  'Design',
-  'Productivity',
-  'Marketing',
-  'Career',
-  'Utilities',
-  'Entertainment',
-];
-
+/**
+ * Tools marketplace configuration.
+ *
+ * Add a tool to the array below and it will automatically appear in the
+ * marketplace. New categories are picked up automatically too, so there is
+ * nothing else to update.
+ *
+ * Required: id, name, description, path, category
+ * Optional: icon, accent, tags, badge, added, featured, longDescription, highlights
+ */
 export const tools = [
   {
     id: 'ai-interview',
@@ -139,3 +137,12 @@ export const tools = [
     added: '2026-02-28',
   },
 ];
+
+// Categories are derived from the tools list so a new category only needs to
+// be added to a tool entry — no separate category config to keep in sync.
+export const toolCategories = [
+  'All',
+  ...new Set(tools.map((tool) => tool.category).filter(Boolean)),
+];
+
+export const featuredTool = tools.find((tool) => tool.featured) ?? null;

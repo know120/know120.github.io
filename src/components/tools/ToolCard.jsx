@@ -5,6 +5,10 @@ const badgeStyles = {
 };
 
 export default function ToolCard({ tool }) {
+  const accent = tool.accent ?? 'from-indigo-500 to-violet-600';
+  const icon = tool.icon ?? 'pi pi-box';
+  const tags = tool.tags ?? [];
+
   return (
     <a
       href={`/#${tool.path}`}
@@ -14,15 +18,15 @@ export default function ToolCard({ tool }) {
     >
       {/* Accent glow */}
       <div
-        className={`pointer-events-none absolute -right-14 -top-14 h-36 w-36 rounded-full bg-linear-to-br ${tool.accent} opacity-10 blur-2xl transition-opacity duration-300 group-hover:opacity-30`}
+        className={`pointer-events-none absolute -right-14 -top-14 h-36 w-36 rounded-full bg-linear-to-br ${accent} opacity-10 blur-2xl transition-opacity duration-300 group-hover:opacity-30`}
         aria-hidden="true"
       />
 
       <div className="flex items-start justify-between gap-3">
         <div
-          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-linear-to-br ${tool.accent} text-white shadow-lg shadow-black/30`}
+          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-linear-to-br ${accent} text-white shadow-lg shadow-black/30`}
         >
-          <i className={`${tool.icon} text-lg`} aria-hidden="true" />
+          <i className={`${icon} text-lg`} aria-hidden="true" />
         </div>
 
         {tool.badge && (
@@ -42,16 +46,18 @@ export default function ToolCard({ tool }) {
         {tool.description}
       </p>
 
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {tool.tags.map((tag) => (
-          <span
-            key={tag}
-            className="rounded-md border border-white/5 bg-slate-900/60 px-2 py-1 text-[11px] font-medium text-slate-400"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
+      {tags.length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {tags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-md border border-white/5 bg-slate-900/60 px-2 py-1 text-[11px] font-medium text-slate-400"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
 
       <div className="mt-5 flex items-center justify-between border-t border-white/5 pt-4">
         <span className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
