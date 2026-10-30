@@ -76,39 +76,7 @@ export default function Tools() {
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-50">
-      <header className="sticky top-0 z-40 border-b border-white/5 bg-slate-900/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link to="/" className="group flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-indigo-500 to-cyan-500 text-sm font-bold text-white shadow-lg shadow-indigo-500/20">
-              S
-            </span>
-            <span className="font-semibold tracking-tight text-white">
-              Sujay <span className="font-normal text-slate-500">/ Tools</span>
-            </span>
-          </Link>
-
-          <div className="flex items-center gap-2">
-            <a
-              href="https://github.com/know120"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-9 items-center gap-2 rounded-lg border border-white/10 px-3 text-sm text-slate-400 transition-colors hover:border-white/20 hover:text-white"
-            >
-              <i className="pi pi-github text-xs" aria-hidden="true" />
-              <span className="hidden sm:inline">GitHub</span>
-            </a>
-            <Link
-              to="/"
-              className="inline-flex h-9 items-center gap-2 rounded-lg bg-white px-3.5 text-sm font-semibold text-slate-900 transition-colors hover:bg-indigo-100"
-            >
-              Portfolio
-              <i className="pi pi-arrow-up-right text-xs" aria-hidden="true" />
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <main className="relative mx-auto max-w-6xl px-4 pb-20 pt-12 sm:px-6 sm:pt-16 lg:px-8">
+      <main className="relative mx-auto max-w-6xl px-4 pb-20 pt-14 sm:px-6 sm:pt-20 lg:px-8">
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
           <div className="absolute -top-24 left-1/4 h-72 w-72 rounded-full bg-indigo-600/20 blur-[120px]" />
           <div className="absolute -top-10 right-0 h-64 w-64 rounded-full bg-cyan-500/10 blur-[110px]" />
@@ -362,18 +330,30 @@ export default function Tools() {
           )}
         </section>
 
-        <div className="relative mt-16 flex flex-col items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-5 text-sm text-slate-400 sm:flex-row">
+        <div className="relative mt-16 flex flex-col items-center justify-between gap-5 rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-6 text-sm text-slate-400 sm:flex-row">
           <p className="inline-flex items-center gap-2 text-center sm:text-left">
             <i className="pi pi-lock text-xs text-emerald-400" aria-hidden="true" />
             Everything runs in your browser — no installs, no accounts, no tracking.
           </p>
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 font-medium text-slate-300 transition-colors hover:text-white"
-          >
-            Back to portfolio
-            <i className="pi pi-arrow-up-right text-xs" aria-hidden="true" />
-          </Link>
+
+          <div className="flex w-full items-center justify-center gap-2 sm:w-auto">
+            <a
+              href="https://github.com/know120"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-lg border border-white/10 px-4 text-sm text-slate-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white sm:flex-none"
+            >
+              <i className="pi pi-github text-xs" aria-hidden="true" />
+              GitHub
+            </a>
+            <Link
+              to="/"
+              className="inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-lg bg-white px-4 text-sm font-semibold text-slate-900 transition-colors hover:bg-indigo-100 sm:flex-none"
+            >
+              Portfolio
+              <i className="pi pi-arrow-up-right text-xs" aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </main>
     </div>
