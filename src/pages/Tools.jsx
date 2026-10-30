@@ -233,8 +233,10 @@ export default function Tools() {
         {/* Featured */}
         {!isFiltering && featured && (
           <section className="relative mt-14">
-            <Link
-              to={featured.path}
+            <a
+              href={`/#${featured.path}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group relative grid overflow-hidden rounded-3xl border border-white/10 bg-linear-to-br from-indigo-500/15 via-slate-900 to-slate-900 p-6 transition-all duration-300 hover:border-indigo-400/40 hover:shadow-[0_30px_70px_-30px_rgba(99,102,241,0.7)] sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center"
             >
               <div
@@ -271,7 +273,7 @@ export default function Tools() {
                 <span className="mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 transition-colors group-hover:bg-indigo-100">
                   Open tool
                   <i
-                    className="pi pi-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1"
+                    className="pi pi-external-link text-[10px] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                     aria-hidden="true"
                   />
                 </span>
@@ -296,7 +298,7 @@ export default function Tools() {
                   <i className={`${featured.icon} text-4xl`} aria-hidden="true" />
                 </div>
               </div>
-            </Link>
+            </a>
           </section>
         )}
 
