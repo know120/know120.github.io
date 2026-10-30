@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 const badgeStyles = {
   New: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300',
   Popular: 'border-amber-500/30 bg-amber-500/10 text-amber-300',
@@ -8,8 +6,10 @@ const badgeStyles = {
 
 export default function ToolCard({ tool }) {
   return (
-    <Link
-      to={tool.path}
+    <a
+      href={`/#${tool.path}`}
+      target="_blank"
+      rel="noopener noreferrer"
       className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-[0_24px_50px_-24px_rgba(99,102,241,0.6)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-400"
     >
       {/* Accent glow */}
@@ -60,11 +60,11 @@ export default function ToolCard({ tool }) {
         <span className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-300 transition-colors group-hover:text-white">
           Open
           <i
-            className="pi pi-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1"
+            className="pi pi-external-link text-[10px] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             aria-hidden="true"
           />
         </span>
       </div>
-    </Link>
+    </a>
   );
 }
