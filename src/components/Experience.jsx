@@ -5,7 +5,7 @@ const Experience = () => {
 
     const expICAL = {
         header: 'ICRA Analytics Limited',
-        title: 'Software Engineer',
+        title: 'Software Engineer II',
         body: 'Working on software solutions and data-driven products, contributing to the design, development, and delivery of reliable applications.',
         footer: 'January 2026 - Present'
     };
@@ -14,7 +14,7 @@ const Experience = () => {
         header: 'Alumnus Software Limited',
         title: 'Full Stack Developer',
         body: 'Developed a web application for one of the leading Tire manufacturing company using Angular 7,Bootstrap 5, .NET Framework, and SQLServer.',
-        footer: 'July 2022 - Present'
+        footer: 'July 2022 - January 2026'
     };
 
     const expDSS = {
