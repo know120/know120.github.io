@@ -3,6 +3,13 @@ import Card from "./Card";
 
 const Experience = () => {
 
+    const expICAL = {
+        header: 'ICRA Analytics Limited',
+        title: 'Software Engineer',
+        body: 'Working on software solutions and data-driven products, contributing to the design, development, and delivery of reliable applications.',
+        footer: 'January 2026 - Present'
+    };
+
     const expASL = {
         header: 'Alumnus Software Limited',
         title: 'Full Stack Developer',
@@ -31,6 +38,14 @@ const Experience = () => {
                 </div>
 
                 <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 transition-all duration-1000 opacity-100 translate-y-0`}>
+                    <div className="glass-panel glass-interactive rounded-3xl p-6">
+                        <Card
+                            header={expICAL.header}
+                            title={expICAL.title}
+                            body={expICAL.body}
+                            footer={expICAL.footer}
+                        />
+                    </div>
                     <div className="glass-panel glass-interactive rounded-3xl p-6">
                         <Card
                             header={expASL.header}
