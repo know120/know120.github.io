@@ -54,17 +54,17 @@ const AddTechStackModal = ({ isOpen, onClose, customTechStacks, onAddStack, onDe
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-[#03050f]/75 backdrop-blur-md" onClick={onClose}></div>
+      <div className="absolute inset-0 bg-[#05070b]/75 backdrop-blur-md" onClick={onClose}></div>
       
-      <div className="glass-panel relative max-h-[90vh] w-full max-w-lg animate-fade-in overflow-y-auto rounded-3xl">
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-white/10 bg-[rgba(10,16,38,0.75)] p-6 backdrop-blur-xl">
+      <div className="glass-panel relative max-h-[90vh] w-full max-w-lg animate-fade-in overflow-y-auto rounded-sm">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[var(--glass-border)] bg-[rgba(10,14,21,0.92)] p-6 backdrop-blur-xl">
           <div>
             <h2 className="text-xl font-bold text-white">Add Custom Tech Stack</h2>
             <p className="mt-1 text-sm text-[var(--text-secondary)]">Create a new tech stack for interviews</p>
           </div>
           <button 
             onClick={onClose} 
-            className="icon-button h-9 w-9 rounded-lg"
+            className="icon-button h-9 w-9 rounded-sm"
           >
             <i className="pi pi-times"></i>
           </button>
@@ -86,15 +86,15 @@ const AddTechStackModal = ({ isOpen, onClose, customTechStacks, onAddStack, onDe
           
           <div>
             <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">Select Icon</label>
-            <div className="grid grid-cols-8 gap-2 max-h-40 overflow-y-auto rounded-xl border border-white/10 bg-white/5 p-2">
+            <div className="grid grid-cols-8 gap-2 max-h-40 overflow-y-auto rounded-sm border border-[var(--glass-border)] bg-[var(--bg-tertiary)] p-2">
               {AVAILABLE_ICONS.map(icon => (
                 <button
                   key={icon}
                   type="button"
                   onClick={() => setNewTechStack(prev => ({ ...prev, icon }))}
-                  className={`icon-button rounded-lg p-2 ${
+                  className={`icon-button rounded-sm p-2 ${
                     newTechStack.icon === icon
-                      ? 'glass-chip-active border-[var(--accent-primary)] text-[#0b1026]'
+                      ? 'glass-chip-active border-[var(--accent-primary)] text-[#080a0f]'
                       : 'text-[var(--text-secondary)]'
                   }`}
                 >
@@ -127,7 +127,7 @@ const AddTechStackModal = ({ isOpen, onClose, customTechStacks, onAddStack, onDe
                 {customTechStacks.map(stack => (
                   <span 
                     key={stack.id} 
-                    className="glass-chip rounded-lg px-3 py-1.5 text-sm"
+                    className="glass-chip rounded-sm px-3 py-1.5 text-sm"
                   >
                     <i className={`pi ${stack.icon} text-indigo-400`}></i>
                     {stack.name}
@@ -145,7 +145,7 @@ const AddTechStackModal = ({ isOpen, onClose, customTechStacks, onAddStack, onDe
           )}
         </div>
         
-        <div className="sticky bottom-0 flex items-center justify-end gap-3 border-t border-white/10 bg-[rgba(10,16,38,0.75)] p-6 backdrop-blur-xl">
+        <div className="sticky bottom-0 flex items-center justify-end gap-3 border-t border-[var(--glass-border)] bg-[rgba(10,14,21,0.92)] p-6 backdrop-blur-xl">
           <button
             type="button"
             onClick={onClose}

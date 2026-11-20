@@ -3,20 +3,22 @@ import PropTypes from 'prop-types';
 
 const Card = ({ header, title, body, footer }) => {
   return (
-    <div className="h-full flex flex-col">
-      <div className="mb-4">
-        <h3 className="mb-1 text-lg font-semibold text-[var(--accent-secondary)]">{header}</h3>
-        {title && <h4 className="text-xl font-bold text-white">{title}</h4>}
+    <div className="flex h-full flex-col">
+      <div className="mb-5">
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--accent-primary)]">
+          {header}
+        </span>
+        {title && <h4 className="mt-2 text-xl font-bold tracking-tight text-[var(--text-primary)]">{title}</h4>}
       </div>
 
-      <div className="flex-1 mb-6">
-        <p className="leading-relaxed text-[var(--text-secondary)]/85">{body}</p>
+      <div className="mb-6 flex-1">
+        <p className="text-sm leading-relaxed text-[var(--text-secondary)]">{body}</p>
       </div>
 
       {footer && (
-        <div className="mt-auto border-t border-white/10 pt-4">
-          <span className="flex items-center gap-2 text-sm font-medium text-[var(--text-tertiary)]">
-            <i className="pi pi-calendar"></i>
+        <div className="mt-auto flex items-center gap-2 border-t border-[var(--glass-border)] pt-4">
+          <span className="h-1.5 w-1.5 bg-[var(--accent-primary)]" />
+          <span className="font-mono text-[11px] uppercase tracking-wider text-[var(--text-tertiary)]">
             {footer}
           </span>
         </div>
@@ -29,7 +31,7 @@ Card.propTypes = {
   header: PropTypes.string.isRequired,
   title: PropTypes.string,
   body: PropTypes.string.isRequired,
-  footer: PropTypes.string
+  footer: PropTypes.string,
 };
 
 export default Card;

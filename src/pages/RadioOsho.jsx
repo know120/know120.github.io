@@ -479,7 +479,7 @@ export default function RadioOsho() {
                   disabled={!progressMax}
                   className="w-full h-1.5 cursor-pointer appearance-none rounded-full bg-slate-700 accent-amber-500 disabled:cursor-not-allowed"
                   style={{
-                    background: `linear-gradient(to right, #f59e0b ${progressPercent}%, #334155 ${progressPercent}%)`,
+                    background: `linear-gradient(to right, #f59e0b ${progressPercent}%, #333e52 ${progressPercent}%)`,
                   }}
                   aria-label="Seek"
                 />
@@ -560,7 +560,7 @@ export default function RadioOsho() {
                     onChange={(e) => setVolume(Number(e.target.value))}
                     className="w-20 md:w-28 h-1.5 cursor-pointer appearance-none rounded-full bg-slate-700 accent-amber-500"
                     style={{
-                      background: `linear-gradient(to right, #f59e0b ${muted ? 0 : volume}%, #334155 ${muted ? 0 : volume}%)`,
+                      background: `linear-gradient(to right, #f59e0b ${muted ? 0 : volume}%, #333e52 ${muted ? 0 : volume}%)`,
                     }}
                     aria-label="Volume"
                   />

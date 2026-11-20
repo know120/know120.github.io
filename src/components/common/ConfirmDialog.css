@@ -27,7 +27,7 @@
 /* Dialog Container */
 .confirm-dialog {
   position: relative;
-  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  background: linear-gradient(145deg, #141a26, #1a1a1a);
   border: 1px solid rgba(139, 92, 246, 0.3);
   border-radius: 20px;
   box-shadow:
@@ -168,25 +168,22 @@
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.1);
-  color: #f8fafc;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(180deg, #151b12 0%, #0d110c 100%);
+  color: var(--accent-primary);
+  border: 1px solid var(--glass-border-strong);
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+  background: rgba(214, 255, 75, 0.08);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: white;
+  background: linear-gradient(180deg, #e2ff7d 0%, var(--accent-primary) 48%, #b6e82e 100%);
+  color: #080a0f;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+  filter: brightness(1.06);
 }
 
 .btn-danger {
@@ -195,8 +192,7 @@
 }
 
 .btn-danger:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+  filter: brightness(1.06);
 }
 
 .btn-warning {
@@ -205,8 +201,7 @@
 }
 
 .btn-warning:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);
+  filter: brightness(1.06);
 }
 
 /* Shine Effect */

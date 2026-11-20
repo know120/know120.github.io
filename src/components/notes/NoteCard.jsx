@@ -8,7 +8,7 @@ const NoteCard = ({ note, onEdit, onDelete }) => {
   if (!note) {
     return (
       <div className="note-card-container h-100">
-        <div className="note-card h-100" style={{ background: '#2a2a2a', padding: '2rem', borderRadius: '20px' }}>
+        <div className="note-card h-100" style={{ background: '#141a26', padding: '2rem', borderRadius: '20px' }}>
           <p style={{ color: 'white', textAlign: 'center' }}>No note data available</p>
         </div>
       </div>

@@ -38,7 +38,7 @@
 
 .toggle-thumb.dark {
   left: 2px;
-  background: linear-gradient(135deg, #1e293b, #334155);
+  background: linear-gradient(135deg, #1e293b, #333e52);
 }
 
 .toggle-thumb.light {

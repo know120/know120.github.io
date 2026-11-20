@@ -5,7 +5,7 @@ const ContactForm = () => {
     name: '',
     email: '',
     subject: '',
-    message: ''
+    message: '',
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -14,9 +14,7 @@ const ContactForm = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
-    }
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
 
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
@@ -24,9 +22,7 @@ const ContactForm = () => {
       newErrors.email = 'Email is invalid';
     }
 
-    if (!formData.subject.trim()) {
-      newErrors.subject = 'Subject is required';
-    }
+    if (!formData.subject.trim()) newErrors.subject = 'Subject is required';
 
     if (!formData.message.trim()) {
       newErrors.message = 'Message is required';
@@ -40,39 +36,23 @@ const ContactForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
+      setErrors((prev) => ({ ...prev, [name]: '' }));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       setSubmitStatus('success');
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-      });
+      setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {
       setSubmitStatus('error');
     } finally {
@@ -81,101 +61,119 @@ const ContactForm = () => {
     }
   };
 
+  const fieldClass = (key) =>
+    `glass-input w-full px-4 py-3 text-sm ${errors[key] ? 'border-[var(--accent-rose)]' : ''}`;
+
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div className="glass-panel rounded-3xl p-8 md:p-10">
-        <div className="text-center mb-8">
-          <h3 className="mb-2 text-2xl font-bold text-white">Send me a message</h3>
-          <p className="text-[var(--text-secondary)]/85">I'd love to hear from you. Send me a message and I'll respond as soon as possible.</p>
+    <div className="mx-auto w-full max-w-3xl">
+      <div className="glass-panel rounded-sm p-8 md:p-10">
+        <div className="mb-8 flex items-end justify-between gap-4 border-b border-[var(--glass-border)] pb-6">
+          <div>
+            <span className="eyebrow">Contact form</span>
+            <h3 className="mt-3 text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+              Send me a message
+            </h3>
+          </div>
+          <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-tertiary)] sm:block">
+            Response within 48h
+          </span>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-medium text-[var(--text-secondary)]">Name *</label>
+              <label htmlFor="name" className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--text-secondary)]">
+                Name *
+              </label>
               <input
                 type="text"
                 id="name"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`glass-input w-full px-4 py-3 ${errors.name ? 'border-red-400/80 focus:border-red-400' : ''} text-white placeholder-slate-500 transition-all`}
+                className={fieldClass('name')}
                 placeholder="Your full name"
               />
-              {errors.name && <span className="text-xs text-red-400">{errors.name}</span>}
+              {errors.name && <span className="text-xs text-[var(--accent-rose)]">{errors.name}</span>}
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-[var(--text-secondary)]">Email *</label>
+              <label htmlFor="email" className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--text-secondary)]">
+                Email *
+              </label>
               <input
                 type="email"
                 id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`glass-input w-full px-4 py-3 ${errors.email ? 'border-red-400/80 focus:border-red-400' : ''} text-white placeholder-slate-500 transition-all`}
+                className={fieldClass('email')}
                 placeholder="your.email@example.com"
               />
-              {errors.email && <span className="text-xs text-red-400">{errors.email}</span>}
+              {errors.email && <span className="text-xs text-[var(--accent-rose)]">{errors.email}</span>}
             </div>
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="subject" className="text-sm font-medium text-[var(--text-secondary)]">Subject *</label>
+            <label htmlFor="subject" className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--text-secondary)]">
+              Subject *
+            </label>
             <input
               type="text"
               id="subject"
               name="subject"
               value={formData.subject}
               onChange={handleChange}
-              className={`glass-input w-full px-4 py-3 ${errors.subject ? 'border-red-400/80 focus:border-red-400' : ''} text-white placeholder-slate-500 transition-all`}
+              className={fieldClass('subject')}
               placeholder="What's this about?"
             />
-            {errors.subject && <span className="text-xs text-red-400">{errors.subject}</span>}
+            {errors.subject && <span className="text-xs text-[var(--accent-rose)]">{errors.subject}</span>}
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="message" className="text-sm font-medium text-[var(--text-secondary)]">Message *</label>
+            <label htmlFor="message" className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--text-secondary)]">
+              Message *
+            </label>
             <textarea
               id="message"
               name="message"
               value={formData.message}
               onChange={handleChange}
-              className={`glass-input w-full px-4 py-3 ${errors.message ? 'border-red-400/80 focus:border-red-400' : ''} text-white placeholder-slate-500 transition-all resize-none`}
+              className={`${fieldClass('message')} resize-none`}
               placeholder="Tell me about your project or just say hello..."
               rows="5"
-            ></textarea>
-            {errors.message && <span className="text-xs text-red-400">{errors.message}</span>}
+            />
+            {errors.message && <span className="text-xs text-[var(--accent-rose)]">{errors.message}</span>}
           </div>
 
           <button
             type="submit"
-            className={`btn-primary w-full py-4 font-bold ${isSubmitting ? 'cursor-not-allowed opacity-60' : ''}`}
+            className={`btn-primary w-full py-4 ${isSubmitting ? 'cursor-not-allowed opacity-60' : ''}`}
             disabled={isSubmitting}
           >
             {isSubmitting ? (
-              <div className="flex items-center justify-center gap-2">
-                <i className="pi pi-spin pi-spinner"></i>
+              <>
+                <i className="pi pi-spin pi-spinner" />
                 <span>Sending...</span>
-              </div>
+              </>
             ) : (
-              <div className="flex items-center justify-center gap-2">
-                <i className="pi pi-send"></i>
+              <>
+                <i className="pi pi-send" />
                 <span>Send Message</span>
-              </div>
+              </>
             )}
           </button>
 
           {submitStatus === 'success' && (
-            <div className="flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-400/10 p-4 text-emerald-300 backdrop-blur-md">
-              <i className="pi pi-check-circle text-xl"></i>
+            <div className="flex items-center gap-3 border border-[var(--accent-primary)]/30 bg-[var(--accent-primary)]/10 p-4 text-sm text-[var(--accent-primary)]">
+              <i className="pi pi-check-circle text-xl" />
               <span>Message sent successfully! I'll get back to you soon.</span>
             </div>
           )}
 
           {submitStatus === 'error' && (
-            <div className="flex items-center gap-3 rounded-2xl border border-rose-400/25 bg-rose-400/10 p-4 text-rose-300 backdrop-blur-md">
-              <i className="pi pi-exclamation-triangle text-xl"></i>
+            <div className="flex items-center gap-3 border border-[var(--accent-rose)]/30 bg-[var(--accent-rose)]/10 p-4 text-sm text-[var(--accent-rose)]">
+              <i className="pi pi-exclamation-triangle text-xl" />
               <span>Something went wrong. Please try again later.</span>
             </div>
           )}
