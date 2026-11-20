@@ -75,7 +75,7 @@ export default function Tools() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-50">
+    <div className="relative min-h-screen text-[var(--text-primary)]">
       <main className="relative mx-auto max-w-6xl px-4 pb-20 pt-14 sm:px-6 sm:pt-20 lg:px-8">
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
           <div className="absolute -top-24 left-1/4 h-72 w-72 rounded-full bg-indigo-600/20 blur-[120px]" />
@@ -84,7 +84,7 @@ export default function Tools() {
 
         {/* Hero */}
         <section className="relative">
-          <span className="inline-flex items-center gap-2 rounded-full border border-indigo-400/20 bg-indigo-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-indigo-300">
+          <span className="glass-chip px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--accent-secondary)]">
             <i className="pi pi-bolt text-[10px]" aria-hidden="true" />
             The toolbox
           </span>
@@ -93,12 +93,12 @@ export default function Tools() {
             Small tools that do <span className="heading-gradient">big things</span>.
           </h1>
 
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg">
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-[var(--text-secondary)]/85 sm:text-lg">
             A growing collection of browser-based utilities for designing, building, hiring,
             and everything in between. No installs, no accounts — just open and go.
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-500">
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[var(--text-tertiary)]">
             <span className="inline-flex items-center gap-2">
               <i className="pi pi-th-large text-xs text-indigo-400" aria-hidden="true" />
               {tools.length} tools
@@ -117,7 +117,7 @@ export default function Tools() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <div className="relative flex-1">
               <i
-                className="pi pi-search pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-500"
+                className="pi pi-search pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--text-tertiary)]"
                 aria-hidden="true"
               />
               <input
@@ -127,7 +127,7 @@ export default function Tools() {
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search tools, tags, or categories…"
                 aria-label="Search tools"
-                className="h-12 w-full rounded-xl border border-white/10 bg-white/5 pl-11 pr-24 text-sm text-white placeholder:text-slate-500 outline-none transition-all focus:border-indigo-400/60 focus:bg-white/[0.07] focus:ring-4 focus:ring-indigo-500/10 [&::-webkit-search-cancel-button]:hidden"
+                className="glass-input h-12 pl-11 pr-24 text-sm [&::-webkit-search-cancel-button]:hidden"
               />
               <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1">
                 {query ? (
@@ -138,12 +138,12 @@ export default function Tools() {
                       searchRef.current?.focus();
                     }}
                     aria-label="Clear search"
-                    className="flex h-7 w-7 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-white/10 hover:text-white"
+                    className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-tertiary)] transition-colors hover:bg-white/10 hover:text-white"
                   >
                     <i className="pi pi-times text-xs" aria-hidden="true" />
                   </button>
                 ) : (
-                  <kbd className="hidden rounded border border-white/10 bg-slate-900/60 px-1.5 py-0.5 font-sans text-[10px] text-slate-500 sm:block">
+                  <kbd className="hidden rounded border border-white/10 bg-slate-900/60 px-1.5 py-0.5 font-sans text-[10px] text-[var(--text-tertiary)] sm:block">
                     /
                   </kbd>
                 )}
@@ -155,7 +155,7 @@ export default function Tools() {
                 value={sort}
                 onChange={(event) => setSort(event.target.value)}
                 aria-label="Sort tools"
-                className="h-12 w-full cursor-pointer appearance-none rounded-xl border border-white/10 bg-white/5 pl-4 pr-10 text-sm text-slate-300 outline-none transition-all hover:bg-white/[0.07] focus:border-indigo-400/60 focus:ring-4 focus:ring-indigo-500/10 sm:w-44"
+                className="glass-input h-12 w-full cursor-pointer appearance-none pl-4 pr-10 text-sm sm:w-44"
               >
                 {sortOptions.map((option) => (
                   <option key={option.value} value={option.value} className="bg-slate-900">
@@ -164,7 +164,7 @@ export default function Tools() {
                 ))}
               </select>
               <i
-                className="pi pi-chevron-down pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-500"
+                className="pi pi-chevron-down pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-[var(--text-tertiary)]"
                 aria-hidden="true"
               />
             </div>
@@ -181,18 +181,10 @@ export default function Tools() {
                   type="button"
                   onClick={() => setCategory(name)}
                   aria-pressed={active}
-                  className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm transition-all ${
-                    active
-                      ? 'border-transparent bg-white text-slate-900 shadow-lg shadow-black/20'
-                      : 'border-white/10 bg-white/[0.03] text-slate-400 hover:border-white/20 hover:bg-white/[0.06] hover:text-white'
-                  }`}
+                  className={`glass-chip px-3.5 py-1.5 text-sm ${active ? 'glass-chip-active' : ''}`}
                 >
                   {name}
-                  <span
-                    className={`text-[11px] tabular-nums ${
-                      active ? 'text-slate-500' : 'text-slate-600'
-                    }`}
-                  >
+                  <span className={`text-[11px] tabular-nums ${active ? 'opacity-60' : 'text-[var(--text-tertiary)]'}`}>
                     {countForCategory(name)}
                   </span>
                 </button>
@@ -208,7 +200,7 @@ export default function Tools() {
               href={`/#${featured.path}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative grid overflow-hidden rounded-3xl border border-white/10 bg-linear-to-br from-indigo-500/15 via-slate-900 to-slate-900 p-6 transition-all duration-300 hover:border-indigo-400/40 hover:shadow-[0_30px_70px_-30px_rgba(99,102,241,0.7)] sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center"
+              className="glass-panel glass-interactive group relative grid overflow-hidden rounded-[2rem] p-6 transition-all duration-500 sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center"
             >
               <div
                 className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl transition-opacity duration-300 group-hover:opacity-80"
@@ -216,7 +208,7 @@ export default function Tools() {
               />
 
               <div className="relative">
-                <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-amber-300">
+                <span className="glass-chip border-amber-400/25 bg-amber-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-amber-200">
                   <i className="pi pi-star-fill text-[10px]" aria-hidden="true" />
                   Featured tool
                 </span>
@@ -225,7 +217,7 @@ export default function Tools() {
                   {featured.name}
                 </h2>
 
-                <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-300 sm:text-base">
+                <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--text-secondary)]/85 sm:text-base">
                   {featured.longDescription ?? featured.description}
                 </p>
 
@@ -234,7 +226,7 @@ export default function Tools() {
                     {featured.highlights.map((highlight) => (
                       <span
                         key={highlight}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-slate-300"
+                        className="glass-chip rounded-lg px-2.5 py-1 text-xs text-[var(--text-secondary)]"
                       >
                         <i className="pi pi-check text-[10px] text-emerald-400" aria-hidden="true" />
                         {highlight}
@@ -243,7 +235,7 @@ export default function Tools() {
                   </div>
                 )}
 
-                <span className="mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 transition-colors group-hover:bg-indigo-100">
+                <span className="btn-primary mt-6 px-4 py-2.5 text-sm">
                   Open tool
                   <i
                     className="pi pi-external-link text-[10px] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
@@ -282,7 +274,7 @@ export default function Tools() {
               <h2 className="text-xl font-semibold text-white">
                 {isFiltering ? 'Results' : 'All tools'}
               </h2>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-[var(--text-tertiary)]">
                 {filteredTools.length === tools.length
                   ? `${tools.length} tools ready to use`
                   : `${filteredTools.length} of ${tools.length} tools`}
@@ -295,7 +287,7 @@ export default function Tools() {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-3 py-1.5 text-sm text-slate-400 transition-colors hover:border-white/20 hover:text-white"
+                className="glass-chip rounded-lg px-3 py-1.5 text-sm text-[var(--text-secondary)]"
               >
                 <i className="pi pi-filter-slash text-xs" aria-hidden="true" />
                 Clear filters
@@ -310,18 +302,18 @@ export default function Tools() {
               ))}
             </div>
           ) : (
-            <div className="mt-6 rounded-2xl border border-dashed border-white/10 bg-white/[0.02] px-6 py-16 text-center">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-500">
+            <div className="glass-panel mt-6 rounded-3xl px-6 py-16 text-center">
+              <div className="glass-chip mx-auto flex h-12 w-12 items-center justify-center rounded-xl text-[var(--text-tertiary)]">
                 <i className="pi pi-search text-lg" aria-hidden="true" />
               </div>
               <h3 className="mt-4 text-lg font-semibold text-white">No tools found</h3>
-              <p className="mx-auto mt-1 max-w-sm text-sm text-slate-500">
+              <p className="mx-auto mt-1 max-w-sm text-sm text-[var(--text-tertiary)]">
                 Nothing matched your search. Try a different keyword or browse another category.
               </p>
               <button
                 type="button"
                 onClick={clearFilters}
-                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition-colors hover:bg-indigo-100"
+                className="btn-primary mt-5 px-4 py-2 text-sm"
               >
                 Reset filters
                 <i className="pi pi-refresh text-xs" aria-hidden="true" />
@@ -330,7 +322,7 @@ export default function Tools() {
           )}
         </section>
 
-        <div className="relative mt-16 flex flex-col items-center justify-between gap-5 rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-6 text-sm text-slate-400 sm:flex-row">
+        <div className="glass-panel relative mt-16 flex flex-col items-center justify-between gap-5 rounded-3xl px-6 py-6 text-sm text-[var(--text-secondary)] sm:flex-row">
           <p className="inline-flex items-center gap-2 text-center sm:text-left">
             <i className="pi pi-lock text-xs text-emerald-400" aria-hidden="true" />
             Everything runs in your browser — no installs, no accounts, no tracking.
@@ -341,14 +333,14 @@ export default function Tools() {
               href="https://github.com/know120"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-lg border border-white/10 px-4 text-sm text-slate-300 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white sm:flex-none"
+              className="glass-chip h-10 flex-1 px-4 text-sm sm:flex-none"
             >
               <i className="pi pi-github text-xs" aria-hidden="true" />
               GitHub
             </a>
             <Link
               to="/"
-              className="inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-lg bg-white px-4 text-sm font-semibold text-slate-900 transition-colors hover:bg-indigo-100 sm:flex-none"
+              className="btn-primary h-10 flex-1 px-4 text-sm sm:flex-none"
             >
               Portfolio
               <i className="pi pi-arrow-up-right text-xs" aria-hidden="true" />

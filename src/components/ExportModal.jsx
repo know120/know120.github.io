@@ -43,23 +43,23 @@ const ExportModal = ({ isOpen, onClose, session }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className="absolute inset-0 bg-[#03050f]/75 backdrop-blur-md"
         onClick={onClose}
       ></div>
       
       {/* Modal */}
-      <div className="relative w-full max-w-2xl bg-slate-900 rounded-2xl border border-slate-700 shadow-2xl animate-fade-in">
+      <div className="glass-panel relative w-full max-w-2xl animate-fade-in rounded-3xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-800">
+        <div className="flex items-center justify-between border-b border-white/10 p-6">
           <div>
             <h2 className="text-xl font-bold text-white">Export Interview Report</h2>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="mt-1 text-sm text-[var(--text-secondary)]">
               Choose your preferred export format
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+            className="icon-button h-9 w-9 rounded-lg"
           >
             <i className="pi pi-times"></i>
           </button>
@@ -68,19 +68,19 @@ const ExportModal = ({ isOpen, onClose, session }) => {
         {/* Content */}
         <div className="p-6">
           {/* Candidate Info */}
-          <div className="p-4 rounded-lg bg-slate-800/50 border border-slate-700 mb-6">
+          <div className="glass-panel mb-6 rounded-2xl p-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,#6366f1,#22d3ee)] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_10px_24px_-12px_rgba(99,102,241,0.9)]">
                 <i className="pi pi-user text-xl text-white"></i>
               </div>
               <div>
                 <h3 className="font-semibold text-white">{session.candidateName}</h3>
-                <p className="text-sm text-slate-400">{session.candidateEmail}</p>
+                <p className="text-sm text-[var(--text-secondary)]">{session.candidateEmail}</p>
               </div>
               {session.result && (
                 <div className="ml-auto text-right">
                   <div className="text-2xl font-bold text-white">{session.result.averageScore}/10</div>
-                  <div className="text-xs text-slate-400">Average Score</div>
+                  <div className="text-xs text-[var(--text-tertiary)]">Average Score</div>
                 </div>
               )}
             </div>
@@ -96,7 +96,7 @@ const ExportModal = ({ isOpen, onClose, session }) => {
                 <button
                   key={format.id}
                   onClick={() => setSelectedFormat(format.id)}
-                  className={`p-4 rounded-xl border transition-all text-left ${
+                  className={`glass-chip rounded-xl p-4 text-left ${
                     selectedFormat === format.id
                       ? `${getSelectedFormatColor(format.color)} text-white`
                       : `bg-slate-800/50 border-slate-700 ${getFormatColor(format.color)}`
@@ -128,12 +128,12 @@ const ExportModal = ({ isOpen, onClose, session }) => {
           </div>
 
           {/* Format Preview */}
-          <div className="p-4 rounded-lg bg-slate-800/30 border border-slate-700">
-            <div className="flex items-center gap-2 mb-2">
-              <i className="pi pi-info-circle text-slate-400"></i>
-              <span className="text-sm font-medium text-slate-300">Format Details</span>
+          <div className="glass-panel rounded-2xl p-4">
+            <div className="mb-2 flex items-center gap-2">
+              <i className="pi pi-info-circle text-[var(--accent-secondary)]"></i>
+              <span className="text-sm font-medium text-[var(--text-secondary)]">Format Details</span>
             </div>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-[var(--text-secondary)]/80">
               {selectedFormat === 'json' && 'Standard JSON format containing all interview data, evaluations, and metadata. Ideal for developers and system integrations.'}
               {selectedFormat === 'md' && 'Markdown document with formatted tables, headers, and emojis. Perfect for documentation and GitHub-style reports.'}
               {selectedFormat === 'pdf' && 'Print-ready PDF with professional styling, tables, and color-coded scores. Best for sharing with stakeholders.'}
@@ -143,21 +143,17 @@ const ExportModal = ({ isOpen, onClose, session }) => {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end gap-3 p-6 border-t border-slate-800">
+        <div className="flex items-center justify-end gap-3 border-t border-white/10 p-6">
           <button
             onClick={onClose}
-            className="px-6 py-3 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all"
+            className="btn-secondary px-6 py-3 font-medium"
           >
             Cancel
           </button>
           <button
             onClick={handleExportClick}
             disabled={isExporting}
-            className={`px-8 py-3 rounded-lg font-bold text-white transition-all flex items-center gap-2 ${
-              isExporting
-                ? 'bg-indigo-600/50 cursor-not-allowed'
-                : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-lg'
-            }`}
+            className={`btn-primary px-8 py-3 font-bold ${isExporting ? 'cursor-not-allowed opacity-60' : ''}`}
           >
             {isExporting ? (
               <>

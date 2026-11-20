@@ -1,7 +1,7 @@
 const badgeStyles = {
-  New: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300',
-  Popular: 'border-amber-500/30 bg-amber-500/10 text-amber-300',
-  Beta: 'border-sky-500/30 bg-sky-500/10 text-sky-300',
+  New: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-200',
+  Popular: 'border-amber-400/30 bg-amber-400/10 text-amber-200',
+  Beta: 'border-sky-400/30 bg-sky-400/10 text-sky-200',
 };
 
 export default function ToolCard({ tool }) {
@@ -14,35 +14,35 @@ export default function ToolCard({ tool }) {
       href={`/#${tool.path}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-[0_24px_50px_-24px_rgba(99,102,241,0.6)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-400"
+      className="glass-panel glass-interactive group relative flex h-full flex-col overflow-hidden rounded-3xl p-5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent-primary)]"
     >
-      {/* Accent glow */}
+      {/* Accent refraction */}
       <div
-        className={`pointer-events-none absolute -right-14 -top-14 h-36 w-36 rounded-full bg-linear-to-br ${accent} opacity-10 blur-2xl transition-opacity duration-300 group-hover:opacity-30`}
+        className={`pointer-events-none absolute -right-14 -top-14 h-36 w-36 rounded-full bg-linear-to-br ${accent} opacity-10 blur-2xl transition-opacity duration-500 group-hover:opacity-35`}
         aria-hidden="true"
       />
 
       <div className="flex items-start justify-between gap-3">
         <div
-          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-linear-to-br ${accent} text-white shadow-lg shadow-black/30`}
+          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-linear-to-br ${accent} text-white shadow-[0_12px_30px_-12px_rgba(99,102,241,0.9),inset_0_1px_0_rgba(255,255,255,0.3)]`}
         >
           <i className={`${icon} text-lg`} aria-hidden="true" />
         </div>
 
         {tool.badge && (
           <span
-            className={`rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${badgeStyles[tool.badge] ?? badgeStyles.Beta}`}
+            className={`glass-chip px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${badgeStyles[tool.badge] ?? badgeStyles.Beta}`}
           >
             {tool.badge}
           </span>
         )}
       </div>
 
-      <h3 className="mt-4 text-lg font-semibold text-white transition-colors group-hover:text-indigo-300">
+      <h3 className="mt-4 text-lg font-semibold text-white transition-colors group-hover:text-[var(--accent-secondary)]">
         {tool.name}
       </h3>
 
-      <p className="mt-1.5 flex-1 text-sm leading-relaxed text-slate-400">
+      <p className="mt-1.5 flex-1 text-sm leading-relaxed text-[var(--text-secondary)]/80">
         {tool.description}
       </p>
 
@@ -51,7 +51,7 @@ export default function ToolCard({ tool }) {
           {tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-md border border-white/5 bg-slate-900/60 px-2 py-1 text-[11px] font-medium text-slate-400"
+              className="glass-chip rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--text-secondary)]"
             >
               {tag}
             </span>
@@ -59,11 +59,11 @@ export default function ToolCard({ tool }) {
         </div>
       )}
 
-      <div className="mt-5 flex items-center justify-between border-t border-white/5 pt-4">
-        <span className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+      <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
+        <span className="text-[11px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
           {tool.category}
         </span>
-        <span className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-300 transition-colors group-hover:text-white">
+        <span className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--text-secondary)] transition-colors group-hover:text-white">
           Open
           <i
             className="pi pi-external-link text-[10px] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"

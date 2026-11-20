@@ -25,22 +25,22 @@ const Contact = () => {
                         <span className="heading-gradient">Get In Touch</span>
                         <GlowingLine />
                     </h2>
-                    <p className="text-slate-400 max-w-2xl mx-auto">
+                    <p className="text-[var(--text-secondary)] max-w-2xl mx-auto">
                         Have a project in mind or just want to say hi? Feel free to reach out!
                     </p>
                 </div>
 
                 <ContactForm />
 
-                <div className="mt-20 pt-10 border-t border-slate-800 text-center">
-                    <div className="flex justify-center gap-6 mb-8">
+                <div className="mt-20 border-t border-white/10 pt-10 text-center">
+                    <div className="mb-8 flex justify-center gap-3">
                         {socialLinks.map((link, index) => (
                             <a
                                 key={index}
                                 href={link.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-indigo-600 hover:text-white transition-all transform hover:-translate-y-1"
+                                className="icon-button h-11 w-11"
                                 aria-label={link.label}
                             >
                                 <i className={`pi ${link.icon}`}></i>
@@ -48,10 +48,10 @@ const Contact = () => {
                         ))}
                     </div>
 
-                    <p className="text-slate-500 text-sm">
+                    <p className="text-sm text-[var(--text-tertiary)]">
                         © {currentYear} Sujay Halder. All rights reserved.
                     </p>
-                    <p className="text-slate-600 text-xs mt-2">
+                    <p className="mt-2 text-xs text-[var(--text-tertiary)]/70">
                         Built with React, Tailwind CSS & Modern Web Technologies
                     </p>
                 </div>

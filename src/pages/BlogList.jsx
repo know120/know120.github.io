@@ -4,18 +4,23 @@ import { posts } from '../utils/postUtils';
 export default function BlogList() {
   return (
     <div className="section-container">
-      <Link to="/" className="text-blue-500 hover:underline mb-4 inline-block">&larr; Back to Home</Link>
-      <h1 className="text-4xl text-center font-bold mb-8 text-slate-900 dark:text-white">Blogs</h1>
+      <Link to="/" className="glass-chip mb-6 px-4 py-2 text-sm">&larr; Back to Home</Link>
+
+      <div className="mb-10 text-center">
+        <h1 className="heading-gradient text-4xl font-bold">Blogs</h1>
+        <p className="mt-3 text-[var(--text-secondary)]">Notes on building, learning, and shipping.</p>
+      </div>
+
       {posts.length === 0 ? (
-        <p className="text-slate-500">No posts yet!</p>
+        <p className="glass-panel p-8 text-center text-[var(--text-tertiary)]">No posts yet!</p>
       ) : (
-        <ul className="space-y-6">
+        <ul className="space-y-5">
           {posts.map(post => (
-            <li key={post.slug} className="border-b border-slate-200 dark:border-slate-800 pb-4">
-              <Link to={`/blog/${post.slug}`} className="text-2xl font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+            <li key={post.slug} className="glass-panel glass-interactive rounded-3xl p-6">
+              <Link to={`/blog/${post.slug}`} className="text-2xl font-semibold text-white transition-colors hover:text-[var(--accent-secondary)]">
                 {post.title}
               </Link>
-              {post.date && <p className="text-slate-500 dark:text-slate-400">{post.date.toLocaleDateString()}</p>}
+              {post.date && <p className="mt-2 text-sm text-[var(--text-tertiary)]">{post.date.toLocaleDateString()}</p>}
             </li>
           ))}
         </ul>

@@ -39,17 +39,17 @@ const SkillsSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             <span className="heading-gradient">Technical Skills</span>
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
+          <p className="text-[var(--text-secondary)] max-w-2xl mx-auto">
             A comprehensive overview of my technical expertise and the tools I use to bring ideas to life.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {skillCategories.map((category, idx) => (
-            <div key={idx} className="glass-panel rounded-2xl p-6 hover:bg-slate-800/80 transition-colors">
+            <div key={idx} className="glass-panel glass-interactive rounded-3xl p-6">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center">
-                  <i className={`pi ${category.icon} text-indigo-400 text-xl`}></i>
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]">
+                  <i className={`pi ${category.icon} text-xl text-[var(--accent-secondary)]`}></i>
                 </div>
                 <h3 className="text-xl font-bold text-white">{category.title}</h3>
               </div>
@@ -60,13 +60,13 @@ const SkillsSection = () => {
                     <div className="flex justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <img src={skill.icon} alt={skill.name} className="w-5 h-5" />
-                        <span className="text-slate-300 text-sm font-medium">{skill.name}</span>
+                        <span className="text-sm font-medium text-[var(--text-secondary)]">{skill.name}</span>
                       </div>
-                      <span className="text-slate-500 text-xs">{skill.level}%</span>
+                      <span className="text-xs text-[var(--text-tertiary)]">{skill.level}%</span>
                     </div>
-                    <div className="h-2 bg-slate-700/50 rounded-full overflow-hidden">
+                    <div className="h-2 overflow-hidden rounded-full bg-white/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.35)]">
                       <div
-                        className="h-full bg-linear-to-r from-indigo-500 to-purple-500 rounded-full"
+                        className="h-full rounded-full bg-[linear-gradient(90deg,#6366f1,#7c8cff_45%,#64e3ff)] shadow-[0_0_18px_rgba(100,227,255,0.45)]"
                         style={{ width: `${skill.level}%` }}
                       ></div>
                     </div>
