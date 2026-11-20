@@ -422,6 +422,8 @@
     transform: translateY(-3px);
     box-shadow:
       0 7px 0 -3px rgba(255, 255, 255, 0.22),
+      0 0 0 1px rgba(124, 140, 255, 0.16),
+      0 0 24px -6px rgba(99, 102, 241, 0.65),
       0 18px 34px -14px rgba(99, 102, 241, 0.95),
       0 10px 24px -12px rgba(34, 211, 238, 0.6),
       inset 0 1px 0 rgba(255, 255, 255, 0.6),
@@ -454,6 +456,8 @@
     transform: translateY(-5px);
     box-shadow:
       0 10px 0 -4px rgba(255, 255, 255, 0.28),
+      0 0 0 1px rgba(124, 140, 255, 0.28),
+      0 0 32px -6px rgba(99, 102, 241, 0.85),
       0 28px 48px -16px rgba(99, 102, 241, 1),
       0 14px 28px -12px rgba(34, 211, 238, 0.7),
       inset 0 1px 0 rgba(255, 255, 255, 0.65),
@@ -482,6 +486,8 @@
     transform: translateY(-3px);
     box-shadow:
       0 7px 0 -3px rgba(255, 255, 255, 0.16),
+      0 0 0 1px rgba(124, 140, 255, 0.12),
+      0 0 20px -6px rgba(124, 140, 255, 0.5),
       0 18px 32px -14px rgba(124, 140, 255, 0.7),
       0 8px 18px -10px rgba(2, 6, 23, 0.9),
       inset 0 1px 0 rgba(255, 255, 255, 0.28),
@@ -518,6 +524,8 @@
     color: #fff;
     box-shadow:
       0 10px 0 -4px rgba(255, 255, 255, 0.2),
+      0 0 0 1px rgba(124, 140, 255, 0.24),
+      0 0 28px -6px rgba(124, 140, 255, 0.7),
       0 28px 46px -16px rgba(124, 140, 255, 0.85),
       0 12px 24px -12px rgba(2, 6, 23, 0.9),
       inset 0 1px 0 rgba(255, 255, 255, 0.32),
@@ -537,9 +545,12 @@
     background:
       linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.14),
-      0 8px 18px -12px rgba(2, 6, 23, 0.9);
-    transform: translateY(-1px);
+      0 4px 0 -2px rgba(255, 255, 255, 0.16),
+      0 0 0 1px rgba(124, 140, 255, 0.12),
+      0 0 18px -6px rgba(124, 140, 255, 0.55),
+      0 8px 18px -12px rgba(2, 6, 23, 0.9),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    transform: translateY(-3px);
     color: var(--text-tertiary);
     -webkit-backdrop-filter: blur(14px) saturate(150%);
     backdrop-filter: blur(14px) saturate(150%);
@@ -551,12 +562,15 @@
   }
 
   .icon-button:hover {
-    transform: translateY(-2px);
+    transform: translateY(-5px);
     color: #fff;
     border-color: var(--glass-border-strong);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.2),
-      0 14px 30px -16px rgba(99, 102, 241, 0.8);
+      0 6px 0 -2px rgba(255, 255, 255, 0.22),
+      0 0 0 1px rgba(124, 140, 255, 0.24),
+      0 0 24px -6px rgba(124, 140, 255, 0.7),
+      0 14px 30px -16px rgba(99, 102, 241, 0.8),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
 
   /* -----------------------------------------------------------------------
@@ -784,6 +798,8 @@ html body a.btn-secondary {
   transform: translateY(-3px);
   box-shadow:
     0 7px 0 -3px rgba(255, 255, 255, 0.18),
+    0 0 0 1px rgba(124, 140, 255, 0.14),
+    0 0 22px -6px rgba(124, 140, 255, 0.6),
     0 18px 32px -14px rgba(124, 140, 255, 0.75),
     0 8px 18px -10px rgba(2, 6, 23, 0.9),
     inset 0 1px 0 rgba(255, 255, 255, 0.4),
@@ -801,6 +817,8 @@ html body a.btn-secondary:hover {
   transform: translateY(-5px);
   box-shadow:
     0 10px 0 -4px rgba(255, 255, 255, 0.24),
+    0 0 0 1px rgba(124, 140, 255, 0.26),
+    0 0 30px -6px rgba(124, 140, 255, 0.8),
     0 28px 46px -16px rgba(124, 140, 255, 0.9),
     0 12px 24px -12px rgba(2, 6, 23, 0.95),
     inset 0 1px 0 rgba(255, 255, 255, 0.48),
