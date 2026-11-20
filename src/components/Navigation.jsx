@@ -106,7 +106,7 @@ const Navigation = () => {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="block px-3 py-2 font-mono text-sm uppercase tracking-widest text-[var(--text-secondary)] transition-colors hover:bg-[var(--accent-primary)]/10 hover:text-[var(--accent-primary)]"
+                  className="mobile-menu-link block px-3 py-2 font-mono text-sm uppercase tracking-widest text-[var(--text-secondary)] transition-colors hover:bg-[var(--accent-primary)]/10 hover:text-[var(--accent-primary)]"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}
@@ -115,7 +115,7 @@ const Navigation = () => {
                 <button
                   key={link.name}
                   onClick={() => scrollToSection(link.id)}
-                  className="block w-full px-3 py-2 text-left font-mono text-sm uppercase tracking-widest text-[var(--text-secondary)] transition-colors hover:bg-[var(--accent-primary)]/10 hover:text-[var(--accent-primary)]"
+                  className="mobile-menu-link block w-full px-3 py-2 text-left font-mono text-sm uppercase tracking-widest text-[var(--text-secondary)] transition-colors hover:bg-[var(--accent-primary)]/10 hover:text-[var(--accent-primary)]"
                 >
                   {link.name}
                 </button>

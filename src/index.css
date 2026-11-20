@@ -607,7 +607,8 @@ html body button:not(.nav-link):not(.theme-toggle),
 html body input[type="submit"],
 html body input[type="button"],
 html body a.btn-primary,
-html body a.btn-secondary {
+html body a.btn-secondary,
+html body a.mobile-menu-link {
   position: relative;
   border-style: solid;
   border-width: 1.5px;
@@ -622,11 +623,13 @@ html body input[type="submit"]:hover,
 html body input[type="button"]:hover,
 html body a.btn-primary:hover,
 html body a.btn-secondary:hover,
+html body a.mobile-menu-link:hover,
 html body button:not(.nav-link):not(.theme-toggle):active,
 html body input[type="submit"]:active,
 html body input[type="button"]:active,
 html body a.btn-primary:active,
-html body a.btn-secondary:active {
+html body a.btn-secondary:active,
+html body a.mobile-menu-link:active {
   translate: 0 -3px !important;
   box-shadow: var(--keycap-shadow) !important;
 }
