@@ -34,7 +34,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="home" className="relative flex min-h-screen items-center overflow-hidden pt-24">
+    <section id="home" className="relative flex min-h-screen items-center overflow-hidden pt-12">
       {/* Oversized background wordmark */}
       <div
         className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center overflow-hidden"
