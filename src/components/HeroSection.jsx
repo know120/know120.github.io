@@ -60,9 +60,11 @@ const HeroSection = () => {
               </span>
             </div>
 
-            <h1 className="mb-6 text-[clamp(3.5rem,8vw,7rem)] font-extrabold leading-[0.95] tracking-[-0.055em] text-[var(--text-primary)]">
-              Hi, I'm <br />
-              <span className="heading-gradient">Sujay Halder</span>
+            <h1 className="mb-6 font-extrabold leading-[0.95] tracking-[-0.055em] text-[var(--text-primary)]">
+              <span className="block text-[clamp(3.5rem,8vw,7rem)]">Hi, I'm</span>{' '}
+              <span className="heading-gradient block whitespace-nowrap text-[clamp(2.6rem,6.4vw,5.75rem)]">
+                Sujay Halder
+              </span>
             </h1>
 
             <div className="mb-8 flex h-10 items-center font-mono text-base text-[var(--accent-tertiary)] sm:text-lg">
@@ -132,7 +134,7 @@ const HeroSection = () => {
                 </div>
               </div>
 
-              <div className="glass-panel absolute -bottom-8 left-6 hidden rounded-sm px-4 py-3 sm:block">
+              <div className="glass-panel absolute -bottom-8 right-6 hidden rounded-sm px-4 py-3 sm:block">
                 <span className="block font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
                   Based in
                 </span>
