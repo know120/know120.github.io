@@ -713,6 +713,30 @@ html body a.btn-secondary {
     inset 0 -8px 14px rgba(2, 6, 23, 0.3);
 }
 
+/* Component CSS files define their own :hover/:active states that would strip
+   the lift. Re-assert the same elevation so the keycap stays raised at all
+   times — hover only changes color/border elsewhere, never the depth. */
+html body button:not(.nav-link):hover,
+html body input[type="submit"]:hover,
+html body input[type="button"]:hover,
+html body a.btn-primary:hover,
+html body a.btn-secondary:hover,
+html body button:not(.nav-link):active,
+html body input[type="submit"]:active,
+html body input[type="button"]:active,
+html body a.btn-primary:active,
+html body a.btn-secondary:active {
+  transform: translateY(-3px);
+  box-shadow:
+    0 6px 0 -2px rgba(255, 255, 255, 0.34),
+    0 10px 0 -3px rgba(2, 6, 23, 0.55),
+    0 0 22px -6px rgba(124, 140, 255, 0.6),
+    0 18px 32px -14px rgba(124, 140, 255, 0.75),
+    0 8px 18px -10px rgba(2, 6, 23, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -8px 14px rgba(2, 6, 23, 0.3);
+}
+
 /* Keep circular icon buttons circular while retaining the keycap depth. */
 html body button.icon-button {
   border-radius: 999px;
