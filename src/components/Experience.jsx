@@ -12,7 +12,7 @@ const Experience = () => {
 
     const expASL = {
         header: 'Alumnus Software Limited',
-        title: 'Full Stack Developer',
+        title: 'Member of Technical Staff I',
         body: 'Developed a web application for one of the leading Tire manufacturing company using Angular 7,Bootstrap 5, .NET Framework, and SQLServer.',
         footer: 'July 2022 - January 2026'
     };
