@@ -411,7 +411,7 @@
     justify-content: center;
     gap: 0.5rem;
     overflow: hidden;
-    border-radius: 999px;
+    border-radius: 0.9rem;
     border: 1.5px solid rgba(255, 255, 255, 0.34);
     padding: 0.98rem 1.8rem;
     min-height: 2.9rem;
@@ -493,7 +493,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border-radius: 999px;
+    border-radius: 0.9rem;
     border: 1.5px solid var(--glass-border);
     padding: 0.98rem 1.8rem;
     min-height: 2.9rem;
@@ -785,5 +785,85 @@ body.light-theme .heading-gradient {
 
   .btn-primary::after {
     display: none;
+  }
+}
+
+/* ==========================================================================
+   Universal keycap treatment
+   Component CSS files (notes, dialogs, tool pages) are unlayered and load
+   after this file, so these rules use a higher specificity to make every
+   control read as the same lifted, rounded glass key.
+   ========================================================================== */
+html body button:not(.nav-link),
+html body input[type="submit"],
+html body input[type="button"],
+html body a.btn-primary,
+html body a.btn-secondary {
+  position: relative;
+  border-style: solid;
+  border-width: 1.5px;
+  border-color: var(--glass-border-strong);
+  border-radius: 0.9rem;
+  transform: translateY(-2px);
+  box-shadow:
+    0 5px 0 -1px rgba(2, 6, 23, 0.75),
+    0 12px 24px -12px rgba(2, 6, 23, 0.95),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    inset 0 -6px 12px rgba(2, 6, 23, 0.28);
+  transition:
+    transform 0.3s var(--ease-liquid),
+    box-shadow 0.3s ease,
+    filter 0.3s ease;
+}
+
+html body button:not(.nav-link):hover,
+html body input[type="submit"]:hover,
+html body input[type="button"]:hover,
+html body a.btn-primary:hover,
+html body a.btn-secondary:hover {
+  transform: translateY(-4px);
+  filter: brightness(1.06);
+  box-shadow:
+    0 8px 0 -1px rgba(2, 6, 23, 0.78),
+    0 20px 34px -14px rgba(2, 6, 23, 0.98),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    inset 0 -6px 12px rgba(2, 6, 23, 0.24);
+}
+
+html body button:not(.nav-link):active,
+html body input[type="submit"]:active,
+html body input[type="button"]:active,
+html body a.btn-primary:active,
+html body a.btn-secondary:active {
+  transform: translateY(0);
+  filter: none;
+  box-shadow:
+    0 2px 0 -1px rgba(2, 6, 23, 0.7),
+    0 6px 14px -10px rgba(2, 6, 23, 0.85),
+    inset 0 2px 6px rgba(2, 6, 23, 0.35);
+}
+
+/* Keep circular icon buttons circular while retaining the keycap depth. */
+html body button.icon-button {
+  border-radius: 999px;
+}
+
+/* Third-party canvas controls keep their own chrome. */
+html body .tl-container button,
+html body .tl-container button:hover,
+html body .tl-container button:active {
+  transform: none;
+  box-shadow: none;
+  border-radius: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body button:not(.nav-link),
+  html body input[type="submit"],
+  html body input[type="button"],
+  html body a.btn-primary,
+  html body a.btn-secondary {
+    transform: none;
+    transition: none;
   }
 }
