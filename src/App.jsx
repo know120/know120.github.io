@@ -23,13 +23,15 @@ function App() {
           </div>
 
           <Suspense fallback={
-            <div className="flex flex-col items-center justify-center h-screen">
-              <div className="relative h-16 w-16">
-                <div className="absolute inset-0 rounded-full border border-white/20" />
-                <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-[var(--accent-primary)] border-r-[var(--accent-secondary)]" />
-                <div className="absolute inset-3 rounded-full bg-[var(--accent-primary)]/20 blur-md" />
+            <div className="flex h-screen flex-col items-center justify-center">
+              <div className="relative h-14 w-14 border border-[var(--glass-border)]">
+                <span className="absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-[var(--accent-primary)]" />
+                <span className="absolute -bottom-px -right-px h-4 w-4 border-b-2 border-r-2 border-[var(--accent-primary)]" />
+                <span className="absolute inset-0 animate-pulse bg-[var(--accent-primary)]/10" />
               </div>
-              <p className="mt-5 text-sm font-medium tracking-wide text-[var(--text-secondary)]">Loading…</p>
+              <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.24em] text-[var(--text-secondary)]">
+                Loading…
+              </p>
             </div>
           }>
             <Router />

@@ -43,23 +43,23 @@ const ExportModal = ({ isOpen, onClose, session }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-[#03050f]/75 backdrop-blur-md"
+        className="absolute inset-0 bg-[#05070b]/75 backdrop-blur-md"
         onClick={onClose}
       ></div>
       
       {/* Modal */}
-      <div className="glass-panel relative w-full max-w-2xl animate-fade-in rounded-3xl">
+      <div className="glass-panel relative w-full max-w-2xl animate-fade-in rounded-sm">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-white/10 p-6">
+        <div className="flex items-center justify-between border-b border-[var(--glass-border)] p-6">
           <div>
-            <h2 className="text-xl font-bold text-white">Export Interview Report</h2>
+            <h2 className="text-xl font-bold text-[var(--text-primary)]">Export Interview Report</h2>
             <p className="mt-1 text-sm text-[var(--text-secondary)]">
               Choose your preferred export format
             </p>
           </div>
           <button
             onClick={onClose}
-            className="icon-button h-9 w-9 rounded-lg"
+            className="icon-button h-9 w-9 rounded-sm"
           >
             <i className="pi pi-times"></i>
           </button>
@@ -68,18 +68,18 @@ const ExportModal = ({ isOpen, onClose, session }) => {
         {/* Content */}
         <div className="p-6">
           {/* Candidate Info */}
-          <div className="glass-panel mb-6 rounded-2xl p-4">
+          <div className="glass-panel mb-6 rounded-sm p-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,#6366f1,#22d3ee)] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_10px_24px_-12px_rgba(99,102,241,0.9)]">
-                <i className="pi pi-user text-xl text-white"></i>
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,#d6ff4b,#5eead4)] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_10px_24px_-12px_rgba(214,255,75,0.6)]">
+                <i className="pi pi-user text-xl text-[var(--text-primary)]"></i>
               </div>
               <div>
-                <h3 className="font-semibold text-white">{session.candidateName}</h3>
+                <h3 className="font-semibold text-[var(--text-primary)]">{session.candidateName}</h3>
                 <p className="text-sm text-[var(--text-secondary)]">{session.candidateEmail}</p>
               </div>
               {session.result && (
                 <div className="ml-auto text-right">
-                  <div className="text-2xl font-bold text-white">{session.result.averageScore}/10</div>
+                  <div className="text-2xl font-bold text-[var(--text-primary)]">{session.result.averageScore}/10</div>
                   <div className="text-xs text-[var(--text-tertiary)]">Average Score</div>
                 </div>
               )}
@@ -88,7 +88,7 @@ const ExportModal = ({ isOpen, onClose, session }) => {
 
           {/* Format Selection */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-slate-300 mb-3">
+            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-3">
               Select Export Format
             </label>
             <div className="grid grid-cols-2 gap-4">
@@ -96,22 +96,22 @@ const ExportModal = ({ isOpen, onClose, session }) => {
                 <button
                   key={format.id}
                   onClick={() => setSelectedFormat(format.id)}
-                  className={`glass-chip rounded-xl p-4 text-left ${
+                  className={`glass-chip rounded-sm p-4 text-left ${
                     selectedFormat === format.id
-                      ? `${getSelectedFormatColor(format.color)} text-white`
-                      : `bg-slate-800/50 border-slate-700 ${getFormatColor(format.color)}`
+                      ? `${getSelectedFormatColor(format.color)} text-[var(--text-primary)]`
+                      : `bg-[var(--bg-tertiary)] border-[var(--glass-border)] ${getFormatColor(format.color)}`
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                      selectedFormat === format.id ? 'bg-white/20' : 'bg-slate-700/50'
+                    <div className={`w-10 h-10 rounded-sm flex items-center justify-center ${
+                      selectedFormat === format.id ? 'bg-white/20' : 'bg-[var(--bg-tertiary)]'
                     }`}>
                       <i className={`pi ${format.icon} text-lg`}></i>
                     </div>
                     <div className="flex-1">
                       <div className="font-semibold">{format.name}</div>
                       <div className={`text-xs mt-1 ${
-                        selectedFormat === format.id ? 'text-white/70' : 'text-slate-400'
+                        selectedFormat === format.id ? 'text-[var(--text-primary)]/70' : 'text-[var(--text-secondary)]'
                       }`}>
                         {format.description}
                       </div>
@@ -128,7 +128,7 @@ const ExportModal = ({ isOpen, onClose, session }) => {
           </div>
 
           {/* Format Preview */}
-          <div className="glass-panel rounded-2xl p-4">
+          <div className="glass-panel rounded-sm p-4">
             <div className="mb-2 flex items-center gap-2">
               <i className="pi pi-info-circle text-[var(--accent-secondary)]"></i>
               <span className="text-sm font-medium text-[var(--text-secondary)]">Format Details</span>

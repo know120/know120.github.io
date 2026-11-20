@@ -10,8 +10,10 @@ export default function BlogPost() {
 
   return (
     <div className="section-container">
-      <Link to="/blog" className="glass-chip mb-6 inline-flex px-4 py-2 text-sm">&larr; Back to Blog</Link>
-      <article className="glass-panel prose prose-invert lg:prose-xl max-w-none rounded-3xl p-6 text-[var(--text-secondary)] sm:p-10">
+      <Link to="/blog" className="glass-chip mb-10 inline-flex px-4 py-2 font-mono text-[11px] uppercase tracking-wider">
+        <i className="pi pi-arrow-left" /> Back to Blog
+      </Link>
+      <article className="glass-panel prose prose-invert lg:prose-xl max-w-none rounded-sm p-6 text-[var(--text-secondary)] sm:p-10">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
       </article>
     </div>

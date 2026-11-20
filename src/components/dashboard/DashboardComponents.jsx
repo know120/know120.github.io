@@ -11,9 +11,9 @@ const MetricCard = ({ title, value, icon, color = 'indigo' }) => {
   };
 
   return (
-    <div className="glass-panel glass-interactive rounded-2xl p-6">
+    <div className="glass-panel glass-interactive rounded-sm p-6">
       <div className="flex items-center gap-4">
-        <div className={`rounded-xl border border-white/20 p-3 bg-linear-to-br ${colorClasses[color]} shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_12px_28px_-14px_rgba(99,102,241,0.9)]`}>
+        <div className={`rounded-sm border border-white/20 p-3 bg-linear-to-br ${colorClasses[color]} shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_12px_28px_-14px_rgba(214,255,75,0.5)]`}>
           <i className={`pi ${icon} text-white text-lg`}></i>
         </div>
         <div>
@@ -27,7 +27,7 @@ const MetricCard = ({ title, value, icon, color = 'indigo' }) => {
 
 const ModelList = ({ models, modelsByFamily }) => {
   return (
-    <div className="glass-panel rounded-2xl p-6">
+    <div className="glass-panel rounded-sm p-6">
       <h3 className="text-lg font-semibold text-white mb-4">
         <i className="pi pi-list mr-2"></i>
         Available Models ({models.length})
@@ -45,7 +45,7 @@ const ModelList = ({ models, modelsByFamily }) => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
         {models.map((model, index) => (
-          <div key={index} className="glass-chip rounded-xl p-4 text-left">
+          <div key={index} className="glass-chip rounded-sm p-4 text-left">
             <div className="mb-1 font-medium text-[var(--text-primary)]">
               {model.displayName || model.id || model.name}
             </div>

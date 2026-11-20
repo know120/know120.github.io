@@ -66,7 +66,7 @@ const SkillsSection = () => {
                     </div>
                     <div className="h-2 overflow-hidden rounded-full bg-white/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.35)]">
                       <div
-                        className="h-full rounded-full bg-[linear-gradient(90deg,#6366f1,#7c8cff_45%,#64e3ff)] shadow-[0_0_18px_rgba(100,227,255,0.45)]"
+                        className="h-full rounded-full bg-[linear-gradient(90deg,#6366f1,#7c8cff_45%,#5eead4)] shadow-[0_0_18px_rgba(100,227,255,0.45)]"
                         style={{ width: `${skill.level}%` }}
                       ></div>
                     </div>

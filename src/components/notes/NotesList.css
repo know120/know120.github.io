@@ -62,8 +62,7 @@
 }
 
 .create-note-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+  filter: brightness(1.08);
 }
 
 /* Search Section */
@@ -227,8 +226,7 @@
 }
 
 .create-first-note-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(139, 92, 246, 0.4);
+  filter: brightness(1.08);
 }
 
 /* No Results State */
@@ -288,18 +286,12 @@
 }
 
 .no-results-actions .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
+  background: rgba(214, 255, 75, 0.08);
 }
 
 .no-results-actions .btn-primary {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: white;
-}
-
-.no-results-actions .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+  background: linear-gradient(180deg, #e2ff7d 0%, var(--accent-primary) 48%, #b6e82e 100%);
+  color: #080a0f;
 }
 
 /* Touch-friendly enhancements */
