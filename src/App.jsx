@@ -14,11 +14,22 @@ function App() {
   return (
     <HelmetProvider>
       <ThemeProvider>
-        <div className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen min-w-screen">
+        <div className="app-shell text-[var(--text-primary)] min-h-screen min-w-screen">
+          <div className="liquid-canvas" aria-hidden="true">
+            <div className="liquid-blob liquid-blob--indigo" />
+            <div className="liquid-blob liquid-blob--cyan" />
+            <div className="liquid-blob liquid-blob--violet" />
+            <div className="liquid-blob liquid-blob--rose" />
+          </div>
+
           <Suspense fallback={
             <div className="flex flex-col items-center justify-center h-screen">
-              <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
-              <p className="mt-4 text-lg">Loading...</p>
+              <div className="relative h-16 w-16">
+                <div className="absolute inset-0 rounded-full border border-white/20" />
+                <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-[var(--accent-primary)] border-r-[var(--accent-secondary)]" />
+                <div className="absolute inset-3 rounded-full bg-[var(--accent-primary)]/20 blur-md" />
+              </div>
+              <p className="mt-5 text-sm font-medium tracking-wide text-[var(--text-secondary)]">Loading…</p>
             </div>
           }>
             <Router />

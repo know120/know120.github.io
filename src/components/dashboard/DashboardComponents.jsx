@@ -11,14 +11,14 @@ const MetricCard = ({ title, value, icon, color = 'indigo' }) => {
   };
 
   return (
-    <div className="glass-panel rounded-xl p-6">
+    <div className="glass-panel glass-interactive rounded-2xl p-6">
       <div className="flex items-center gap-4">
-        <div className={`p-3 rounded-lg bg-gradient-to-br ${colorClasses[color]}`}>
+        <div className={`rounded-xl border border-white/20 p-3 bg-linear-to-br ${colorClasses[color]} shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_12px_28px_-14px_rgba(99,102,241,0.9)]`}>
           <i className={`pi ${icon} text-white text-lg`}></i>
         </div>
         <div>
           <div className="text-2xl font-bold text-white">{value}</div>
-          <div className="text-sm text-slate-400">{title}</div>
+          <div className="text-sm text-[var(--text-secondary)]">{title}</div>
         </div>
       </div>
     </div>
@@ -27,7 +27,7 @@ const MetricCard = ({ title, value, icon, color = 'indigo' }) => {
 
 const ModelList = ({ models, modelsByFamily }) => {
   return (
-    <div className="glass-panel rounded-xl p-6">
+    <div className="glass-panel rounded-2xl p-6">
       <h3 className="text-lg font-semibold text-white mb-4">
         <i className="pi pi-list mr-2"></i>
         Available Models ({models.length})
@@ -36,7 +36,7 @@ const ModelList = ({ models, modelsByFamily }) => {
       {modelsByFamily && Object.keys(modelsByFamily).length > 0 && (
         <div className="mb-6 flex flex-wrap gap-2">
           {Object.entries(modelsByFamily).map(([family, count]) => (
-            <span key={family} className="px-3 py-1 bg-slate-800 rounded-full text-sm text-slate-300">
+            <span key={family} className="glass-chip px-3 py-1 text-sm">
               {family}: {count}
             </span>
           ))}
@@ -45,24 +45,24 @@ const ModelList = ({ models, modelsByFamily }) => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
         {models.map((model, index) => (
-          <div key={index} className="p-4 bg-slate-800/50 rounded-lg">
-            <div className="font-medium text-slate-200 mb-1">
+          <div key={index} className="glass-chip rounded-xl p-4 text-left">
+            <div className="mb-1 font-medium text-[var(--text-primary)]">
               {model.displayName || model.id || model.name}
             </div>
             {(model.family || model.type) && (
-              <div className="text-xs text-slate-400 mb-2">
+              <div className="mb-2 text-xs text-[var(--accent-secondary)]">
                 {model.family} {model.type && `• ${model.type}`}
               </div>
             )}
             {model.description && (
-              <div className="text-xs text-slate-500 line-clamp-2">
+              <div className="line-clamp-2 text-xs text-[var(--text-tertiary)]">
                 {model.description}
               </div>
             )}
             {model.supportedGenerationMethods && (
               <div className="mt-2 flex flex-wrap gap-1">
                 {model.supportedGenerationMethods.slice(0, 3).map((method, i) => (
-                  <span key={i} className="text-xs px-2 py-1 bg-slate-700/50 rounded text-slate-400">
+                  <span key={i} className="rounded bg-white/5 px-2 py-1 text-xs text-[var(--text-secondary)]">
                     {method}
                   </span>
                 ))}

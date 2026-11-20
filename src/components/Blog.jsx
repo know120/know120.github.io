@@ -16,7 +16,7 @@ const Blog = () => {
 
     return (
         <section id="blog" className="py-20 relative overflow-hidden">
-            <div className="absolute inset-0 bg-linear-to-b from-indigo-900/10 to-transparent -z-10"></div>
+            <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_50%_0%,rgba(124,140,255,0.12),transparent_70%)]"></div>
 
             <div className="section-container">
                 <div className="text-center mb-16">
@@ -26,13 +26,13 @@ const Blog = () => {
                             <GlowingLine />
                         </div>
                     </h2>
-                    <p className="text-slate-400 max-w-2xl mx-auto">
+                    <p className="text-[var(--text-secondary)] max-w-2xl mx-auto">
                         Exploring the frontiers of web technology, sharing experiences,
                         and documenting the journey of building modern digital experiences.
                     </p>
                 </div>
 
-                <div className="flex items-center justify-center gap-8">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                     {latestPosts.map((post) => (
                         <BlogCard key={post.slug} post={post} />
                     ))}

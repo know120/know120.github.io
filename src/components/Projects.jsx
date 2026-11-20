@@ -54,14 +54,14 @@ const projects = [
 const Projects = () => {
 
     return (
-        <section id="projects" className="py-10 bg-slate-900/50">
+        <section id="projects" className="py-10 relative">
             <div className="section-container">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">
                         <span className="heading-gradient">Featured Projects</span>
                         <GlowingLine />
                     </h2>
-                    <p className="text-slate-400 max-w-2xl mx-auto">
+                    <p className="text-[var(--text-secondary)] max-w-2xl mx-auto">
                         A selection of projects that demonstrate my skills and passion for building impactful solutions.
                     </p>
                 </div>
@@ -79,7 +79,7 @@ const Projects = () => {
                         href="https://github.com/know120"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-600 hover:border-indigo-500 hover:text-indigo-400 transition-colors"
+                        className="btn-secondary inline-flex items-center gap-2 px-6 py-3"
                     >
                         <i className="pi pi-github"></i>
                         <span>View More on GitHub</span>

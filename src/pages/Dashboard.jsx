@@ -8,7 +8,7 @@ import VerticalLines from '../components/common/VerticalLines';
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-50 relative">
+    <div className="relative min-h-screen text-[var(--text-primary)]">
       {/* <VerticalLines /> */}
       <Navigation />
 

@@ -7,12 +7,11 @@ export default function BlogPost() {
   const { slug } = useParams();
   const fullSlug = slug + '.md';
   const content = getPost(fullSlug);
-  // console.log(content);
 
   return (
     <div className="section-container">
-      <Link to="/blog" className="text-blue-500 hover:underline mb-4 inline-block">&larr; Back to Blog</Link>
-      <article className="prose lg:prose-xl dark:prose-invert dark:text-slate-300 max-w-none">
+      <Link to="/blog" className="glass-chip mb-6 inline-flex px-4 py-2 text-sm">&larr; Back to Blog</Link>
+      <article className="glass-panel prose prose-invert lg:prose-xl max-w-none rounded-3xl p-6 text-[var(--text-secondary)] sm:p-10">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
       </article>
     </div>

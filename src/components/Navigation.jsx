@@ -34,12 +34,12 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-7xl z-50 transition-all duration-300 rounded-2xl ${isScrolled || isMobileMenuOpen
-          ? 'bg-slate-900/90 backdrop-blur-md border border-white/10 shadow-lg shadow-indigo-500/10'
-          : 'bg-transparent border border-transparent'
+      className={`fixed top-4 left-4 right-4 z-50 rounded-full transition-all duration-500 md:left-1/2 md:w-full md:max-w-7xl md:-translate-x-1/2 ${isScrolled || isMobileMenuOpen
+          ? 'glass-nav'
+          : 'border border-transparent bg-transparent'
         }`}
     >
-      <div className="px- sm:px-6 lg:px-8">
+      <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="shrink-0">
@@ -49,7 +49,7 @@ const Navigation = () => {
                 e.preventDefault();
                 scrollToSection('home');
               }}
-              className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-indigo-400 to-cyan-400 hover:opacity-80 transition-opacity"
+              className="heading-gradient text-xl font-bold tracking-tight transition-opacity hover:opacity-85 sm:text-2xl"
             >
               Sujay Halder
             </a>
@@ -57,13 +57,13 @@ const Navigation = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+            <div className="flex items-center gap-1">
               {navLinks.map((link) => (
                 link.href ? (
                   <a
                     key={link.name}
                     href={link.href}
-                    className="text-slate-300 hover:text-white hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200"
+                    className="nav-link"
                   >
                     {link.name}
                   </a>
@@ -71,7 +71,7 @@ const Navigation = () => {
                   <button
                     key={link.name}
                     onClick={() => scrollToSection(link.id)}
-                    className="text-slate-300 hover:text-white hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 cursor-pointer"
+                    className="nav-link cursor-pointer"
                   >
                     {link.name}
                   </button>
@@ -99,7 +99,7 @@ const Navigation = () => {
             </button> */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-white/10 focus:outline-none"
+              className="icon-button h-10 w-10 text-[var(--text-secondary)] hover:text-white"
             >
               <span className="sr-only">Open main menu</span>
               {!isMobileMenuOpen ? (
@@ -118,14 +118,14 @@ const Navigation = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 mt-2 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-xl mx-4">
+        <div className="glass-panel absolute top-full left-0 right-0 mx-4 mt-3 overflow-hidden rounded-3xl md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               link.href ? (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-slate-300 hover:text-white hover:bg-white/10 block px-3 py-2 rounded-md text-base font-medium"
+                  className="block rounded-xl px-3 py-2 text-base font-medium text-[var(--text-secondary)] transition-colors hover:bg-white/10 hover:text-white"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}
@@ -134,7 +134,7 @@ const Navigation = () => {
                 <button
                   key={link.name}
                   onClick={() => scrollToSection(link.id)}
-                  className="text-slate-300 hover:text-white hover:bg-white/10 block w-full text-left px-3 py-2 rounded-md text-base font-medium"
+                  className="block w-full rounded-xl px-3 py-2 text-left text-base font-medium text-[var(--text-secondary)] transition-colors hover:bg-white/10 hover:text-white"
                 >
                   {link.name}
                 </button>

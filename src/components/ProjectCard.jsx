@@ -5,15 +5,15 @@ const ProjectCard = ({ project }) => {
 
   return (
     <div className="group relative h-full">
-      <div className="glass-panel rounded-2xl overflow-hidden h-full transition-all duration-500 hover:shadow-[0_0_30px_rgba(99,102,241,0.3)] hover:-translate-y-2 flex flex-col">
+      <div className="glass-panel glass-interactive flex h-full flex-col overflow-hidden rounded-3xl">
 
         {/* Image Container */}
         <div className="relative h-48 overflow-hidden">
-          <div className="absolute inset-0 bg-linear-to-t from-slate-900 to-transparent z-10 opacity-60"></div>
+          <div className="absolute inset-0 z-10 bg-linear-to-t from-[#070b1d] via-[#070b1d]/20 to-transparent opacity-80"></div>
           <img
             src={project.image || 'https://via.placeholder.com/400x200/6366f1/ffffff?text=Project'}
             alt={project.title}
-            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
 
           {/* Floating Tech Stack */}
@@ -21,13 +21,13 @@ const ProjectCard = ({ project }) => {
             {(project.technologies || []).slice(0, 3).map((tech, index) => (
               <span
                 key={index}
-                className="text-xs font-medium px-2 py-1 rounded-md bg-slate-900/80 text-indigo-300 border border-indigo-500/30 backdrop-blur-sm"
+                className="glass-chip px-2 py-1 text-xs font-medium text-[var(--accent-secondary)]"
               >
                 {tech}
               </span>
             ))}
             {(project.technologies || []).length > 3 && (
-              <span className="text-xs font-medium px-2 py-1 rounded-md bg-slate-900/80 text-slate-400 border border-slate-700 backdrop-blur-sm">
+              <span className="glass-chip px-2 py-1 text-xs font-medium text-[var(--text-secondary)]">
                 +{project.technologies.length - 3}
               </span>
             )}
@@ -35,12 +35,12 @@ const ProjectCard = ({ project }) => {
         </div>
 
         {/* Content */}
-        <div className="p-6 flex-1 flex flex-col">
-          <h3 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors">
+        <div className="flex flex-1 flex-col p-6">
+          <h3 className="mb-2 text-xl font-bold text-white transition-colors group-hover:text-[var(--accent-secondary)]">
             {project.title}
           </h3>
 
-          <p className="text-slate-400 text-sm mb-4 line-clamp-3 flex-1">
+          <p className="mb-4 line-clamp-3 flex-1 text-sm text-[var(--text-secondary)]/80">
             {project.description}
           </p>
 
@@ -48,8 +48,8 @@ const ProjectCard = ({ project }) => {
           {project.features && project.features.length > 0 && (
             <div className="mb-4 space-y-1">
               {project.features.slice(0, 2).map((feature, idx) => (
-                <div key={idx} className="flex items-center text-xs text-slate-500">
-                  <i className="pi pi-check-circle text-indigo-500/70 mr-2"></i>
+                <div key={idx} className="flex items-center text-xs text-[var(--text-tertiary)]">
+                  <i className="pi pi-check-circle mr-2 text-[var(--accent-secondary)]/70"></i>
                   {feature}
                 </div>
               ))}
@@ -57,15 +57,16 @@ const ProjectCard = ({ project }) => {
           )}
 
           {/* Actions */}
-          <div className="flex items-center gap-3 mt-auto pt-4 border-t border-white/5">
+          <div className="mt-auto flex items-center gap-3 border-t border-white/10 pt-4">
             {project.liveDemo && (
               <a
                 href={project.liveDemo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 text-center py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors"
+                className="btn-primary flex-1 px-4 py-2 text-sm"
               >
-                <i className="pi pi-external-link mr-2"></i>Live Demo
+                <i className="pi pi-external-link mr-2 text-xs"></i>
+                Live Demo
               </a>
             )}
             {project.github && (
@@ -73,9 +74,9 @@ const ProjectCard = ({ project }) => {
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex-1 text-center py-2 rounded-lg border border-slate-600 hover:border-slate-400 hover:bg-slate-800 text-slate-300 text-sm font-medium transition-all ${!project.liveDemo ? 'w-full' : ''}`}
+                className={`btn-secondary px-4 py-2 text-sm ${project.liveDemo ? 'flex-1' : 'w-full'}`}
               >
-                <i className="pi pi-github mr-2"></i>Code
+                <i className="pi pi-github mr-2 text-xs"></i>Code
               </a>
             )}
           </div>

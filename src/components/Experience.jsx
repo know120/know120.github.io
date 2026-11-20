@@ -25,13 +25,13 @@ const Experience = () => {
                         <span className="heading-gradient">Work Experience</span>
                         <GlowingLine />
                     </h2>
-                    <p className="text-slate-400 max-w-2xl mx-auto">
+                    <p className="text-[var(--text-secondary)] max-w-2xl mx-auto">
                         My professional journey and the companies I've had the privilege to work with.
                     </p>
                 </div>
 
                 <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 transition-all duration-1000 opacity-100 translate-y-0`}>
-                    <div className="glass-panel rounded-2xl p-6 hover:bg-slate-800/80 transition-colors">
+                    <div className="glass-panel glass-interactive rounded-3xl p-6">
                         <Card
                             header={expASL.header}
                             title={expASL.title}
@@ -39,7 +39,7 @@ const Experience = () => {
                             footer={expASL.footer}
                         />
                     </div>
-                    <div className="glass-panel rounded-2xl p-6 hover:bg-slate-800/80 transition-colors">
+                    <div className="glass-panel glass-interactive rounded-3xl p-6">
                         <Card
                             header={expDSS.header}
                             title={expDSS.title}
